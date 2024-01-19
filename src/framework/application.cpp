@@ -89,7 +89,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 		}
 	}
 
-	/*if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si es pressiona "+", s'incrementa l'amplada del borde
+	if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si es pressiona "+", s'incrementa l'amplada del borde
 		borderWidth++;
 		framebuffer.DrawRect(600, 100, 400, 100, Color::WHITE, borderWidth, true, Color::BLUE);
 	}
@@ -97,7 +97,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	if (event.keysym.sym == SDLK_MINUS && borderWidth >= 1) { //Si es pressiona "-", es redueix l'amplada del borde
 		borderWidth--;
 		framebuffer.DrawRect(600, 100, 400, 100, Color::WHITE, borderWidth, true, Color::BLUE);
-	}*/
+	}
 
 	if (event.keysym.sym == SDLK_3) {
 		if (triangleChecker == 0) {
