@@ -72,8 +72,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
 
 	if (event.keysym.sym == SDLK_2) { //Si es pressiona 2, es dibuixa un rectangle
-		int width;
-		int height;
 		if (!drawingInCourse) {
 			initPosX = mouse_position.x;
 			initPosY = mouse_position.y;
@@ -90,13 +88,15 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
 
 	if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si es pressiona "+", s'incrementa l'amplada del borde
+		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
 		borderWidth++;
-		framebuffer.DrawRect(600, 100, 400, 100, Color::WHITE, borderWidth, true, Color::BLUE);
+		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
 	}
 
 	if (event.keysym.sym == SDLK_MINUS && borderWidth >= 1) { //Si es pressiona "-", es redueix l'amplada del borde
+		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
 		borderWidth--;
-		framebuffer.DrawRect(600, 100, 400, 100, Color::WHITE, borderWidth, true, Color::BLUE);
+		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
 	}
 
 	if (event.keysym.sym == SDLK_3) {

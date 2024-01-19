@@ -31,6 +31,8 @@ public:
 	float initPosY;
 	float endPosX;
 	float endPosY;
+	float width;
+	float height;
 	// Variable per controlar el proces de dibuix del rectangle
 	int triangleChecker = 0;
 	// Vectors que guardaran les posicions del cursor
