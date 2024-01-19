@@ -7,7 +7,8 @@
 #include "main/includes.h"
 #include "framework.h"
 #include "image.h"
-#include "Windows.h"
+
+// Hola linus como estás?
 
 class Application
 {
