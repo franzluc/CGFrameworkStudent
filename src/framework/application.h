@@ -8,6 +8,10 @@
 #include "framework.h"
 #include "image.h"
 
+// Hola linus como estás?
+
+// hol hola hola
+
 class Application
 {
 public:
