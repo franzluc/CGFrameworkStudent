@@ -7,6 +7,7 @@
 #include "main/includes.h"
 #include "framework.h"
 #include "image.h"
+#include "Windows.h"
 
 class Application
 {
@@ -24,7 +25,19 @@ public:
 	const Uint8* keystate;
 	int mouse_state; // Tells which buttons are pressed
 	Vector2 mouse_position; // Last mouse position
+	bool drawingInCourse = false; // Checks if there is a drawing in course
 	Vector2 mouse_delta; // Mouse movement in the last frame
+	// Variables per guardar les coordenades del cursor utilitzades per dibuixar
+	float initPosX;
+	float initPosY;
+	float endPosX;
+	float endPosY;
+	// Variable per controlar el proces de dibuix del rectangle
+	int triangleChecker = 0;
+	// Vectors que guardaran les posicions del cursor
+	Vector2 vector0;
+	Vector2 vector1;
+	Vector2 vector2;
 
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
@@ -57,4 +70,7 @@ public:
 		SDL_GetWindowSize(window,&w,&h);
 		return Vector2(float(w), float(h));
 	}
+
+private:
+	int borderWidth = 4;
 };

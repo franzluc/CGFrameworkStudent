@@ -39,7 +39,7 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {
-
+	
 }
 
 //keyboard press event 
@@ -47,7 +47,72 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 {
 	// KEY CODES: https://wiki.libsdl.org/SDL2/SDL_Keycode
 	switch(event.keysym.sym) {
-		case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app
+		case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app	
+	}
+
+	if (event.keysym.sym == SDLK_1) { //Si es pressiona 1, es dibuixa una línia	
+		framebuffer.Resize(1920, 1080);
+		// Primer condicional per guardar les primeres coordenades
+		if (!drawingInCourse) {
+			// Es guarden les primeres coordenades del cursor
+			initPosX = mouse_position.x;
+			initPosY = mouse_position.y;
+			// S'actualitza l'estat drawingInCourse
+			drawingInCourse = true;
+		}
+		// Segon condicional per guardar les segones coordenades i dibuixar la linia
+		else {
+			// Es guarden les segones coordenades del cursor
+			endPosX = mouse_position.x;
+			endPosY = mouse_position.y;
+			// Es dibuixa la linia i s'actualitza l'estat drawingInCourse
+			framebuffer.DrawLineDDA(initPosX, initPosY, endPosX, endPosY, Color::WHITE);
+			drawingInCourse = false;
+		}
+	}
+
+	if (event.keysym.sym == SDLK_2) { //Si es pressiona 2, es dibuixa un rectangle
+		int width;
+		int height;
+		if (!drawingInCourse) {
+			initPosX = mouse_position.x;
+			initPosY = mouse_position.y;
+			drawingInCourse = true;
+		}
+		else {
+			endPosX = mouse_position.x;
+			endPosY = mouse_position.y;
+			width = endPosX - initPosX;
+			height = endPosY - initPosY;
+			framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
+			drawingInCourse = false;
+		}
+	}
+
+	/*if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si es pressiona "+", s'incrementa l'amplada del borde
+		borderWidth++;
+		framebuffer.DrawRect(600, 100, 400, 100, Color::WHITE, borderWidth, true, Color::BLUE);
+	}
+
+	if (event.keysym.sym == SDLK_MINUS && borderWidth >= 1) { //Si es pressiona "-", es redueix l'amplada del borde
+		borderWidth--;
+		framebuffer.DrawRect(600, 100, 400, 100, Color::WHITE, borderWidth, true, Color::BLUE);
+	}*/
+
+	if (event.keysym.sym == SDLK_3) {
+		if (triangleChecker == 0) {
+			vector0 = mouse_position;
+			triangleChecker = 1;
+		}
+		else if (triangleChecker == 1) {
+			vector1 = mouse_position;
+			triangleChecker = 2;
+		}
+		else if (triangleChecker == 2) {
+			vector2 = mouse_position;
+			framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, false, Color::BLUE);
+			triangleChecker = 0;
+		}
 	}
 }
 
