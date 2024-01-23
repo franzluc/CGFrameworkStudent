@@ -28,13 +28,14 @@ void Application::Init(void)
 {
 	std::cout << "Initiating app..." << std::endl;
 
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
 	Image imatge;
-	bool exitCarrega = imatge.LoadPNG("res/images/toolbar.png", false);
-
-	SDL_RenderClear(renderer);
-	imatge.Render();
+	bool carrega = imatge.LoadPNG("images/toolbar.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	imatge.LoadPNG("images/toolbar.png", true);
+	framebuffer.DrawImage(imatge, 0, 0, false);
+	
 }
 
 // Render one frame
@@ -61,49 +62,59 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 	if (event.keysym.sym == SDLK_1) { //Si es pressiona 1, es dibuixa una línia	
 		framebuffer.DrawLineDDA(initPosX, initPosY, endPosX, endPosY, Color::WHITE);
+		lastFigure = 1;
 	}
 
 	if (event.keysym.sym == SDLK_2) { //Si es pressiona 2, es dibuixa un rectangle
 		width = endPosX - initPosX;
 		height = endPosY - initPosY;
 		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
+		lastFigure = 2;
 	}
     
     if (event.keysym.sym == SDLK_3) { // Si se presiona 3, se dibuja un circulo.
-        if (!drawingInCourse){
-            initPosX = mouse_position.x;
-            initPosY = mouse_position.y;
-            drawingInCourse = true;
-        } else {
-            endPosX = mouse_position.x;
-            endPosY = mouse_position.y;
-            int radio = sqrt((endPosX-initPosX)*(endPosX-initPosX)+(endPosY-initPosY)*(endPosY-initPosY));
-            framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, true, Color::BLUE);
-            drawingInCourse = false;
-        }
+        radio = sqrt((endPosX-initPosX)*(endPosX-initPosX)+(endPosY-initPosY)*(endPosY-initPosY));
+        framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, true, Color::BLUE);
+		lastFigure = 3;
     }
     
 	if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si es pressiona "+", s'incrementa l'amplada del borde
-		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
-		borderWidth++;
-		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
+		if (lastFigure == 2) {
+			framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
+			borderWidth++;
+			framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
+		}
+		else if (lastFigure == 3) {
+			framebuffer.DrawCircle(initPosX, initPosY, radio, Color::BLACK, borderWidth, true, Color::BLACK);
+			borderWidth++;
+			framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, true, Color::BLUE);
+		}
+		
 	}
 
 	if (event.keysym.sym == SDLK_MINUS && borderWidth >= 1) { //Si es pressiona "-", es redueix l'amplada del borde
-		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
-		borderWidth--;
-		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
+		if (lastFigure == 2) {
+			framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
+			borderWidth--;
+			framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
+		}
+		else if (lastFigure == 3) {
+			framebuffer.DrawCircle(initPosX, initPosY, radio, Color::BLACK, borderWidth, true, Color::BLACK);
+			borderWidth--;
+			framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, true, Color::BLUE);
+		}
 	}
 
-	if (event.keysym.sym == SDLK_3) {
+	if (event.keysym.sym == SDLK_4) {
 		framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, false, Color::BLUE);
+		lastFigure = 4;
 	}
 }
 
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
-		// Deteccio de coordenades per la linia i el rectangle
+		// Deteccio de coordenades per la linia, el rectangle i el cercle
 		if (!drawingInCourse) {
 			initPosX = mouse_position.x;
 			initPosY = mouse_position.y;

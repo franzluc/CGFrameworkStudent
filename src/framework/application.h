@@ -33,6 +33,8 @@ public:
 	float endPosY;
 	float width;
 	float height;
+	// Variable per el radi del cercle
+	int radio;
 	// Variable per controlar el proces de dibuix del rectangle
 	int triangleChecker = 0;
 	// Vectors que guardaran les posicions del cursor per dibuixar triangles
@@ -41,6 +43,12 @@ public:
 	Vector2 vector2;
 	// Boolea per comprobar que l'imatge s'ha carregar correctament
 	bool exitCarrega;
+	// Int per saber la ultima figura dibuixada (per tal de poder ampliar el border del rectangle o el cercle
+	int lastFigure;
+		// 1 --> linia
+		// 2 --> rectangle
+		// 3 --> cercle
+		// 4 --> triangle
 
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);

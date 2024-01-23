@@ -607,5 +607,13 @@ void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2
 }
 
 void Image::DrawImage(const Image& image, int x, int y, bool top) {
-	
+	Image imatge;
+	imatge = image;
+	Color* pixels;
+	for (int i = 0; i < image.width; i++) {
+		for (int j = 0; j < image.height; j++) {
+			pixels = &imatge.GetPixel(i, j);
+			SetPixel(x + i, y + j, *pixels);
+		}
+	}
 }
