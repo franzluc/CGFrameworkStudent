@@ -31,15 +31,16 @@ class Image
 		unsigned char* data; // Bytes with the pixel information
 	} TGAInfo;
 
-	struct Cell {
-		int maxX;
-		int minX;
-	};
-
 public:
 	unsigned int width;
 	unsigned int height;
 	unsigned int bytes_per_pixel = 3; // Bits per pixel
+
+	// Estructura per les columnes de AET
+	struct Cell {
+		int minX;
+		int maxX;
+	};
 
 	Color* pixels;
 
@@ -114,6 +115,9 @@ public:
 
 	//Declaració de la funció per actualitzar la AET
 	void UpdateTable(std::vector<Cell>& table, int y, int x);
+
+	//Declaració de la funció per dibuixar una imatge
+	void DrawImage(const Image& image, int x, int y, bool top);
 };
 
 // Image storing one float per pixel instead of a 3 or 4 component Color

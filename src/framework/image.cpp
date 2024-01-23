@@ -587,55 +587,25 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int border
     
 
 void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
-	/* Dibuix de linies del triangle
+	// Dibuix de linies del triangle
 	Image::DrawLineDDA(p0.x, p0.y, p1.x, p1.y, Color::WHITE);
 	Image::DrawLineDDA(p1.x, p1.y, p2.x, p2.y, Color::WHITE);
 	Image::DrawLineDDA(p2.x, p2.y, p0.x, p0.y, Color::WHITE);
 
-	// S'ordenen els vertex en ordre ascendent depenent les seves y
-	int p0Y = p0.y;
-	int p1Y = p1.y;
-	int p2Y = p2.y;
-
-	if (p0Y < p1Y) {
-		std::swap(p0Y, p1Y);
-	}
-
-	if (p1Y < p2Y) {
-		std::swap(p1Y, p2Y);
-	}
-
-	if (p0Y < p1Y) {
-		std::swap(p0Y, p1Y);
-	}
-	/*Vector2 vertices[3] = {p0, p1, p2};
-	std::sort(vertices, vertices + 3, [](const Vector2& a, const Vector2& b) {
-		return a.y < b.y;
-		});
-
 	// Es crea la taula per emmagatzemar valors
-	int files = p2Y - p0Y;
-	int table[files][2];
-	std::vector<Cell> AET;
+	/*int table[720][2];
+	std::vector<Cell> AET;*/
 
 	// S'escanejen els valors minims i maxims
-	for (int i = 0; i < 2; ++i) {
-		int x0 = vertices[i].x;
-		int y0 = vertices[i].y;
-		int x1 = vertices[i + 1].x;
-		int y1 = vertices[i + 1].y;
-
+	/*for (int i = 0; i <= 720; ++i) {
+		for (int j = 0; j <= 1280; ++j) {
+			if ()
+		}
 		// S'ordena la taula AET
 		ScanLineDDA(x0, y0, x1, y1, AET);
-	}
-
-	/* Draw pixels for each scanline
-	for (int y = vertices[0].y; y <= vertices[2].y; ++y) {
-		// Update AET
-		for (auto& cell : AET) {
-			if (cell.y == y) {
-				cell.x += cell.x < cell.y ? 1 : 0;
-			}
-		}
 	}*/
+}
+
+void Image::DrawImage(const Image& image, int x, int y, bool top) {
+	
 }
