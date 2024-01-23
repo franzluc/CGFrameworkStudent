@@ -29,12 +29,135 @@ void Application::Init(void)
 	std::cout << "Initiating app..." << std::endl;
 
 	Image imatge;
-	bool carrega = imatge.LoadPNG("images/toolbar.png");
+	bool carrega = imatge.LoadPNG("images/toolbar2.png");
 	if (carrega == false) {
 		std::cout << "Image not found!" << std::endl;
 	}
-	imatge.LoadPNG("images/toolbar.png", true);
-	framebuffer.DrawImage(imatge, 0, 0, false);
+	else {
+		imatge.LoadPNG("images/toolbar2.png", true);
+		framebuffer.DrawImage(imatge, 0, 0, false);
+	}
+	carrega = imatge.LoadPNG("images/clear.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/clear.png", true);
+		framebuffer.DrawImage(imatge, 10, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/load.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/load.png", true);
+		framebuffer.DrawImage(imatge, 52, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/save.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/save.png", true);
+		framebuffer.DrawImage(imatge, 94, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/eraser.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/eraser.png", true);
+		framebuffer.DrawImage(imatge, 136, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/line.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/line.png", true);
+		framebuffer.DrawImage(imatge, 178, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/rectangle.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/rectangle.png", true);
+		framebuffer.DrawImage(imatge, 220, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/circle.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/circle.png", true);
+		framebuffer.DrawImage(imatge, 262, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/triangle.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/triangle.png", true);
+		framebuffer.DrawImage(imatge, 304, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/black.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/black.png", true);
+		framebuffer.DrawImage(imatge, 346, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/white.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/white.png", true);
+		framebuffer.DrawImage(imatge, 388, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/pink.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/pink.png", true);
+		framebuffer.DrawImage(imatge, 430, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/yellow.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/yellow.png", true);
+		framebuffer.DrawImage(imatge, 472, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/red.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/red.png", true);
+		framebuffer.DrawImage(imatge, 514, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/blue.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/blue.png", true);
+		framebuffer.DrawImage(imatge, 556, 16, false);
+	}
+	carrega = imatge.LoadPNG("images/cyan.png");
+	if (carrega == false) {
+		std::cout << "Image not found!" << std::endl;
+	}
+	else {
+		imatge.LoadPNG("images/cyan.png", true);
+		framebuffer.DrawImage(imatge, 598, 16, false);
+	}
+	
 	
 }
 
@@ -60,25 +183,25 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 		case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app	
 	}
 
-	if (event.keysym.sym == SDLK_1) { //Si es pressiona 1, es dibuixa una línia	
+	if (event.keysym.sym == SDLK_1) { //Si se presiona 1 se dibuja una linea	
 		framebuffer.DrawLineDDA(initPosX, initPosY, endPosX, endPosY, Color::WHITE);
 		lastFigure = 1;
 	}
 
-	if (event.keysym.sym == SDLK_2) { //Si es pressiona 2, es dibuixa un rectangle
+	if (event.keysym.sym == SDLK_2) { //Si se presiona 2 se dibuja un rectangulo
 		width = endPosX - initPosX;
 		height = endPosY - initPosY;
 		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, true, Color::BLUE);
 		lastFigure = 2;
 	}
     
-    if (event.keysym.sym == SDLK_3) { // Si se presiona 3, se dibuja un circulo.
+    if (event.keysym.sym == SDLK_3) { //Si se presiona 3 se dibuja un circulo
         radio = sqrt((endPosX-initPosX)*(endPosX-initPosX)+(endPosY-initPosY)*(endPosY-initPosY));
         framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, true, Color::BLUE);
 		lastFigure = 3;
     }
     
-	if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si es pressiona "+", s'incrementa l'amplada del borde
+	if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si se presiona + se incrementa el borde
 		if (lastFigure == 2) {
 			framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
 			borderWidth++;
@@ -92,7 +215,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 		
 	}
 
-	if (event.keysym.sym == SDLK_MINUS && borderWidth >= 1) { //Si es pressiona "-", es redueix l'amplada del borde
+	if (event.keysym.sym == SDLK_MINUS && borderWidth >= 1) { //Si se presiona - se incrementa el borde
 		if (lastFigure == 2) {
 			framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
 			borderWidth--;
@@ -114,7 +237,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
-		// Deteccio de coordenades per la linia, el rectangle i el cercle
+		// Deteccion de coordenadas para la linea, el rectangulo y el circulo
 		if (!drawingInCourse) {
 			initPosX = mouse_position.x;
 			initPosY = mouse_position.y;
@@ -126,7 +249,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 			drawingInCourse = false;
 		}
 
-		// Deteccio de coordenades per el triangle
+		// Deteccion del coordenadas para el triangulo
 		if (triangleChecker == 0) {
 			vector0 = mouse_position;
 			triangleChecker = 1;

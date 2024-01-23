@@ -36,7 +36,7 @@ public:
 	unsigned int height;
 	unsigned int bytes_per_pixel = 3; // Bits per pixel
 
-	// Estructura per les columnes de AET
+	// Estructura para AET
 	struct Cell {
 		int minX;
 		int maxX;
@@ -101,22 +101,19 @@ public:
 	}
 	#endif
 
-	//Declaració de la funció per dibuixar una línia
+	//Declaracion para la funcion de dibujar una linea
 	void DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c);
     
-    // Declaration of the function for drawing a circle
+    //Declaracion para la funcion de dibujar un rectangulo
     void DrawCircle(int x, int y, int r, const Color& borderColor, int borderWidth, bool isFilled, const Color& fillColor);
 
-	//Declaració de la funció per dibuixar un triangle
+	//Declaracion para la funcion de dibujar un triangulo
 	void DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor);
 
-	//Declaració de l'algorisme per escanejar el triangle
+	//Declaracion del algoritmo para el triangulo
 	void ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table);
 
-	//Declaració de la funció per actualitzar la AET
-	void UpdateTable(std::vector<Cell>& table, int y, int x);
-
-	//Declaració de la funció per dibuixar una imatge
+	//Declaracion de la funcion para dibujar una imagen
 	void DrawImage(const Image& image, int x, int y, bool top);
 };
 

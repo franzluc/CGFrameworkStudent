@@ -26,29 +26,29 @@ public:
 	Vector2 mouse_position; // Last mouse position
 	bool drawingInCourse = false; // Checks if there is a drawing in course
 	Vector2 mouse_delta; // Mouse movement in the last frame
-	// Variables per guardar les coordenades del cursor utilitzades per dibuixar linies i rectangles
+	// Variables para guardar las coordenadas para dibujar lineas, rectangulos y circulos
 	float initPosX;
 	float initPosY;
 	float endPosX;
 	float endPosY;
 	float width;
 	float height;
-	// Variable per el radi del cercle
+	// Variable para guardar el radio del circulo
 	int radio;
-	// Variable per controlar el proces de dibuix del rectangle
+	// Variable para controlar el proceso de dibujo del rectangulo
 	int triangleChecker = 0;
-	// Vectors que guardaran les posicions del cursor per dibuixar triangles
+	// Vectores que guardan la posicion del cursor
 	Vector2 vector0;
 	Vector2 vector1;
 	Vector2 vector2;
-	// Boolea per comprobar que l'imatge s'ha carregar correctament
+	// Booleano para comprobar que se ha cargado exitosamente la imagen
 	bool exitCarrega;
-	// Int per saber la ultima figura dibuixada (per tal de poder ampliar el border del rectangle o el cercle
+	// Int para saber la ultima figura dibujada
 	int lastFigure;
-		// 1 --> linia
-		// 2 --> rectangle
-		// 3 --> cercle
-		// 4 --> triangle
+		// 1 --> linea
+		// 2 --> rectangulo
+		// 3 --> circulo
+		// 4 --> triangulo
 
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
