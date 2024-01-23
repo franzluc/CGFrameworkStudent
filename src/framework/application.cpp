@@ -1,7 +1,8 @@
 #include "application.h"
 #include "mesh.h"
 #include "shader.h"
-#include "utils.h" 
+#include "utils.h"
+#include <cmath>
 
 Application::Application(const char* caption, int width, int height)
 {
@@ -86,7 +87,21 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 			drawingInCourse = false;
 		}
 	}
-
+    
+    if (event.keysym.sym == SDLK_3) { // Si se presiona 3, se dibuja un circulo.
+        if (!drawingInCourse){
+            initPosX = mouse_position.x;
+            initPosY = mouse_position.y;
+            drawingInCourse = true;
+        } else {
+            endPosX = mouse_position.x;
+            endPosY = mouse_position.y;
+            int radio = sqrt((endPosX-initPosX)*(endPosX-initPosX)+(endPosY-initPosY)*(endPosY-initPosY));
+            framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, true, Color::BLUE);
+            drawingInCourse = false;
+        }
+    }
+    
 	if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si es pressiona "+", s'incrementa l'amplada del borde
 		framebuffer.DrawRect(initPosX, initPosY, width, height, Color::BLACK, borderWidth, true, Color::BLACK);
 		borderWidth++;

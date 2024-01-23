@@ -8,6 +8,8 @@
 #include "utils.h"
 #include "camera.h"
 #include "mesh.h"
+#include "application.h"
+#include <cmath>
 
 Image::Image() {
 	width = 0; height = 0;
@@ -498,6 +500,8 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c)
 
 }
 
+
+
 void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table) {
 
 	//Es calcula la diferencia entre els punts
@@ -556,6 +560,31 @@ void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table
 		}
 	}*/
 }
+
+void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int borderWidth, bool isFilled, const Color& fillColor) {
+    
+    
+    for (int p = 0; p < borderWidth; ++p){
+        for (int i=0; i < width; ++i){
+            for (int j=0; j < height; ++j){
+                if ((sqrt((i-x)*(i-x)+(j-y)*(j-y)) > (r-1-p)) && (sqrt((i-x)*(i-x)+(j-y)*(j-y)) < (r+1))){
+                    SetPixel(i, j, borderColor);
+                }
+            }
+        }
+    }
+    
+    if(isFilled) {
+        for (int i=0; i < width; ++i){
+            for (int j=0; j < height; ++j){
+                if ((sqrt((i-x)*(i-x)+(j-y)*(j-y)) < (r+1-borderWidth))){
+                    SetPixel(i, j, fillColor);
+                }
+            }
+        }
+    }
+}
+    
 
 void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
 	/* Dibuix de linies del triangle
