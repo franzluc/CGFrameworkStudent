@@ -147,6 +147,11 @@ public:
 	void Resize(unsigned int width, unsigned int height);
 };
 
+class Button
+{
+private:
+	Image imatge;
+	Vector2 posicio;
 
 
 class ParticleSystem {
@@ -165,6 +170,7 @@ class ParticleSystem {
         Particle particles[MAX_PARTICLES];
 
 public:
+	//Button(const std::string& _image, const Vector2& _position) : imatge(_image), posicio(_position) {};
     
     ParticleSystem();
     
