@@ -28,8 +28,8 @@ void Application::Init(void)
 {
 	std::cout << "Initiating app..." << std::endl;
 
-	Button(*"images/toolbar2.png", Vector2(0, 0));
-	Image imatge = imatge;
+	//Button(*"images/toolbar2.png", Vector2(0, 0));
+	//Image imatge = imatge;
 
 	/*Image imatge;
 	bool carrega = imatge.LoadPNG("images/toolbar2.png");
