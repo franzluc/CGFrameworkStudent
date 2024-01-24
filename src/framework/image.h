@@ -154,7 +154,7 @@ private:
 	Vector2 posicio;
     //Button(const std::string& _image, const Vector2& _position) : imatge(_image), posicio(_position) {};
     
-}
+};
 
 
 class ParticleSystem {
@@ -186,5 +186,5 @@ public:
     
     
     
-}
+};
 
