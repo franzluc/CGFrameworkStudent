@@ -313,20 +313,20 @@ bool Image::SaveTGA(const char* filename)
 
 void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int borderWidth, bool isFilled, const Color& fillColor)
 {
-	if (w > 0 && h < 0) { //Quan la 1a posicio del cursor i la segona formen un vector diagonal cap a la part inferior dreta
-		for (int p = 0; p < borderWidth; ++p) {  //Aquest for es per l'amplada del border en les coordenades X
+	if (w > 0 && h < 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte inferior derecha
+		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
 			for (int i = 0; i < w + (borderWidth - 1); ++i) {
 				SetPixel(x + i, y + p, bordercolor);
 				SetPixel(x + i, y + h - 1 + p, bordercolor);
 			}
 		}
-		for (int q = 0; q < borderWidth; ++q) {  //Aquest for es per l'amplada del border en les coordernades Y
+		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
 			for (int j = 0; j > h; --j) {
 				SetPixel(x + q, y - abs(j), bordercolor);
 				SetPixel(x + w - 1 + q, y - abs(j), bordercolor);
 			}
 		}
-		//Si el rectangle ha d'estar omplert de color:
+		//Si el rectángulo debe estar llenado de color:
 		if (isFilled) {
 			for (int i = 0; i < w - borderWidth - 1; ++i) {
 				for (int j = 0; j > (h + borderWidth - 1); --j) {
@@ -335,20 +335,20 @@ void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int b
 			}
 		}
 	}
-	else if (w < 0 && h < 0) { //Quan la 1a posicio del cursor i la segona formen un vector diagonal cap a la part inferior esquerra
-		for (int p = 0; p < borderWidth; ++p) {  //Aquest for es per l'amplada del border en les coordenades X
+	else if (w < 0 && h < 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte inferior izquierda
+		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
 			for (int i = 0; i > (w + (borderWidth - 1)); --i) {
 				SetPixel(x - abs(i), y - p, bordercolor);
 				SetPixel(x - abs(i), y + h + 1 + p, bordercolor);
 			}
 		}
-		for (int q = 0; q < borderWidth; ++q) {  //Aquest for es per l'amplada del border en les coordernades Y
+		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
 			for (int j = 0; j > h; --j) {
 				SetPixel(x - q, y - abs(j), bordercolor);
 				SetPixel(x - abs(w) + 1 + q, y - abs(j), bordercolor);
 			}
 		}
-		//Si el rectangle ha d'estar omplert de color:
+		//Si el rectángulo debe estar llenado de color:
 		if (isFilled) {
 			for (int i = 0; i > w + (borderWidth * 2); --i) {
 				for (int j = 0; j > (h + borderWidth * 2); --j) {
@@ -357,20 +357,20 @@ void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int b
 			}
 		}
 	}
-	else if (w < 0 && h > 0) { //Quan la 1a posicio del cursor i la segona formen un vector diagonal cap a la part superior esquerra
-		for (int p = 0; p < borderWidth; ++p) {  //Aquest for es per l'amplada del border en les coordenades X
+	else if (w < 0 && h > 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte superior izquierda
+		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
 			for (int i = 0; i > (w + (borderWidth - 1)); --i) {
 				SetPixel(x - abs(i), y - p, bordercolor);
 				SetPixel(x - abs(i), y + h + 1 + p, bordercolor);
 			}
 		}
-		for (int q = 0; q < borderWidth; ++q) {  //Aquest for es per l'amplada del border en les coordernades Y
+		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
 			for (int j = 0; j < (h + (borderWidth * 2)); ++j) {
 				SetPixel(x + q, (y - borderWidth + 1) + j, bordercolor);
 				SetPixel(x + q + w, (y - borderWidth + 1) + j, bordercolor);
 			}
 		}
-		//Si el rectangle ha d'estar omplert de color:
+		//Si el rectángulo debe estar llenado de color:
 		if (isFilled) {
 			for (int i = 0; i > (w + borderWidth); --i) {
 				for (int j = 0; j < h; ++j) {
@@ -379,20 +379,20 @@ void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int b
 			}
 		}
 	}
-	else if (w > 0 && h > 0) { //Quan la 1a posicio del cursor i la segona formen un vector diagonal cap a la part superior dreta
-		for (int p = 0; p < borderWidth; ++p) {  //Aquest for es per l'amplada del border en les coordenades X
+	else if (w > 0 && h > 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte superior derecha
+		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
 			for (int i = 0; i < w + (borderWidth - 1); ++i) {
 				SetPixel(x + i, y + p, bordercolor);
 				SetPixel(x + i, y + h - 1 + p, bordercolor);
 			}
 		}
-		for (int q = 0; q < borderWidth; ++q) {  //Aquest for es per l'amplada del border en les coordernades Y
+		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
 			for (int j = 0; j < (h + borderWidth - 1); ++j) {
 				SetPixel(x + q, y + j, bordercolor);
 				SetPixel(x + q + w, y + j, bordercolor);
 			}
 		}
-		//Si el rectangle ha d'estar omplert de color:
+		//Si el rectángulo debe estar llenado de color:
 		if (isFilled) {
 			for (int i = 0; i < (w - borderWidth); ++i) {
 				for (int j = 0; j < (h - borderWidth); ++j) {
@@ -475,21 +475,21 @@ void FloatImage::Resize(unsigned int width, unsigned int height)
 	pixels = new_pixels;
 }
 
-//Funció per dibuixar una línia
+//Funcion para dibujar una linea
 void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c)
 {
-	//Es calcula la diferencia entre els punts
+	//Se calcula la diferencia entre los puntos
 	int dx = x1 - x0;
 	int dy = y1 - y0;
 
-	//Es calculen els punts intermitjos que formaran la linia
+	//Se calculan los puntos intermedios que formarán la línea
 	int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
 
-	//Es calcula l'increment
+	//Se calcula el incremento
 	float Xinc = dx / (float)steps;
 	float Yinc = dy / (float)steps;
 
-	//Es dibuixa la linia
+	//Se dibuja la linea
 	float X = x0;
 	float Y = y0;
 	for (int i = 0; i <= steps; i++) {
@@ -582,8 +582,6 @@ void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table
 }
 
 void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int borderWidth, bool isFilled, const Color& fillColor) {
-    
-    
     for (int p = 0; p < borderWidth; ++p){
         for (int i=0; i < width; ++i){
             for (int j=0; j < height; ++j){
@@ -607,7 +605,7 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int border
     
 
 void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
-	// Dibuix de linies del triangle
+	// Dibujo de las lineas del triangulo
 	Image::DrawLineDDA(p0.x, p0.y, p1.x, p1.y, Color::WHITE);
 	Image::DrawLineDDA(p1.x, p1.y, p2.x, p2.y, Color::WHITE);
 	Image::DrawLineDDA(p2.x, p2.y, p0.x, p0.y, Color::WHITE);
