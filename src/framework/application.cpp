@@ -28,7 +28,10 @@ void Application::Init(void)
 {
 	std::cout << "Initiating app..." << std::endl;
 
-	Image imatge;
+	Button(*"images/toolbar2.png", Vector2(0, 0));
+	Image imatge = imatge;
+
+	/*Image imatge;
 	bool carrega = imatge.LoadPNG("images/toolbar2.png");
 	if (carrega == false) {
 		std::cout << "Image not found!" << std::endl;
@@ -156,7 +159,7 @@ void Application::Init(void)
 	else {
 		imatge.LoadPNG("images/cyan.png", true);
 		framebuffer.DrawImage(imatge, 598, 16, false);
-	}
+	}*/
 	
 	
 }

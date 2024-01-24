@@ -27,12 +27,14 @@ public:
 	bool drawingInCourse = false; // Checks if there is a drawing in course
 	Vector2 mouse_delta; // Mouse movement in the last frame
 	// Variables para guardar las coordenadas para dibujar lineas, rectangulos y circulos
-	float initPosX;
-	float initPosY;
-	float endPosX;
-	float endPosY;
-	float width;
-	float height;
+	float initPosX = 0;
+	float initPosY = 0;
+	float endPosX = 0;
+	float endPosY = 0;
+	float width = 0;
+	float height = 0;
+	// Variable per guardar el valor de border
+	int borderWidth = 4;
 	// Variable para guardar el radio del circulo
 	int radio;
 	// Variable para controlar el proceso de dibujo del rectangulo
@@ -49,6 +51,8 @@ public:
 		// 2 --> rectangulo
 		// 3 --> circulo
 		// 4 --> triangulo
+	// Booleano para comprobar si el click es dentro de una imagen del menu
+	bool clickInsideImg;
 
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
@@ -81,7 +85,4 @@ public:
 		SDL_GetWindowSize(window,&w,&h);
 		return Vector2(float(w), float(h));
 	}
-
-private:
-	int borderWidth = 4;
 };
