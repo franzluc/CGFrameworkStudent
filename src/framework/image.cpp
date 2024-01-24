@@ -10,6 +10,7 @@
 #include "mesh.h"
 #include "application.h"
 #include <cmath>
+#include <random>
 
 Image::Image() {
 	width = 0; height = 0;
@@ -311,97 +312,7 @@ bool Image::SaveTGA(const char* filename)
 	return true;
 }
 
-void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int borderWidth, bool isFilled, const Color& fillColor)
-{
-	if (w > 0 && h < 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte inferior derecha
-		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
-			for (int i = 0; i < w + (borderWidth - 1); ++i) {
-				SetPixel(x + i, y + p, bordercolor);
-				SetPixel(x + i, y + h - 1 + p, bordercolor);
-			}
-		}
-		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
-			for (int j = 0; j > h; --j) {
-				SetPixel(x + q, y - abs(j), bordercolor);
-				SetPixel(x + w - 1 + q, y - abs(j), bordercolor);
-			}
-		}
-		//Si el rectángulo debe estar llenado de color:
-		if (isFilled) {
-			for (int i = 0; i < w - borderWidth - 1; ++i) {
-				for (int j = 0; j > (h + borderWidth - 1); --j) {
-					SetPixel(x + i + borderWidth, y + j - 1, fillColor);
-				}
-			}
-		}
-	}
-	else if (w < 0 && h < 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte inferior izquierda
-		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
-			for (int i = 0; i > (w + (borderWidth - 1)); --i) {
-				SetPixel(x - abs(i), y - p, bordercolor);
-				SetPixel(x - abs(i), y + h + 1 + p, bordercolor);
-			}
-		}
-		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
-			for (int j = 0; j > h; --j) {
-				SetPixel(x - q, y - abs(j), bordercolor);
-				SetPixel(x - abs(w) + 1 + q, y - abs(j), bordercolor);
-			}
-		}
-		//Si el rectángulo debe estar llenado de color:
-		if (isFilled) {
-			for (int i = 0; i > w + (borderWidth * 2); --i) {
-				for (int j = 0; j > (h + borderWidth * 2); --j) {
-					SetPixel(x + i - borderWidth, y + j - borderWidth, fillColor);
-				}
-			}
-		}
-	}
-	else if (w < 0 && h > 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte superior izquierda
-		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
-			for (int i = 0; i > (w + (borderWidth - 1)); --i) {
-				SetPixel(x - abs(i), y - p, bordercolor);
-				SetPixel(x - abs(i), y + h + 1 + p, bordercolor);
-			}
-		}
-		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
-			for (int j = 0; j < (h + (borderWidth * 2)); ++j) {
-				SetPixel(x + q, (y - borderWidth + 1) + j, bordercolor);
-				SetPixel(x + q + w, (y - borderWidth + 1) + j, bordercolor);
-			}
-		}
-		//Si el rectángulo debe estar llenado de color:
-		if (isFilled) {
-			for (int i = 0; i > (w + borderWidth); --i) {
-				for (int j = 0; j < h; ++j) {
-					SetPixel(x + i - 1, y + j + 1, fillColor);
-				}
-			}
-		}
-	}
-	else if (w > 0 && h > 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte superior derecha
-		for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
-			for (int i = 0; i < w + (borderWidth - 1); ++i) {
-				SetPixel(x + i, y + p, bordercolor);
-				SetPixel(x + i, y + h - 1 + p, bordercolor);
-			}
-		}
-		for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
-			for (int j = 0; j < (h + borderWidth - 1); ++j) {
-				SetPixel(x + q, y + j, bordercolor);
-				SetPixel(x + q + w, y + j, bordercolor);
-			}
-		}
-		//Si el rectángulo debe estar llenado de color:
-		if (isFilled) {
-			for (int i = 0; i < (w - borderWidth); ++i) {
-				for (int j = 0; j < (h - borderWidth); ++j) {
-					SetPixel(x + borderWidth + i, y + borderWidth + j, fillColor);
-				}
-			}
-		}
-	}
-}
+
 
 #ifndef IGNORE_LAMBDAS
 
@@ -493,7 +404,8 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c)
 	float X = x0;
 	float Y = y0;
 	for (int i = 0; i <= steps; i++) {
-		SetPixel(round(X), round(Y), Color::WHITE);
+		SetPixel(round(X), round(Y), c);
+        SetPixel(round(X), round(Y), c);
 		X += Xinc;
 		Y += Yinc;
 	}
@@ -504,13 +416,13 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c)
 
 void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table) {
 
+    // Repetimos los pasos de dibujar la l’nea, pero en vez de utilizar SetPixel con los puntos,
+    // comprobamos si el valor x es un valor m‡ximo o m’nimo para ese valor de Y. Almacenamos estos puntos en la tabla.
     
-    
-    //Es calcula la diferencia entre els punts
 	int dx = x1 - x0;
 	int dy = y1 - y0;
 
-	//Es calculen els punts intermitjos que formaran la linia
+	
 	int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
 
 	//Es calcula l'increment
@@ -521,7 +433,7 @@ void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table
 	float X = x0;
 	float Y = y0;
 	
-    
+    // Iteramos hasta recorrer todos los pixels
     for (int i = 0; i <= steps; ++i){
         if (round(X) < table[round(Y)].minX){
             table[round(Y)].minX = round(X);
@@ -534,54 +446,106 @@ void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table
     }
     
     
-    
    
-    
-    
-    /*for (int i = 0; i <= steps; i++) {
-		table[]
-		//SetPixel(round(X), round(Y), Color::WHITE);
-		X += Xinc;
-		Y += Yinc;
-	}*/
-
-	/* Algoritme DDA per calcular el pendent
-	int dx = x1 - x0;
-	int dy = y1 - y0;
-	float pendent = static_cast<float>(dy) / static_cast<float>(dx);
-
-	// Si el pendent es mes petit que 1
-	if (std::abs(dx) >= std::abs(dy)) {
-		
-		int x, y;
-		if (x0 > x1) {
-			std::swap(x0, x1);
-			std::swap(y0, y1);
-		}
-
-		y = y0;
-		for (x = x0; x <= x1; ++x) {
-			UpdateTable(table, y, x);
-			y += pendent;
-		}
-	}
-	// Si el pendent es mes gran que 1
-	else {
-		int x, y;
-		if (y0 > y1) {
-			std::swap(x0, x1);
-			std::swap(y0, y1);
-		}
-
-		x = x0;
-		for (y = y0; y <= y1; ++y) {
-			UpdateTable(table, y, x);
-			x += 1 / pendent;
-		}
-	}*/
 }
 
+void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int borderWidth, bool isFilled, const Color& fillColor)
+{
+    if (w > 0 && h < 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte inferior derecha
+        for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
+            for (int i = 0; i < w + (borderWidth - 1); ++i) {
+                SetPixel(x + i, y + p, bordercolor);
+                SetPixel(x + i, y + h - 1 + p, bordercolor);
+            }
+        }
+        for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
+            for (int j = 0; j > h; --j) {
+                SetPixel(x + q, y - abs(j), bordercolor);
+                SetPixel(x + w - 1 + q, y - abs(j), bordercolor);
+            }
+        }
+        //Si el rectángulo debe estar llenado de color:
+        if (isFilled) {
+            for (int i = 0; i < w - borderWidth - 1; ++i) {
+                for (int j = 0; j > (h + borderWidth - 1); --j) {
+                    SetPixel(x + i + borderWidth, y + j - 1, fillColor);
+                }
+            }
+        }
+    }
+    else if (w < 0 && h < 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte inferior izquierda
+        for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
+            for (int i = 0; i > (w + (borderWidth - 1)); --i) {
+                SetPixel(x - abs(i), y - p, bordercolor);
+                SetPixel(x - abs(i), y + h + 1 + p, bordercolor);
+            }
+        }
+        for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
+            for (int j = 0; j > h; --j) {
+                SetPixel(x - q, y - abs(j), bordercolor);
+                SetPixel(x - abs(w) + 1 + q, y - abs(j), bordercolor);
+            }
+        }
+        //Si el rectángulo debe estar llenado de color:
+        if (isFilled) {
+            for (int i = 0; i > w + (borderWidth * 2); --i) {
+                for (int j = 0; j > (h + borderWidth * 2); --j) {
+                    SetPixel(x + i - borderWidth, y + j - borderWidth, fillColor);
+                }
+            }
+        }
+    }
+    else if (w < 0 && h > 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte superior izquierda
+        for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
+            for (int i = 0; i > (w + (borderWidth - 1)); --i) {
+                SetPixel(x - abs(i), y - p, bordercolor);
+                SetPixel(x - abs(i), y + h + 1 + p, bordercolor);
+            }
+        }
+        for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
+            for (int j = 0; j < (h + (borderWidth * 2)); ++j) {
+                SetPixel(x + q, (y - borderWidth + 1) + j, bordercolor);
+                SetPixel(x + q + w, (y - borderWidth + 1) + j, bordercolor);
+            }
+        }
+        //Si el rectángulo debe estar llenado de color:
+        if (isFilled) {
+            for (int i = 0; i > (w + borderWidth); --i) {
+                for (int j = 0; j < h; ++j) {
+                    SetPixel(x + i - 1, y + j + 1, fillColor);
+                }
+            }
+        }
+    }
+    else if (w > 0 && h > 0) { //Cuando la 1a posición del cursor y la segunda forman un vector diagonal hacia la parte superior derecha
+        for (int p = 0; p < borderWidth; ++p) {  //Este "for" es por el ancho del border en las coordenadas X
+            for (int i = 0; i < w + (borderWidth - 1); ++i) {
+                SetPixel(x + i, y + p, bordercolor);
+                SetPixel(x + i, y + h - 1 + p, bordercolor);
+            }
+        }
+        for (int q = 0; q < borderWidth; ++q) {  //Este "for" es por el ancho del border en las coordenadas Y
+            for (int j = 0; j < (h + borderWidth - 1); ++j) {
+                SetPixel(x + q, y + j, bordercolor);
+                SetPixel(x + q + w, y + j, bordercolor);
+            }
+        }
+        //Si el rectángulo debe estar llenado de color:
+        if (isFilled) {
+            for (int i = 0; i < (w - borderWidth); ++i) {
+                for (int j = 0; j < (h - borderWidth); ++j) {
+                    SetPixel(x + borderWidth + i, y + borderWidth + j, fillColor);
+                }
+            }
+        }
+    }
+}
+
+
+
+// Funci—n para dibujar un circulo
 void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int borderWidth, bool isFilled, const Color& fillColor) {
+    
     for (int p = 0; p < borderWidth; ++p){
         for (int i=0; i < width; ++i){
             for (int j=0; j < height; ++j){
@@ -603,48 +567,40 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int border
     }
 }
     
-
+// Funci—n para dibujar un tr’angulo
 void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
-	// Dibujo de las lineas del triangulo
-	Image::DrawLineDDA(p0.x, p0.y, p1.x, p1.y, Color::WHITE);
-	Image::DrawLineDDA(p1.x, p1.y, p2.x, p2.y, Color::WHITE);
-	Image::DrawLineDDA(p2.x, p2.y, p0.x, p0.y, Color::WHITE);
+	
+    // Dibujo de las lineas del triangulo.
+	Image::DrawLineDDA(p0.x, p0.y, p1.x, p1.y, borderColor);
+	Image::DrawLineDDA(p1.x, p1.y, p2.x, p2.y, borderColor);
+	Image::DrawLineDDA(p2.x, p2.y, p0.x, p0.y, borderColor);
     
-    std::vector<Cell> table;
-    table.resize(height);
-    for(int i=0; i<table.size(); ++i){
-        table[i].minX=width;
-        table[i].maxX=0;
-    }
     
+    
+    // Si est‡ lleno, procedemos a crear la tabla que servir‡ de par‡metro para ScanLineDDA.
     if (isFilled){
+        
+        // Creamos la tabla donde se almacenar‡n los m‡ximos y m’nimos de X.
+        std::vector<Cell> table;
+        table.resize(height); // Aumentamos el nœmero de filas y redefinimos los valores m‡ximos y m’nimos como 0 y el ancho.
+        for(int i=0; i<table.size(); ++i){
+            table[i].minX=width;
+            table[i].maxX=0;
+        }
+        
+        // Aplicamos la siguiente funci—n sobre cada l’nea para obtener los valores m‡ximos y m’nimos de X.
         ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
         ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
         ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
         
+        // Iteramos por cada valor de Y para rellenar de color entre el valor m’nimo y m‡ximo.
         for(int j = 0; j < table.size(); ++j){
-            for (int i = table[j].minX + 1; i < table[j].maxX; ++i){
+            for (int i = table[j].minX+1; i < table[j].maxX; ++i){
                 SetPixel(i, j, fillColor);
             }
-        
        }
     }
 }
-
-
-
-	// Es crea la taula per emmagatzemar valors
-	/*int table[720][2];
-	std::vector<Cell> AET;*/
-
-	// S'escanejen els valors minims i maxims
-	/*for (int i = 0; i <= 720; ++i) {
-		for (int j = 0; j <= 1280; ++j) {
-			if ()
-		}
-		// S'ordena la taula AET
-		ScanLineDDA(x0, y0, x1, y1, AET);
-	}*/
 
 
 void Image::DrawImage(const Image& image, int x, int y, bool top) {
@@ -661,3 +617,19 @@ void Image::DrawImage(const Image& image, int x, int y, bool top) {
 }
 
 
+
+void ParticleSystem::Init(){
+    
+    for (int i=0; i<MAX_PARTICLES; i++){
+        
+        Particle particle;
+        
+        particle.position = Vector2(i, 0);
+        particle.velocity = Vector2(5, 0);
+        particle.color = Color(i,i+2,i+3);
+        particle.acceleration = 2;
+        particle.ttl = 2;
+        particle.inactive = false;
+        
+    }
+}
