@@ -504,7 +504,9 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c)
 
 void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table) {
 
-	//Es calcula la diferencia entre els punts
+    
+    
+    //Es calcula la diferencia entre els punts
 	int dx = x1 - x0;
 	int dy = y1 - y0;
 
@@ -518,7 +520,25 @@ void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table
 	//Es dibuixa la linia
 	float X = x0;
 	float Y = y0;
-	/*for (int i = 0; i <= steps; i++) {
+	
+    
+    for (int i = 0; i <= steps; ++i){
+        if (round(X) < table[round(Y)].minX){
+            table[round(Y)].minX = round(X);
+        }
+        if (round(X) > table[round(Y)].maxX){
+            table[round(Y)].maxX = round(X);
+        }
+        X += Xinc;
+        Y += Yinc;
+    }
+    
+    
+    
+   
+    
+    
+    /*for (int i = 0; i <= steps; i++) {
 		table[]
 		//SetPixel(round(X), round(Y), Color::WHITE);
 		X += Xinc;
@@ -591,6 +611,29 @@ void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2
 	Image::DrawLineDDA(p0.x, p0.y, p1.x, p1.y, Color::WHITE);
 	Image::DrawLineDDA(p1.x, p1.y, p2.x, p2.y, Color::WHITE);
 	Image::DrawLineDDA(p2.x, p2.y, p0.x, p0.y, Color::WHITE);
+    
+    std::vector<Cell> table;
+    table.resize(height);
+    for(int i=0; i<table.size(); ++i){
+        table[i].minX=width;
+        table[i].maxX=0;
+    }
+    
+    if (isFilled){
+        ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
+        ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
+        ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
+        
+        for(int j = 0; j < table.size(); ++j){
+            for (int i = table[j].minX + 1; i < table[j].maxX; ++i){
+                SetPixel(i, j, fillColor);
+            }
+        
+       }
+    }
+}
+
+
 
 	// Es crea la taula per emmagatzemar valors
 	/*int table[720][2];
@@ -604,7 +647,7 @@ void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2
 		// S'ordena la taula AET
 		ScanLineDDA(x0, y0, x1, y1, AET);
 	}*/
-}
+
 
 void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	Image imatge;
@@ -612,8 +655,11 @@ void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	Color* pixels;
 	for (int i = 0; i < image.width; i++) {
 		for (int j = 0; j < image.height; j++) {
-			pixels = &imatge.GetPixel(i, j);
+			Color pixel = imatge.GetPixel(i, j);
+            pixels = &pixel;
 			SetPixel(x + i, y + j, *pixels);
 		}
 	}
 }
+
+

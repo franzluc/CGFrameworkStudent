@@ -106,7 +106,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
 
 	if (event.keysym.sym == SDLK_4) {
-		framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, false, Color::BLUE);
+		framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, true, Color::BLUE);
+     
 		lastFigure = 4;
 	}
 }
