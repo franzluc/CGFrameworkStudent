@@ -156,10 +156,11 @@ private:
     
 };
 
+float numRand(float min, float max) ;
 
 class ParticleSystem {
 
-        static const int MAX_PARTICLES = 1000;
+ static const int MAX_PARTICLES = 10;
 
         struct Particle {
                 Vector2 position;
@@ -174,10 +175,7 @@ class ParticleSystem {
 
 public:
 	
-    
     ParticleSystem();
-    
-    ~ParticleSystem();
     
     void Init();
     void Render(Image* framebuffer);

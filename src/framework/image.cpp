@@ -11,6 +11,8 @@
 #include "application.h"
 #include <cmath>
 #include <random>
+#include <cstdlib>
+
 
 Image::Image() {
 	width = 0; height = 0;
@@ -616,20 +618,59 @@ void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	}
 }
 
+float getRandomFloat(float min, float max) {
+    return min + static_cast<float>(std::rand()) / RAND_MAX * (max - min);
+}
 
 
+
+
+ParticleSystem::ParticleSystem(){
+    
+}
+    
 void ParticleSystem::Init(){
     
-    for (int i=0; i<MAX_PARTICLES; i++){
+    for (int i=0; i < MAX_PARTICLES; i++){
         
-        Particle particle;
+        particles[i].position.x = getRandomFloat(0, 500);
+        particles[i].position.y = 0;
         
-        particle.position = Vector2(i, 0);
-        particle.velocity = Vector2(5, 0);
-        particle.color = Color(i,i+2,i+3);
-        particle.acceleration = 2;
-        particle.ttl = 2;
-        particle.inactive = false;
+        particles[i].velocity.x = i;
+        particles[i].velocity.y = i;
+        
+        particles[i].color = Color(getRandomFloat(0, 255),getRandomFloat(0, 255),getRandomFloat(0, 255));
+        particles[i].acceleration = 5;
+        particles[i].ttl = 200;
+        particles[i].inactive = true;
         
     }
 }
+
+void ParticleSystem::Render(Image* framebuffer){
+    
+    for (int i = 1 ; i < MAX_PARTICLES; i++){
+        if ((particles[i].position.x < framebuffer->width && particles[i].position.x > 0) && (particles[i].position.y < framebuffer->height && particles[i].position.y > 0)) {
+            
+            framebuffer->SetPixel(particles[i].position.x, particles[i].position.y, particles[i].color);
+            //framebuffer->SetPixel(particles[i].position.x+1, particles[i].position.y+1, particles[i].color);//
+            //framebuffer->SetPixel(particles[i].position.x+2, particles[i].position.y+2, particles[i].color);
+            //framebuffer->SetPixel(particles[i].position.x+3, particles[i].position.y+3, particles[i].color);
+            
+            framebuffer->SetPixel(particles[i].position.x-1, particles[i].position.y-1, Color(0,0,0));
+        }
+    }
+}
+
+
+void ParticleSystem::Update(float dt){
+    for (int i=0; i < MAX_PARTICLES; i++){
+        particles[i].position = particles[i].position + (particles[i].velocity * dt);
+        particles[i].ttl = particles[i].ttl - 1;
+    }
+}
+        
+    
+    
+
+

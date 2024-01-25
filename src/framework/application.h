@@ -63,6 +63,8 @@ public:
 
 	// CPU Global framebuffer
 	Image framebuffer;
+    
+    
 
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
@@ -85,4 +87,6 @@ public:
 		SDL_GetWindowSize(window,&w,&h);
 		return Vector2(float(w), float(h));
 	}
+    
+    
 };

@@ -7,6 +7,7 @@
 #include <framework/framework.h>
 #include <framework/image.h>
 
+/*
 class Button
 {
 private:
@@ -16,3 +17,5 @@ private:
 public:
 	Button(const char& _imatge, const Vector2& _posicio);
 };
+
+*/

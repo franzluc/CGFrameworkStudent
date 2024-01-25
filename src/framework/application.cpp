@@ -3,6 +3,8 @@
 #include "shader.h"
 #include "utils.h"
 #include <cmath>
+#include <chrono>
+#include <thread>
 
 Application::Application(const char* caption, int width, int height)
 {
@@ -236,6 +238,23 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
      
 		lastFigure = 4;
 	}
+    
+    if (event.keysym.sym == SDLK_6){
+        float total_time = 10000;
+        float current_time = 0;
+        float dt = 0.05;
+        
+        ParticleSystem ps;
+        ps.Init();
+        ps.Render(&framebuffer);
+        
+        while (current_time < total_time){
+            ps.Update(dt);
+            ps.Render(&framebuffer);
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            current_time = current_time + dt;
+        }
+    }
 }
 
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
