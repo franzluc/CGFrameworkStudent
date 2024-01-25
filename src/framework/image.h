@@ -171,9 +171,5 @@ public:
     void Init();
     void Render(Image* framebuffer);
     void Update(float dt);
-    
-    
-    
-    
 };
 
