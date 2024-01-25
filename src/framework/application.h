@@ -7,6 +7,7 @@
 #include "main/includes.h"
 #include "framework.h"
 #include "image.h"
+#include "button.h"
 
 class Application
 {
@@ -47,12 +48,30 @@ public:
 	bool exitCarrega;
 	// Int para saber la ultima figura dibujada
 	int lastFigure;
-		// 1 --> linea
-		// 2 --> rectangulo
-		// 3 --> circulo
-		// 4 --> triangulo
-	// Booleano para comprobar si el click es dentro de una imagen del menu
-	bool clickInsideImg;
+	// 1 --> linea
+	// 2 --> rectangulo
+	// 3 --> circulo
+	// 4 --> triangulo
+
+	bool modeSelected = false;
+
+// Inicializacion de todos los botones
+	Button toolbarButton{ *"images/toolbar2.png", Vector2(0, 0) };
+	Button clearButton{ *"images/clear.png", Vector2(10, 16) };
+	Button loadButton{ *"images/load.png", Vector2(52, 16) };
+	Button saveButton{ *"images/save.png", Vector2(94, 16) };
+	Button eraserButton{ *"images/eraser.png", Vector2(136, 16) };
+	Button lineButton{ *"images/line.png", Vector2(178, 16) };
+	Button rectangleButton{ *"images/rectangle.png", Vector2(220, 16) };
+	Button circleButton{ *"images/circle.png", Vector2(262, 16) };
+	Button triangleButton{ *"images/triangle.png", Vector2(304, 16) };
+	Button blackButton{ *"images/black.png", Vector2(346, 16) };
+	Button whiteButton{ *"images/white.png", Vector2(388, 16) };
+	Button pinkButton{ *"images/pink.png", Vector2(430, 16) };
+	Button yellowButton{ *"images/yellow.png", Vector2(472, 16) };
+	Button redButton{ *"images/red.png", Vector2(514, 16) };
+	Button blueButton{ *"images/blue.png", Vector2(556, 16) };
+	Button cyanButton{ *"images/cyan.png", Vector2(598, 16) };
 
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
@@ -90,3 +109,5 @@ public:
     
     
 };
+
+

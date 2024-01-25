@@ -1,21 +1,23 @@
 #pragma once
-
-#include "main/includes.h"
-#include <string.h>
-#include <stdio.h>
-#include <iostream>
-#include <framework/framework.h>
 #include <framework/image.h>
 
 /*
 class Button
 {
 private:
-	char imatge;
+	Image imagen;
+	const char* ruta;
 	Vector2 posicio;
 
 public:
+<<<<<<< Updated upstream
 	Button(const char& _imatge, const Vector2& _posicio);
 };
 
 */
+=======
+	Button(const char& _image, Vector2& _position);
+	void DrawButton(Image& framebuffer);
+	bool isMouseInside(Vector2 coords);
+};
+>>>>>>> Stashed changes

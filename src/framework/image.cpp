@@ -418,9 +418,13 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c)
 
 void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table) {
 
+<<<<<<< Updated upstream
     // Repetimos los pasos de dibujar la l’nea, pero en vez de utilizar SetPixel con los puntos,
     // comprobamos si el valor x es un valor m‡ximo o m’nimo para ese valor de Y. Almacenamos estos puntos en la tabla.
     
+=======
+    //Es calcula la diferencia entre els punts
+>>>>>>> Stashed changes
 	int dx = x1 - x0;
 	int dy = y1 - y0;
 
@@ -435,7 +439,10 @@ void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table
 	float X = x0;
 	float Y = y0;
 	
+<<<<<<< Updated upstream
     // Iteramos hasta recorrer todos los pixels
+=======
+>>>>>>> Stashed changes
     for (int i = 0; i <= steps; ++i){
         if (round(X) < table[round(Y)].minX){
             table[round(Y)].minX = round(X);
@@ -446,9 +453,12 @@ void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table
         X += Xinc;
         Y += Yinc;
     }
+<<<<<<< Updated upstream
     
     
    
+=======
+>>>>>>> Stashed changes
 }
 
 void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int borderWidth, bool isFilled, const Color& fillColor)
@@ -604,7 +614,10 @@ void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2
     }
 }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	Image imatge;
 	imatge = image;

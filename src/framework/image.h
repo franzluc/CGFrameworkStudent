@@ -146,6 +146,7 @@ public:
 
 	void Resize(unsigned int width, unsigned int height);
 };
+<<<<<<< Updated upstream
 
 class Button
 {
@@ -186,3 +187,5 @@ public:
     
 };
 
+=======
+>>>>>>> Stashed changes
