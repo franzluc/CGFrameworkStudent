@@ -3,12 +3,10 @@
 #include "shader.h"
 #include "utils.h"
 #include <cmath>
-<<<<<<< Updated upstream
 #include <chrono>
 #include <thread>
-=======
 #include "button.h"
->>>>>>> Stashed changes
+
 
 Application::Application(const char* caption, int width, int height)
 {
@@ -76,14 +74,17 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 	if (event.keysym.sym == SDLK_1) { //Si se presiona 1 se dibuja una linea
 		lastFigure = 1;
+		triangleChecker = 3;
 	}
 
 	if (event.keysym.sym == SDLK_2) { //Si se presiona 2 se dibuja un rectangulo
 		lastFigure = 2;
+		triangleChecker = 3;
 	}
     
     if (event.keysym.sym == SDLK_3) { //Si se presiona 3 se dibuja un circulo
 		lastFigure = 3;
+		triangleChecker = 3;
     }
     
 	if (event.keysym.sym == SDLK_PLUS && borderWidth <= 20) { //Si se presiona + se incrementa el borde
@@ -115,6 +116,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 	if (event.keysym.sym == SDLK_4) {     
 		lastFigure = 4;
+		triangleChecker = 0;
 	}
     
     if (event.keysym.sym == SDLK_6){
@@ -138,53 +140,69 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
+		if (mouse_position.y >= toolbarButton.getAltura()) {
+			// Deteccion de coordenadas para la linea, el rectangulo y el circulo
+			if (!drawingInCourse && modeSelected) {
+				initPosX = mouse_position.x;
+				initPosY = mouse_position.y;
+				drawingInCourse = true;
+			}
+			else if (drawingInCourse && modeSelected) {
+				endPosX = mouse_position.x;
+				endPosY = mouse_position.y;
+				if (lastFigure == 1) {
+					framebuffer.DrawLineDDA(initPosX, initPosY, endPosX, endPosY, Color::WHITE);
+				}
+				else if (lastFigure == 2) {
+					width = endPosX - initPosX;
+					height = endPosY - initPosY;
+					framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, false, Color::BLUE);
+				}
+				else if (lastFigure == 3) {
+					radio = sqrt((endPosX - initPosX) * (endPosX - initPosX) + (endPosY - initPosY) * (endPosY - initPosY));
+					framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, false, Color::BLUE);
+				}
+				drawingInCourse = false;
+			}
+
+			// Deteccion del coordenadas para el triangulo
+			if (triangleChecker == 0 && modeSelected) {
+				vector0 = mouse_position;
+				triangleChecker = 1;
+			}
+			else if (triangleChecker == 1 && modeSelected) {
+				vector1 = mouse_position;
+				triangleChecker = 2;
+			}
+			else if (triangleChecker == 2 && modeSelected) {
+				vector2 = mouse_position;
+				triangleChecker = 0;
+				if (lastFigure == 4) {
+					framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, false, Color::BLUE);
+				}
+			}
+		}
 		
-		// Deteccion de coordenadas para la linea, el rectangulo y el circulo
-		if (!drawingInCourse && modeSelected) {
-			initPosX = mouse_position.x;
-			initPosY = mouse_position.y;
-			drawingInCourse = true;
-		}
-		else {
-			endPosX = mouse_position.x;
-			endPosY = mouse_position.y;
+		if (clearButton.isMouseInside(mouse_position) == true) {
+			framebuffer.DrawRect(0, toolbarButton.getAltura(), window_width, (window_height - toolbarButton.getAltura()), Color::BLACK, 1, true, Color::BLACK);
+			lastFigure = 5;
+			modeSelected = false;
 			drawingInCourse = false;
-			if (lastFigure == 1) {
-				framebuffer.DrawLineDDA(initPosX, initPosY, endPosX, endPosY, Color::WHITE);
-			}
-			else if (lastFigure == 2) {
-				width = endPosX - initPosX;
-				height = endPosY - initPosY;
-				framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, false, Color::BLUE);
-			}
-			else if (lastFigure == 3) {
-				radio = sqrt((endPosX - initPosX) * (endPosX - initPosX) + (endPosY - initPosY) * (endPosY - initPosY));
-				framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, false, Color::BLUE);
-			}
 		}
-
-		// Deteccion del coordenadas para el triangulo
-		if (triangleChecker == 0 && modeSelected) {
-			vector0 = mouse_position;
-			triangleChecker = 1;
-		}
-		else if (triangleChecker == 1 && modeSelected) {
-			vector1 = mouse_position;
-			triangleChecker = 2;
-		}
-		else if (triangleChecker == 2 && modeSelected) {
-			vector2 = mouse_position;
-			triangleChecker = 0;
-			if (lastFigure == 4) {
-				framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, false, Color::BLUE);
-			}
-		}
-
-		if (lineButton.isMouseInside(mouse_position) == true) {
+		else if (lineButton.isMouseInside(mouse_position) == true) {
 			lastFigure = 1;
 			modeSelected = true;
-		} else if (rectangleButton.isMouseInside(mouse_position) == true){
+		} 
+		else if (rectangleButton.isMouseInside(mouse_position) == true){
 			lastFigure = 2;
+			modeSelected = true;
+		}
+		else if (circleButton.isMouseInside(mouse_position) == true) {
+			lastFigure = 3;
+			modeSelected = true;
+		}
+		else if (triangleButton.isMouseInside(mouse_position) == true) {
+			lastFigure = 4;
 			modeSelected = true;
 		}
 	}

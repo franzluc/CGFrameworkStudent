@@ -1,22 +1,12 @@
 #include "button.h"
-<<<<<<< Updated upstream
 #include "framework/application.h"
-/*
-Button::Button(const char& _imatge, const Vector2& _posicio)
-{
-	Image imatge;
-	imatge.LoadPNG(&_imatge, true);
-	posicio.x = _posicio.x;
-	posicio.y = _posicio.y;
-}
-
- */
-=======
 
 Button::Button(const char& _image, Vector2& _position) {
 	ruta = &_image;
 	posicio = _position;
 	imagen.LoadPNG(ruta, true);
+	altura = imagen.height;
+	ancho = imagen.width;
 }
 
 void Button::DrawButton(Image& framebuffer) {
@@ -24,7 +14,7 @@ void Button::DrawButton(Image& framebuffer) {
 }
 
 bool Button::isMouseInside(Vector2 coords) {
-	if (coords.x >= posicio.x && coords.x <= (posicio.x + 32) && coords.y >= posicio.y && coords.y <= (posicio.y + 32))
+	if (coords.x >= posicio.x && coords.x <= (posicio.x + ancho) && coords.y >= posicio.y && coords.y <= (posicio.y + altura))
 	{
 		return true;
 	}
@@ -32,4 +22,11 @@ bool Button::isMouseInside(Vector2 coords) {
 		return false;
 	}
 }
->>>>>>> Stashed changes
+
+int Button::getAltura() {
+	return altura;
+}
+
+int Button::getAncho() {
+	return ancho;
+}

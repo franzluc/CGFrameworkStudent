@@ -39,6 +39,8 @@ public:
 	// Variable para guardar el radio del circulo
 	int radio;
 	// Variable para controlar el proceso de dibujo del rectangulo
+	// Si el valor de la variable es diferente a 0, 1 o 2, significa
+	// que no se esta dibujando el triangulo, sino otra figura
 	int triangleChecker = 0;
 	// Vectores que guardan la posicion del cursor
 	Vector2 vector0;
@@ -48,15 +50,17 @@ public:
 	bool exitCarrega;
 	// Int para saber la ultima figura dibujada
 	int lastFigure;
-	// 1 --> linea
-	// 2 --> rectangulo
-	// 3 --> circulo
-	// 4 --> triangulo
+		// 1 --> linea
+		// 2 --> rectangulo
+		// 3 --> circulo
+		// 4 --> triangulo
+		// otro --> se han eliminado los dibujos
 
+	// Booleano que indica si se ha seleccionado un boton de la barra inferior
 	bool modeSelected = false;
 
-// Inicializacion de todos los botones
-	Button toolbarButton{ *"images/toolbar2.png", Vector2(0, 0) };
+	// Inicializacion de todos los botones
+	Button toolbarButton{*"images/toolbar2.png", Vector2(0, 0)};
 	Button clearButton{ *"images/clear.png", Vector2(10, 16) };
 	Button loadButton{ *"images/load.png", Vector2(52, 16) };
 	Button saveButton{ *"images/save.png", Vector2(94, 16) };
@@ -83,8 +87,6 @@ public:
 	// CPU Global framebuffer
 	Image framebuffer;
     
-    
-
 	// Constructor and main methods
 	Application(const char* caption, int width, int height);
 	~Application();
