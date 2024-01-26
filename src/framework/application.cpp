@@ -5,7 +5,6 @@
 #include <cmath>
 #include <chrono>
 #include <thread>
-#include "button.h"
 
 
 Application::Application(const char* caption, int width, int height)
