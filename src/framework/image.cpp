@@ -629,13 +629,13 @@ void ParticleSystem::Init(){
         particles[i].position.x = getRandomFloat(0, 500);
         particles[i].position.y = 0;
         
-        particles[i].velocity.x = i;
-        particles[i].velocity.y = i;
+        particles[i].velocity.x = 1;
+        particles[i].velocity.y = 1;
         
         particles[i].color = Color(getRandomFloat(0, 255),getRandomFloat(0, 255),getRandomFloat(0, 255));
-        particles[i].acceleration = 5;
-        particles[i].ttl = 200;
-        particles[i].inactive = true;
+        particles[i].acceleration = getRandomFloat(0, 10);
+        particles[i].ttl = getRandomFloat(0, 50);
+        particles[i].inactive = false;
         
     }
 }
@@ -643,23 +643,28 @@ void ParticleSystem::Init(){
 void ParticleSystem::Render(Image* framebuffer){
     
     for (int i = 1 ; i < MAX_PARTICLES; i++){
-        if ((particles[i].position.x < framebuffer->width && particles[i].position.x > 0) && (particles[i].position.y < framebuffer->height && particles[i].position.y > 0)) {
-            
-            framebuffer->SetPixel(particles[i].position.x, particles[i].position.y, particles[i].color);
-            //framebuffer->SetPixel(particles[i].position.x+1, particles[i].position.y+1, particles[i].color);//
-            //framebuffer->SetPixel(particles[i].position.x+2, particles[i].position.y+2, particles[i].color);
-            //framebuffer->SetPixel(particles[i].position.x+3, particles[i].position.y+3, particles[i].color);
-            
-            framebuffer->SetPixel(particles[i].position.x-1, particles[i].position.y-1, Color(0,0,0));
+        if (particles[i].inactive == false){ // Si la part’cula est‡ activa
+            if ((particles[i].position.x < framebuffer->width && particles[i].position.x > 0) && (particles[i].position.y < framebuffer->height && particles[i].position.y > 0)) { // Condiciones para no salir de los bordes del framebuffer
+                
+                // Coloreamos un pixel y borramos el anterior
+                framebuffer->SetPixel(particles[i].position.x, particles[i].position.y, particles[i].color);
+                framebuffer->SetPixel(particles[i].position.x-1, particles[i].position.y-1, Color(0,0,0));
+            }
         }
     }
 }
 
-
+// Funcion para actualizar los valores de las part’culas
 void ParticleSystem::Update(float dt){
     for (int i=0; i < MAX_PARTICLES; i++){
-        particles[i].position = particles[i].position + (particles[i].velocity * dt);
-        particles[i].ttl = particles[i].ttl - 1;
+        // Actualizamos la posici—n en funcion de la velocidad y la aceleraci—n
+        particles[i].position = particles[i].position + (particles[i].velocity * dt * particles[i].acceleration);
+        // Actualizamos el tiempo que la particula est‡ en el framebuffer
+        particles[i].ttl = particles[i].ttl - dt;
+        // Si su tiempo ha terminado, actualizamos su estado para que Render no la use m‡s
+        if (particles[i].ttl == 0){
+            particles[i].inactive = true;
+        }
     }
 }
         

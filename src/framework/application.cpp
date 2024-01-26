@@ -126,17 +126,18 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     if (event.keysym.sym == SDLK_6){
         float total_time = 10000;
         float current_time = 0;
-        float dt = 0.05;
+        float dt = 1;
         
-        ParticleSystem ps;
-        ps.Init();
-        ps.Render(&framebuffer);
+        ParticleSystem ps; // Creamos el sistema de particulas
+        ps.Init(); // Inciamos sus valores
+        ps.Render(&framebuffer); // Introducimos los valores iniciales en el framebuffer
         
+        // Bucle que actualiza los valores mientras no llegue el tiempo total
         while (current_time < total_time){
-            ps.Update(dt);
-            ps.Render(&framebuffer);
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-            current_time = current_time + dt;
+            ps.Update(dt); // Actualizamos los valores
+            ps.Render(&framebuffer); // Introducimos los valores en el framebuffer
+            std::this_thread::sleep_for(std::chrono::milliseconds(15)); // Tiempo real entre cada loop (idealmente debería ser mayor pero no ejecuta el ordenador bien (no se si esta es la manera correcta de hacer este paso)
+            current_time = current_time + dt; // Actualizamos el tiempo total
         }
     }
 
