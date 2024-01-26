@@ -151,7 +151,7 @@ float numRand(float min, float max) ;
 
 class ParticleSystem {
 
- static const int MAX_PARTICLES = 10;
+ static const int MAX_PARTICLES = 1000;
 
         struct Particle {
                 Vector2 position;

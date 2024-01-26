@@ -614,26 +614,27 @@ void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	}
 }
 
+// Funci—n para obtener valores aleatorios
 float getRandomFloat(float min, float max) {
     return min + static_cast<float>(std::rand()) / RAND_MAX * (max - min);
 }
 
 ParticleSystem::ParticleSystem(){
-    
 }
     
 void ParticleSystem::Init(){
     
     for (int i=0; i < MAX_PARTICLES; i++){
         
-        particles[i].position.x = getRandomFloat(0, 500);
-        particles[i].position.y = 0;
+        particles[i].position.x = getRandomFloat(0, 1000);
+        particles[i].position.y = getRandomFloat(0, 1000);
         
-        particles[i].velocity.x = 1;
-        particles[i].velocity.y = 1;
+        // Definimos el vector velocidad como el vector que apunta al punto (0,0)
+        particles[i].velocity.x = 0 - particles[i].position.x;
+        particles[i].velocity.y = 0 - particles[i].position.y;
         
         particles[i].color = Color(getRandomFloat(0, 255),getRandomFloat(0, 255),getRandomFloat(0, 255));
-        particles[i].acceleration = getRandomFloat(0, 10);
+        particles[i].acceleration = getRandomFloat(0, 20);
         particles[i].ttl = getRandomFloat(0, 50);
         particles[i].inactive = false;
         
@@ -667,7 +668,8 @@ void ParticleSystem::Update(float dt){
         }
     }
 }
-        
+ 
+Button::Button(){}
     
 Button::Button(const char& _image, Vector2& _position) {
 	ruta = &_image;
