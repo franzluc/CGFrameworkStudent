@@ -644,8 +644,8 @@ void ParticleSystem::Init(){
 void ParticleSystem::Render(Image* framebuffer){
     
     for (int i = 1 ; i < MAX_PARTICLES; i++){
-        if (particles[i].inactive == false){ // Si la part’cula est‡ activa
-            if ((particles[i].position.x < framebuffer->width && particles[i].position.x > 0) && (particles[i].position.y < framebuffer->height && particles[i].position.y > 0)) { // Condiciones para no salir de los bordes del framebuffer
+        if (!particles[i].inactive){ // Si la particula esta activa
+            if ((particles[i].position.x < framebuffer->width && particles[i].position.x > 0) && (particles[i].position.y < (framebuffer->height) && particles[i].position.y > 0)) { // Condiciones para no salir de los bordes del framebuffer
                 
                 // Coloreamos un pixel y borramos el anterior
                 framebuffer->SetPixel(particles[i].position.x, particles[i].position.y, particles[i].color);
@@ -655,12 +655,12 @@ void ParticleSystem::Render(Image* framebuffer){
     }
 }
 
-// Funcion para actualizar los valores de las part’culas
+// Funcion para actualizar los valores de las particulas
 void ParticleSystem::Update(float dt){
     for (int i=0; i < MAX_PARTICLES; i++){
-        // Actualizamos la posici—n en funcion de la velocidad y la aceleraci—n
+        // Actualizamos la posicion en funcion de la velocidad y la aceleracion
         particles[i].position = particles[i].position + (particles[i].velocity * dt * particles[i].acceleration);
-        // Actualizamos el tiempo que la particula est‡ en el framebuffer
+        // Actualizamos el tiempo que la particula esta en el framebuffer
         particles[i].ttl = particles[i].ttl - dt;
         // Si su tiempo ha terminado, actualizamos su estado para que Render no la use m‡s
         if (particles[i].ttl == 0){

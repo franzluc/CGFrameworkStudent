@@ -136,10 +136,9 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         while (current_time < total_time){
             ps.Update(dt); // Actualizamos los valores
             ps.Render(&framebuffer); // Introducimos los valores en el framebuffer
-            
-            //std::this_thread::sleep_for(std::chrono::milliseconds(15)); Tiempo real entre cada loop (idealmente debería ser mayor pero no ejecuta el ordenador bien (no se si esta es la manera correcta de hacer este paso)
-           
-            current_time = current_time + dt; // Actualizamos el tiempo total
+            //std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // Tiempo real entre cada loop (idealmente debería ser mayor pero no ejecuta el ordenador bien (no se si esta es la manera correcta de hacer este paso)
+			current_time += dt; // Actualizamos el tiempo total
+			
         }
     }
 
