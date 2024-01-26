@@ -566,7 +566,7 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int border
     }
 }
     
-// Funci—n para dibujar un tr’angulo
+// Funci—n para dibujar un triangulo
 void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
 	
     // Dibujo de las lineas del triangulo.

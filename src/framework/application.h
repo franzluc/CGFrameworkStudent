@@ -41,7 +41,7 @@ public:
 	// Variable para controlar el proceso de dibujo del rectangulo
 	// Si el valor de la variable es diferente a 0, 1 o 2, significa
 	// que no se esta dibujando el triangulo, sino otra figura
-	int triangleChecker = 0;
+	int triangleChecker = 3;
 	// Vectores que guardan la posicion del cursor
 	Vector2 vector0;
 	Vector2 vector1;
@@ -58,6 +58,17 @@ public:
 
 	// Booleano que indica si se ha seleccionado un boton de la barra inferior
 	bool modeSelected = false;
+
+	// Variable para el color del relleno y de borde
+	Color colorFill = Color::WHITE;
+	Color borderFill = Color::WHITE;
+
+	// Variable para comprobar si la siguiente figura tiene que ser filleada de color
+	bool isFigureFilled = false;
+
+	// Variables para permitir el dibujo de lineas con el cursor
+	bool cursorPaintTool = false;
+	bool isDrawing = false;
 
 	// Inicializacion de todos los botones
 	Button toolbarButton{*"images/toolbar2.png", Vector2(0, 0)};
@@ -76,6 +87,7 @@ public:
 	Button redButton{ *"images/red.png", Vector2(514, 16) };
 	Button blueButton{ *"images/blue.png", Vector2(556, 16) };
 	Button cyanButton{ *"images/cyan.png", Vector2(598, 16) };
+	Button greenButton{ *"images/green.png", Vector2(640, 16) };
 
 	void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);

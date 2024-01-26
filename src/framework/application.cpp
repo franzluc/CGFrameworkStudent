@@ -48,6 +48,7 @@ void Application::Init(void)
 	redButton.DrawButton(framebuffer);
 	blueButton.DrawButton(framebuffer);
 	cyanButton.DrawButton(framebuffer);
+	greenButton.DrawButton(framebuffer);
 }
 
 // Render one frame
@@ -118,6 +119,10 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 		lastFigure = 4;
 		triangleChecker = 0;
 	}
+
+	if (event.keysym.sym == SDLK_5) {
+		cursorPaintTool = true;
+	}
     
     if (event.keysym.sym == SDLK_6){
         float total_time = 10000;
@@ -135,6 +140,10 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             current_time = current_time + dt;
         }
     }
+
+	if (event.keysym.sym == SDLK_f) {
+		isFigureFilled = true;
+	}
 }
 
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
@@ -142,27 +151,41 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 	if (event.button == SDL_BUTTON_LEFT) {
 		if (mouse_position.y >= toolbarButton.getAltura()) {
 			// Deteccion de coordenadas para la linea, el rectangulo y el circulo
-			if (!drawingInCourse && modeSelected) {
+			if (!drawingInCourse && modeSelected && !cursorPaintTool && !isDrawing) {
 				initPosX = mouse_position.x;
 				initPosY = mouse_position.y;
 				drawingInCourse = true;
 			}
-			else if (drawingInCourse && modeSelected) {
+			else if (drawingInCourse && modeSelected && !cursorPaintTool && !isDrawing) {
 				endPosX = mouse_position.x;
 				endPosY = mouse_position.y;
 				if (lastFigure == 1) {
-					framebuffer.DrawLineDDA(initPosX, initPosY, endPosX, endPosY, Color::WHITE);
+					framebuffer.DrawLineDDA(initPosX, initPosY, endPosX, endPosY, borderFill);
 				}
 				else if (lastFigure == 2) {
 					width = endPosX - initPosX;
 					height = endPosY - initPosY;
-					framebuffer.DrawRect(initPosX, initPosY, width, height, Color::WHITE, borderWidth, false, Color::BLUE);
+					if (isFigureFilled) {
+						framebuffer.DrawRect(initPosX, initPosY, width, height, borderFill, borderWidth, true, colorFill);
+					}
+					else {
+						framebuffer.DrawRect(initPosX, initPosY, width, height, borderFill, borderWidth, false, colorFill);
+					}
 				}
 				else if (lastFigure == 3) {
 					radio = sqrt((endPosX - initPosX) * (endPosX - initPosX) + (endPosY - initPosY) * (endPosY - initPosY));
-					framebuffer.DrawCircle(initPosX, initPosY, radio, Color::WHITE, borderWidth, false, Color::BLUE);
+					if (isFigureFilled) {
+						framebuffer.DrawCircle(initPosX, initPosY, radio, borderFill, borderWidth, true, colorFill);
+					}
+					else {
+						framebuffer.DrawCircle(initPosX, initPosY, radio, borderFill, borderWidth, false, colorFill);
+					}
 				}
 				drawingInCourse = false;
+			}
+
+			if (cursorPaintTool) {
+				isDrawing = true;
 			}
 
 			// Deteccion del coordenadas para el triangulo
@@ -178,7 +201,13 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 				vector2 = mouse_position;
 				triangleChecker = 0;
 				if (lastFigure == 4) {
-					framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, false, Color::BLUE);
+					if (isFigureFilled) {
+						framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, true, borderFill);
+					}
+					else {
+						framebuffer.DrawTriangle(vector0, vector1, vector2, Color::WHITE, false, borderFill);
+					}
+					
 				}
 			}
 		}
@@ -188,22 +217,94 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 			lastFigure = 5;
 			modeSelected = false;
 			drawingInCourse = false;
+			cursorPaintTool = false;
+			isDrawing = false;
+		}
+		else if (loadButton.isMouseInside(mouse_position) == true) {
+			Image imagenCargada;
+			imagenCargada.LoadPNG("images/fruits.png", true);
+			imagenCargada.Resize(1080, 520);
+			framebuffer.DrawImage(imagenCargada, 100, 100, false);
+		}
+		else if (saveButton.isMouseInside(mouse_position) == true) {
+			Image imagenGuardada;
+			imagenGuardada.SaveTGA("IMAGEN_GUARDADA_(saveTGA)");
 		}
 		else if (lineButton.isMouseInside(mouse_position) == true) {
 			lastFigure = 1;
 			modeSelected = true;
+			cursorPaintTool = false;
+			isDrawing = false;
 		} 
-		else if (rectangleButton.isMouseInside(mouse_position) == true){
+		else if (rectangleButton.isMouseInside(mouse_position) == true) {
 			lastFigure = 2;
 			modeSelected = true;
+			cursorPaintTool = false;
+			isDrawing = false;
 		}
 		else if (circleButton.isMouseInside(mouse_position) == true) {
 			lastFigure = 3;
 			modeSelected = true;
+			cursorPaintTool = false;
+			isDrawing = false;
 		}
 		else if (triangleButton.isMouseInside(mouse_position) == true) {
 			lastFigure = 4;
 			modeSelected = true;
+			triangleChecker = 0;
+			cursorPaintTool = false;
+			isDrawing = false;
+		}
+		else if (blackButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::BLACK;
+		}
+		else if (redButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::RED;
+		}
+		else if (greenButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::GREEN;
+		}
+		else if (blueButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::BLUE;
+		}
+		else if (yellowButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::YELLOW;
+		}
+		else if (pinkButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::PURPLE;
+		}
+		else if (cyanButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::CYAN;
+		}
+		else if (whiteButton.isMouseInside(mouse_position) == true) {
+			colorFill = Color::WHITE;
+		}
+	}
+
+	if (event.button == SDL_BUTTON_RIGHT) {
+		if (blackButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::BLACK;
+		}
+		else if (redButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::RED;
+		}
+		else if (greenButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::GREEN;
+		}
+		else if (blueButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::BLUE;
+		}
+		else if (yellowButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::YELLOW;
+		}
+		else if (pinkButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::PURPLE;
+		}
+		else if (cyanButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::CYAN;
+		}
+		else if (whiteButton.isMouseInside(mouse_position) == true) {
+			borderFill = Color::WHITE;
 		}
 	}
 }
@@ -211,13 +312,23 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
-		
+		isDrawing = false;
 	}
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
-	
+	if (isDrawing) {
+		framebuffer.SetPixel(mouse_position.x, mouse_position.y, colorFill);
+		framebuffer.SetPixel(mouse_position.x + 1, mouse_position.y, colorFill);
+		framebuffer.SetPixel(mouse_position.x - 1, mouse_position.y, colorFill);
+		framebuffer.SetPixel(mouse_position.x, mouse_position.y + 1, colorFill);
+		framebuffer.SetPixel(mouse_position.x, mouse_position.y - 1, colorFill);
+		framebuffer.SetPixel(mouse_position.x + 1, mouse_position.y + 1, colorFill);
+		framebuffer.SetPixel(mouse_position.x - 1, mouse_position.y + 1, colorFill);
+		framebuffer.SetPixel(mouse_position.x + 1, mouse_position.y - 1, colorFill);
+		framebuffer.SetPixel(mouse_position.x - 1, mouse_position.y - 1, colorFill);
+	}
 }
 
 void Application::OnWheel(SDL_MouseWheelEvent event)
