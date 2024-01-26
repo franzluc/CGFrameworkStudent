@@ -626,8 +626,8 @@ void ParticleSystem::Init(){
     
     for (int i=0; i < MAX_PARTICLES; i++){
         
-        particles[i].position.x = getRandomFloat(0, 1000);
-        particles[i].position.y = getRandomFloat(0, 1000);
+        particles[i].position.x = getRandomFloat(0, 1280);
+        particles[i].position.y = getRandomFloat(64, 720);
         
         // Definimos el vector velocidad como el vector que apunta al punto (0,0)
         particles[i].velocity.x = 0 - particles[i].position.x;
