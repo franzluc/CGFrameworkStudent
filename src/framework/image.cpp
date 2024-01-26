@@ -635,7 +635,7 @@ void ParticleSystem::Init(){
         
         particles[i].color = Color(getRandomFloat(0, 255),getRandomFloat(0, 255),getRandomFloat(0, 255));
         particles[i].acceleration = getRandomFloat(1, 5);
-        particles[i].ttl = getRandomFloat(0, 50);
+        particles[i].ttl = getRandomFloat(20, 100);
         particles[i].inactive = false;
         
     }
