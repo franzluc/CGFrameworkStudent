@@ -646,10 +646,8 @@ void ParticleSystem::Render(Image* framebuffer){
     for (int i = 1 ; i < MAX_PARTICLES; i++){
         if (!particles[i].inactive){ // Si la particula esta activa
             if ((particles[i].position.x < framebuffer->width && particles[i].position.x > 0) && (particles[i].position.y < (framebuffer->height) && particles[i].position.y > 0)) { // Condiciones para no salir de los bordes del framebuffer
-                
-                // Coloreamos un pixel y borramos el anterior
+                // Coloreamos un pixel
                 framebuffer->SetPixel(particles[i].position.x, particles[i].position.y, particles[i].color);
-                framebuffer->SetPixel(particles[i].position.x-1, particles[i].position.y-1, Color(0,0,0));
             }
         }
     }
