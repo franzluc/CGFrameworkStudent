@@ -2,6 +2,8 @@
 #include "mesh.h"
 #include "shader.h"
 #include "utils.h"
+#include "camera.h"
+#include "entity.h"
 #include <cmath>
 #include <chrono>
 #include <thread>
@@ -25,6 +27,7 @@ Application::Application(const char* caption, int width, int height)
 
 Application::~Application()
 {
+
 }
 
 void Application::Init(void)
@@ -39,7 +42,7 @@ void Application::Init(void)
 void Application::Render(void)
 {
 	// ...
-
+	
 	framebuffer.Render();
 }
 

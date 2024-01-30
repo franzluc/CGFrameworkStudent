@@ -7,6 +7,7 @@
 #pragma once
 
 #include "mesh.h"
+#include "image.h"
 
 #ifndef entity_h
 #define entity_h
@@ -14,15 +15,17 @@
 class Entity {
 public:
     Mesh malla;
-    int matrixModel[4][4];
+    Matrix44 matrixModel;
     
     
     Entity();
     Entity(Mesh malla);
-    Entity(int matrix[4][4]);
+    Entity(Matrix44 matrix);
     Entity(Mesh malla, int matrixModel[4][4]);
     
     ~Entity();
+
+    void Entity::Render(Image* framebuffer, Camera* camera, const Color& c);
 };
 
 
