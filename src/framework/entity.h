@@ -19,7 +19,7 @@ public:
     
     Entity();
     Entity(Mesh malla);
-    Entity(int matrixModel[4][4]);
+    Entity(int matrix[4][4]);
     Entity(Mesh malla, int matrixModel[4][4]);
     
     ~Entity();
