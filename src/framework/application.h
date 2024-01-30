@@ -68,27 +68,8 @@ public:
 	// Variables para permitir el dibujo de lineas con el cursor
 	bool cursorPaintTool = false;
 	bool isDrawing = false;
-
-	// Inicializacion de todos los botones
-	Button toolbarButton{*"images/toolbar2.png", Vector2(0, 0)};
-	Button clearButton{ *"images/clear.png", Vector2(10, 16) };
-	Button loadButton{ *"images/load.png", Vector2(52, 16) };
-	Button saveButton{ *"images/save.png", Vector2(94, 16) };
-	Button eraserButton{ *"images/eraser.png", Vector2(136, 16) };
-	Button lineButton{ *"images/line.png", Vector2(178, 16) };
-	Button rectangleButton{ *"images/rectangle.png", Vector2(220, 16) };
-	Button circleButton{ *"images/circle.png", Vector2(262, 16) };
-	Button triangleButton{ *"images/triangle.png", Vector2(304, 16) };
-	Button blackButton{ *"images/black.png", Vector2(346, 16) };
-	Button whiteButton{ *"images/white.png", Vector2(388, 16) };
-	Button pinkButton{ *"images/pink.png", Vector2(430, 16) };
-	Button yellowButton{ *"images/yellow.png", Vector2(472, 16) };
-	Button redButton{ *"images/red.png", Vector2(514, 16) };
-	Button blueButton{ *"images/blue.png", Vector2(556, 16) };
-	Button cyanButton{ *"images/cyan.png", Vector2(598, 16) };
-	Button greenButton{ *"images/green.png", Vector2(640, 16) };
-
-	void OnKeyPressed(SDL_KeyboardEvent event);
+    
+    void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
 	void OnMouseButtonUp(SDL_MouseButtonEvent event);
 	void OnMouseMove(SDL_MouseButtonEvent event);

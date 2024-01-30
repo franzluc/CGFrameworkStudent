@@ -17,7 +17,7 @@
 #endif
 
 class FloatImage;
-class Entity;
+
 class Camera;
 
 // A matrix of pixels
