@@ -89,7 +89,7 @@ void Camera::UpdateViewMatrix()
 	// Comment this line to create your own projection matrix!
 	// SetExampleViewMatrix();
     
-    Vector3 forward = (center.x - eye.y, center.y - eye.y, center.z - eye.z);
+    Vector3 forward = (center.x - eye.x, center.y - eye.y, center.z - eye.z);
     Vector3 side = (forward.z*up.y - forward.y*up.z, forward.x*up.z - forward.z*up.x , forward.y*up.x - forward.x*up.y);
     Vector3 top = (forward.y*side.z - forward.z*side.y, forward.z*side.x - forward.x*side.z , forward.x*side.y - forward.y*side.x);
     
