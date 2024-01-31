@@ -87,9 +87,9 @@ void Camera::UpdateViewMatrix()
 	view_matrix.SetIdentity();
 
 	// Comment this line to create your own projection matrix!
-	// SetExampleViewMatrix();
+	SetExampleViewMatrix();
     
-    Vector3 forward = (center.x - eye.x, center.y - eye.y, center.z - eye.z);
+    /*Vector3 forward = (center.x - eye.x, center.y - eye.y, center.z - eye.z);
     Vector3 side = (forward.z*up.y - forward.y*up.z, forward.x*up.z - forward.z*up.x , forward.y*up.x - forward.x*up.y);
     Vector3 top = (forward.y*side.z - forward.z*side.y, forward.z*side.x - forward.x*side.z , forward.x*side.y - forward.y*side.x);
     
@@ -106,7 +106,7 @@ void Camera::UpdateViewMatrix()
     view_matrix.M[2][0] = side.z; view_matrix.M[2][1] = top.z; view_matrix.M[2][2] = -forward.z; view_matrix.M[2][3] = 0;
     view_matrix.M[3][0] = 0.0; view_matrix.M[3][1] = 0.0; view_matrix.M[3][2] = 0.0; view_matrix.M[3][3] = 1.0;
 
-    view_matrix.Translate(-eye.x,-eye.y, -eye.z);
+    view_matrix.Translate(-eye.x,-eye.y, -eye.z);*/
 	
 	UpdateViewProjectionMatrix();
 }
