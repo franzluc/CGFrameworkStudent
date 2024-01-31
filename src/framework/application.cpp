@@ -36,14 +36,17 @@ void Application::Init(void)
 	
     std::cout << "Initiating app..." << std::endl;
     
-	Mesh holaa = Mesh();
-	holaa.LoadOBJ("meshes/lee.obj");
-	Entity hola = Entity(holaa);	
+	//Inicializaciones
+	Mesh mesh1 = Mesh();
+	// Se carga el objeto a usar para el mesh
+	mesh1.LoadOBJ("meshes/lee.obj");
+	Entity entity1 = Entity(mesh1);
 	Camera camara = Camera();
+	// Se establecen los parametros de la camara
 	camara.SetPerspective(45, framebuffer.width / framebuffer.height, 0.01, 100);
-	/* Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html */
+	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
 	camara.LookAt({ 0, 0, 1.2 }, { 0, 0, 0 }, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
-	hola.Render(&framebuffer, &camara, Color::WHITE);
+	entity1.Render(&framebuffer, &camara, Color::WHITE);
 
 }
 
