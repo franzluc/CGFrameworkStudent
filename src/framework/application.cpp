@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "camera.h"
 #include "entity.h"
+#include "mesh.h"
 #include <cmath>
 #include <chrono>
 #include <thread>
@@ -35,14 +36,17 @@ void Application::Init(void)
 	
     std::cout << "Initiating app..." << std::endl;
     
-   
+	
+	holaa.LoadOBJ("meshes/anna.obj");
+	
+
 }
 
 // Render one frame
 void Application::Render(void)
 {
 	// ...
-	
+
 	framebuffer.Render();
 }
 
@@ -61,6 +65,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
 
 	if (event.keysym.sym == SDLK_1) {
+		hola.Render(&framebuffer, &camara, Color::WHITE);
 	}
 
 	if (event.keysym.sym == SDLK_2) {

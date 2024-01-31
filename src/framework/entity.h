@@ -9,9 +9,6 @@
 #include "mesh.h"
 #include "image.h"
 
-#ifndef entity_h
-#define entity_h
-
 class Entity {
 public:
     Mesh malla;
@@ -22,12 +19,6 @@ public:
     Entity(Mesh malla);
     Entity(Matrix44 matrix);
     Entity(Mesh malla, int matrixModel[4][4]);
-    
-    ~Entity();
 
     void Entity::Render(Image* framebuffer, Camera* camera, const Color& c);
 };
-
-
-
-#endif /* entity_h */

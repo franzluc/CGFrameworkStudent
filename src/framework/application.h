@@ -7,6 +7,9 @@
 #include "main/includes.h"
 #include "framework.h"
 #include "image.h"
+#include "camera.h"
+#include "mesh.h"
+#include "entity.h"
 
 class Application
 {
@@ -68,7 +71,11 @@ public:
 	// Variables para permitir el dibujo de lineas con el cursor
 	bool cursorPaintTool = false;
 	bool isDrawing = false;
-    
+
+	Mesh holaa = Mesh();
+	Entity hola = Entity(holaa);
+	Camera camara = Camera();
+
     void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
 	void OnMouseButtonUp(SDL_MouseButtonEvent event);

@@ -30,4 +30,6 @@ public:
 	const std::vector<Vector3>& GetVertices() { return vertices; }
 	const std::vector<Vector3>& GetNormals() { return normals; }
 	const std::vector<Vector2>& GetUVs() { return uvs; }
+
+	
 };
