@@ -37,13 +37,12 @@ void Application::Init(void)
     std::cout << "Initiating app..." << std::endl;
     
 	Mesh holaa = Mesh();
-	holaa.LoadOBJ("meshes/anna.obj");
+	holaa.LoadOBJ("meshes/lee.obj");
 	Entity hola = Entity(holaa);	
 	Camera camara = Camera();
-	camara.SetPerspective(45.00, framebuffer.width / framebuffer.height, 0.01, 100);
-	camara.LookAt({ 0, 0, 5 }, { 0, 0, 0 }, { 1, 1, 1 });
-	camara.UpdateViewMatrix();
-	camara.UpdateProjectionMatrix();
+	camara.SetPerspective(45, framebuffer.width / framebuffer.height, 0.01, 100);
+	/* Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html */
+	camara.LookAt({ 0, 0, 1.2 }, { 0, 0, 0 }, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
 	hola.Render(&framebuffer, &camara, Color::WHITE);
 
 }

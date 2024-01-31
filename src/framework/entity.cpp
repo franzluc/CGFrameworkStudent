@@ -16,7 +16,7 @@ Entity::Entity(){
 Entity::Entity(Mesh m){
     this->malla = m;
    
-    matrixModel.SetIdentity();
+    this->matrixModel.SetIdentity();
 }
 
 /*Entity::Entity(Matrix44 matrix) {
