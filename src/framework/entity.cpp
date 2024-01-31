@@ -87,10 +87,12 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
         int y3 = static_cast<int>((1.0f - clipPos3.y) * 0.5f * screenHeight);
 
         // Se dibuja la malla de triangulos usando el algoritmo DDA
-        framebuffer->DrawLineDDA(x1, y1, x2, y2, c);
-        framebuffer->DrawLineDDA(x2, y2, x3, y3, c);
-        framebuffer->DrawLineDDA(x3, y3, x1, y1, c);
+        if (x1 < framebuffer->width && x2 < framebuffer->width && x3 < framebuffer->width){
+            if (y1 < framebuffer->height && y2 < framebuffer->height && y3 < framebuffer->height){
+                framebuffer->DrawLineDDA(x1, y1, x2, y2, c);
+                framebuffer->DrawLineDDA(x2, y2, x3, y3, c);
+                framebuffer->DrawLineDDA(x3, y3, x1, y1, c);
+            }
+        }
     }
-
-    
 }

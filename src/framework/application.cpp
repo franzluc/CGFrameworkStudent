@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "entity.h"
 #include "mesh.h"
+#include "camera.h"
 #include <cmath>
 #include <chrono>
 #include <thread>
@@ -43,9 +44,10 @@ void Application::Init(void)
 	Entity entity1 = Entity(mesh1);
 	Camera camara = Camera();
 	// Se establecen los parametros de la camara
-	camara.SetPerspective(45, framebuffer.width / framebuffer.height, 0.01, 100);
+    
+	camara.SetPerspective(13, framebuffer.width / framebuffer.height, 0.01, 100);
 	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
-	camara.LookAt({ 0, 0, 1.2 }, { 0, 0, 0 }, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
+	camara.LookAt({ 0, -0.2, 3}, { 0, 0, 0 }, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
 	entity1.Render(&framebuffer, &camara, Color::WHITE);
 
 }
