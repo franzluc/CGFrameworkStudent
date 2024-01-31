@@ -86,27 +86,26 @@ void Camera::UpdateViewMatrix()
 	// Reset Matrix (Identity)
 	view_matrix.SetIdentity();
 
-	// Comment this line to create your own projection matrix!
-	SetExampleViewMatrix();
-    
-    /*Vector3 forward = (center.x - eye.x, center.y - eye.y, center.z - eye.z);
-    Vector3 side = (forward.z*up.y - forward.y*up.z, forward.x*up.z - forward.z*up.x , forward.y*up.x - forward.x*up.y);
-    Vector3 top = (forward.y*side.z - forward.z*side.y, forward.z*side.x - forward.x*side.z , forward.x*side.y - forward.y*side.x);
-    
-    // Normalizamos
-    
-    forward = forward / (sqrt(forward.x*forward.x + forward.y*forward.y + forward.z*forward.z));
-    side = side / (sqrt(side.x*side.x + side.y*side.y + side.z*side.z));
-    top = top / (sqrt(top.x*top.x + top.y*top.y + top.z*top.z));
-    
-    // Rellenamos la matriz
-    
-    view_matrix.M[0][0] = side.x; view_matrix.M[0][1] = top.x; view_matrix.M[0][2] = -forward.x; view_matrix.M[0][3] = 0;
-    view_matrix.M[1][0] = side.y; view_matrix.M[1][1] = top.y; view_matrix.M[1][2] = -forward.y; view_matrix.M[1][3] = 0;
-    view_matrix.M[2][0] = side.z; view_matrix.M[2][1] = top.z; view_matrix.M[2][2] = -forward.z; view_matrix.M[2][3] = 0;
-    view_matrix.M[3][0] = 0.0; view_matrix.M[3][1] = 0.0; view_matrix.M[3][2] = 0.0; view_matrix.M[3][3] = 1.0;
+	//SetExampleViewMatrix();
 
-    view_matrix.Translate(-eye.x,-eye.y, -eye.z);*/
+	Vector3 forward = (center.x - eye.x, center.y - eye.y, center.z - eye.z);
+	Vector3 side = (forward.z * up.y - forward.y * up.z, forward.x * up.z - forward.z * up.x, forward.y * up.x - forward.x * up.y);
+	Vector3 top = (forward.y * side.z - forward.z * side.y, forward.z * side.x - forward.x * side.z, forward.x * side.y - forward.y * side.x);
+
+	// Normalizamos
+
+	forward = forward / (sqrt(forward.x * forward.x + forward.y * forward.y + forward.z * forward.z));
+	side = side / (sqrt(side.x * side.x + side.y * side.y + side.z * side.z));
+	top = top / (sqrt(top.x * top.x + top.y * top.y + top.z * top.z));
+
+	// Rellenamos la matriz
+
+	view_matrix.M[0][0] = side.x; view_matrix.M[0][1] = top.x; view_matrix.M[0][2] = -forward.x; view_matrix.M[0][3] = 0;
+	view_matrix.M[1][0] = side.y; view_matrix.M[1][1] = top.y; view_matrix.M[1][2] = -forward.y; view_matrix.M[1][3] = 0;
+	view_matrix.M[2][0] = side.z; view_matrix.M[2][1] = top.z; view_matrix.M[2][2] = -forward.z; view_matrix.M[2][3] = 0;
+	view_matrix.M[3][0] = 0.0; view_matrix.M[3][1] = 0.0; view_matrix.M[3][2] = 0.0; view_matrix.M[3][3] = 1.0;
+
+	view_matrix.Translate(-eye.x, -eye.y, -eye.z);
 	
 	UpdateViewProjectionMatrix();
 }
@@ -117,8 +116,9 @@ void Camera::UpdateProjectionMatrix()
 	// Reset Matrix (Identity)
 	projection_matrix.SetIdentity();
 
+	//SetExampleProjectionMatrix();
 	// Comment this line to create your own projection matrix!
-	SetExampleProjectionMatrix();
+	
 
 	// Remember how to fill a Matrix4x4 (check framework slides)
 	
