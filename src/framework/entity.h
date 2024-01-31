@@ -20,5 +20,7 @@ public:
     Entity(Matrix44 matrix);
     Entity(Mesh malla, int matrixModel[4][4]);
 
-    void Entity::Render(Image* framebuffer, Camera* camera, const Color& c);
+    void Render(Image* framebuffer, Camera* camera, const Color& c);
 };
+
+
