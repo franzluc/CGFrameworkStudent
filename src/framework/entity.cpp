@@ -96,3 +96,34 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
         }
     }
 }
+
+void Entity::Update(float seconds_elapsed, int type) {
+
+    if (type == 0) {
+        for (float radians = 0; radians <= 1; radians += 0.01) {
+            matrixModel.RotateLocal(radians, { 0, 1, 0 });
+            if (radians == 1) {
+                radians = 0;
+            }
+        }
+    }
+    // No funciona
+    else if (type == 1) {
+        for (float i = 1; i <= 2; i += 0.01) {
+            matrixModel.ScaleLocal(i, i, i);
+            if (i == 2) {
+                i = 1;
+            }
+        }
+    }
+    // No funciona
+    else if (type == 2) {
+        for (float i = -0.4; i > 1; i += 0.01) {
+            matrixModel.Translate(0, i, 0);
+            if (i == 1) {
+                i = -0.4;
+            }
+        }
+    }
+    
+}

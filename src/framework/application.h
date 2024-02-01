@@ -72,6 +72,15 @@ public:
 	bool cursorPaintTool = false;
 	bool isDrawing = false;
 
+	Camera camara = Camera();
+
+	Mesh mesh1 = Mesh();
+	Entity entity1;
+	Mesh mesh2 = Mesh();
+	Entity entity2;
+	Mesh mesh3 = Mesh();
+	Entity entity3;
+
     void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
 	void OnMouseButtonUp(SDL_MouseButtonEvent event);

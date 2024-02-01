@@ -36,36 +36,29 @@ void Application::Init(void)
 {
 	
     std::cout << "Initiating app..." << std::endl;
-    
-	Camera camara = Camera();
+
 	// Se establecen los parametros de la camara
 	camara.SetPerspective(13, framebuffer.width / framebuffer.height, 0.01, 100);
 	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
 	camara.LookAt({ 0, -0.2, 5 }, { 0, 0, 0 }, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
 
 	// Entidad 1
-	Mesh mesh1 = Mesh();
 	mesh1.LoadOBJ("meshes/lee.obj");
-	Entity entity1 = Entity(mesh1);
-	entity1.matrixModel.applyScale(1.35, 1.35, 1.35);
+	entity1 = Entity(mesh1);
+	entity1.matrixModel.Scale(1.35, 1.35, 1.35);
 	entity1.matrixModel.Translate(0, -0.4, 0);
 	entity1.Render(&framebuffer, &camara, Color::WHITE);
 
 	// Entidad 2
-	Mesh mesh2 = Mesh();
 	mesh2.LoadOBJ("meshes/anna.obj");
-	Entity entity2 = Entity(mesh2);
-	entity2.matrixModel.applyScale(2, 2, 2);
-	entity2.matrixModel.Translate(-0.55, 0, 0);
-	entity2.matrixModel.Rotate(-0.30, {0, 1, 0});
-	entity2.Render(&framebuffer, &camara, Color::RED);
+	entity2 = Entity(mesh2);
+	entity2.matrixModel.Translate(-0.55, 0.35, 0);
 
 	// Entidad 3
-	Mesh mesh3 = Mesh();
 	mesh3.LoadOBJ("meshes/cleo.obj");
-	Entity entity3 = Entity(mesh3);
-	entity3.matrixModel.applyScale(1.6, 1.6, 1.6);
-	entity3.matrixModel.Translate(0.6, 0, 0);
+	entity3 = Entity(mesh3);
+	entity3.matrixModel.Scale(1.6, 1.6, 1.6);
+	entity3.matrixModel.Translate(0.75, 0, 0);
 	entity3.matrixModel.Rotate(0.40, { -1, 1, 0 });
 	entity3.Render(&framebuffer, &camara, Color::BLUE);
 
@@ -81,8 +74,17 @@ void Application::Render(void)
 
 // Called after render
 void Application::Update(float seconds_elapsed)
-{
-	
+{	
+	// Fran, si te va lento, deja solo un entity girando
+	entity1.Render(&framebuffer, &camara, Color::BLACK);
+	entity1.Update(seconds_elapsed, 0);
+	entity1.Render(&framebuffer, &camara, Color::WHITE);
+	entity2.Render(&framebuffer, &camara, Color::BLACK);
+	entity2.Update(seconds_elapsed, 0);
+	entity2.Render(&framebuffer, &camara, Color::RED);
+	entity3.Render(&framebuffer, &camara, Color::BLACK);
+	entity3.Update(seconds_elapsed, 0);
+	entity3.Render(&framebuffer, &camara, Color::BLUE);
 }
 
 //keyboard press event 

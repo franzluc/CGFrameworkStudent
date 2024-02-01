@@ -236,6 +236,28 @@ void Matrix44::SetRotation( float angle_in_rad, const Vector3& axis  )
 	M[3][3] = 1.0f;
 }
 
+void Matrix44::SetScale(float x, float y, float z) {
+	SetIdentity();
+	m[0] = x;
+	m[5] = y;
+	m[10] = z;
+}
+
+//Funcion para aplicar un escalado a la matriz
+void Matrix44::Scale(float x, float y, float z) {
+
+	Matrix44 S;
+	S.SetScale(x, y, z);
+	*this = *this * S;
+}
+
+void Matrix44::ScaleLocal(float x, float y, float z) {
+
+	Matrix44 S;
+	S.SetScale(x, y, z);
+	*this = S * *this;
+}
+
 Matrix44 Matrix44::GetRotationOnly()
 {
 	Matrix44 trans = *this;
@@ -286,13 +308,6 @@ bool Matrix44::GetXYZ(float* euler) const
         euler[2] = 0.0f;
     }
 	return false;
-}
-
-//Funcion para aplicar un escalado a la matriz
-void Matrix44::applyScale(float x, float y, float z) {
-	m[0] *= x;
-	m[5] *= y;
-	m[10] *= z;
 }
 
 //Multiply a matrix by another and returns the result
