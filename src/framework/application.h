@@ -11,6 +11,7 @@
 #include "mesh.h"
 #include "entity.h"
 
+
 class Application
 {
 public:
@@ -52,11 +53,14 @@ public:
 	bool exitCarrega;
 	// Int para saber la ultima figura dibujada
 	int lastFigure;
-		// 1 --> linea
-		// 2 --> rectangulo
-		// 3 --> circulo
-		// 4 --> triangulo
-		// otro --> se han eliminado los dibujos
+		// 1 --> near_plane
+		// 2 --> far_plane
+        // 3 --> fov
+    
+    int lastMode = 1;
+        // 1 --> perspectiva
+        // 2 --> ortografica
+		
 
 	// Booleano que indica si se ha seleccionado un boton de la barra inferior
 	bool modeSelected = false;
@@ -71,9 +75,23 @@ public:
 	// Variables para permitir el dibujo de lineas con el cursor
 	bool cursorPaintTool = false;
 	bool isDrawing = false;
+    
+   
+    
+    float fov = 13;            // View angle in degrees (1/zoom)
+    float near_plane = 0.01;    // Near plane
+    float far_plane = 100;    // Far plane
+
+    // For orthogonal projection
+    float left = -2;
+    float right = 2;
+    float top = 2;
+    float bottom = -2;
 
 	Camera camara = Camera();
-
+    
+    Mesh mesh0 = Mesh();
+    Entity entity0;
 	Mesh mesh1 = Mesh();
 	Entity entity1;
 	Mesh mesh2 = Mesh();

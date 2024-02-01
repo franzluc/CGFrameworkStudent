@@ -7,6 +7,8 @@
 
 #include "framework.h"
 
+
+
 class Camera
 {
 	// OpenGL methods to fill matrices
