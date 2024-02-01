@@ -83,7 +83,7 @@ public:
        // 1 --> No animada
        // 2 --> Animada
     
-    float fov = 13;            // View angle in degrees (1/zoom)
+    float fov = 45;            // View angle in degrees (1/zoom)
     float near_plane = 0.01;    // Near plane
     float far_plane = 100;    // Far plane
 
@@ -93,7 +93,7 @@ public:
     float top = 2;
     float bottom = -2;
     
-    Vector3 eye = {0, -0.2, 5};
+    Vector3 eye = {0, 0.2, 5};
     Vector3 center = {0, 0, 0};
 
 	Camera camara = Camera();

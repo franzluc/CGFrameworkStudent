@@ -164,7 +164,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         
         if(lastFigure == 2){
             far_plane++;
-            
             if (lastMode == 2){
                 camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
             }
@@ -216,23 +215,20 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
-    if (event.button == SDL_BUTTON_LEFT) {
-        
-        framebuffer.Fill(Color::BLACK);
-        
-        eye.x = mouse_position.x;
-        eye.y = - mouse_position.y;
-        camara.LookAt(eye, center, Vector3::DOWN);
-    }
-    
     if (event.button == SDL_BUTTON_RIGHT) {
         
         framebuffer.Fill(Color::BLACK);
         
-        center.x = mouse_position.x;
-        center.y = mouse_position.y;
-        camara.LookAt(eye, center, Vector3::DOWN);
+        camara.Rotate(mouse_delta.x* DEG2RAD, Vector3(0,1,0));
+        camara.Rotate(mouse_delta.y* DEG2RAD, Vector3(1,0,0));
         
+    }
+    
+    if (event.button == SDL_BUTTON_LEFT) {
+        
+        framebuffer.Fill(Color::BLACK);
+        
+        camara.Move(Vector3(mouse_delta.x*DEG2RAD, mouse_delta.y*DEG2RAD,0));
      }
     
     
