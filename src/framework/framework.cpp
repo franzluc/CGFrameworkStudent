@@ -288,6 +288,13 @@ bool Matrix44::GetXYZ(float* euler) const
 	return false;
 }
 
+//Funcion para aplicar un escalado a la matriz
+void Matrix44::applyScale(float x, float y, float z) {
+	m[0] *= x;
+	m[5] *= y;
+	m[10] *= z;
+}
+
 //Multiply a matrix by another and returns the result
 Matrix44 Matrix44::operator*(const Matrix44& matrix) const
 {

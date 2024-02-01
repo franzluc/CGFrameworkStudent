@@ -218,6 +218,9 @@ class Matrix44
 		bool GetXYZ(float* euler) const;
 
 		Matrix44 operator * (const Matrix44& matrix) const;
+
+		// Funcion para aplicar un escalado a la matriz
+		void applyScale(float x, float y, float z);
 };
 
 // Operators, they are our friends
