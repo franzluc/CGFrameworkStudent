@@ -52,14 +52,7 @@ public:
 	// Booleano para comprobar que se ha cargado exitosamente la imagen
 	bool exitCarrega;
 	// Int para saber la ultima figura dibujada
-	int lastFigure;
-		// 1 --> near_plane
-		// 2 --> far_plane
-        // 3 --> fov
-    
-    int lastMode = 1;
-        // 1 --> perspectiva
-        // 2 --> ortografica
+	
 		
 
 	// Booleano que indica si se ha seleccionado un boton de la barra inferior
@@ -74,19 +67,34 @@ public:
 
 	// Variables para permitir el dibujo de lineas con el cursor
 	bool cursorPaintTool = false;
-	bool isDrawing = false;
+	bool isMoving = false;
     
-   
+    
+    int lastFigure;
+        // 1 --> near_plane
+        // 2 --> far_plane
+        // 3 --> fov
+    
+    int lastMode = 1;
+        // 1 --> perspectiva
+        // 2 --> ortografica
+    
+    int tipo = 1;
+       // 1 --> No animada
+       // 2 --> Animada
     
     float fov = 13;            // View angle in degrees (1/zoom)
     float near_plane = 0.01;    // Near plane
     float far_plane = 100;    // Far plane
 
     // For orthogonal projection
-    float left = -2;
-    float right = 2;
+    float left = -5;
+    float right = 5;
     float top = 2;
     float bottom = -2;
+    
+    Vector3 eye = {0, -0.2, 5};
+    Vector3 center = {0, 0, 0};
 
 	Camera camara = Camera();
     

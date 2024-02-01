@@ -37,21 +37,17 @@ void Application::Init(void)
 	
     std::cout << "Initiating app..." << std::endl;
     
-    
-
-	// Se establecen los parametros de la camara. Establecemos por defecto la cámara cómo perspectiva.
+    // Se establecen los parametros de la camara. Establecemos por defecto la cámara cómo perspectiva.
 	camara.SetPerspective(fov, framebuffer.width/framebuffer.height , near_plane, far_plane);
     
 	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
-	camara.LookAt({ 0, -0.2, 5 }, { 0, 0, 0 }, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
+	camara.LookAt(eye, center, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
     
 }
 
 // Render one frame
 void Application::Render(void)
 {
-	// ...
-
 	framebuffer.Render();
 }
 
@@ -59,13 +55,19 @@ void Application::Render(void)
 void Application::Update(float seconds_elapsed)
 {	
 	// Fran, si te va lento, deja solo un entity girando
-	entity1.Render(&framebuffer, &camara, Color::BLACK);
+    entity0.Render(&framebuffer, &camara, Color::BLACK);
+    entity0.Update(seconds_elapsed, 3);
+    entity0.Render(&framebuffer, &camara, Color::GREEN);
+    
+    entity1.Render(&framebuffer, &camara, Color::BLACK);
 	entity1.Update(seconds_elapsed, 0);
 	entity1.Render(&framebuffer, &camara, Color::WHITE);
-	entity2.Render(&framebuffer, &camara, Color::BLACK);
+	
+    entity2.Render(&framebuffer, &camara, Color::BLACK);
 	entity2.Update(seconds_elapsed, 0);
 	entity2.Render(&framebuffer, &camara, Color::RED);
-	entity3.Render(&framebuffer, &camara, Color::BLACK);
+	
+    entity3.Render(&framebuffer, &camara, Color::BLACK);
 	entity3.Update(seconds_elapsed, 0);
 	entity3.Render(&framebuffer, &camara, Color::BLUE);
 }
@@ -80,17 +82,21 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 	if (event.keysym.sym == SDLK_1) {
         
-        // Entidad 1
+        framebuffer.Fill(Color::BLACK);
+        
         mesh0.LoadOBJ("meshes/lee.obj");
         entity0 = Entity(mesh0);
         entity0.matrixModel.Scale(1.35, 1.35, 1.35);
         entity0.matrixModel.Translate(0, -0.4, 0);
-        entity0.Render(&framebuffer, &camara, Color::WHITE);
+        entity0.Render(&framebuffer, &camara, Color::GREEN);
         
     }
 
 	if (event.keysym.sym == SDLK_2) {
         
+        
+        framebuffer.Fill(Color::BLACK);
+            
         // Entidad 1
         mesh1.LoadOBJ("meshes/lee.obj");
         entity1 = Entity(mesh1);
@@ -114,12 +120,16 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     
     if (event.keysym.sym == SDLK_o) {
         
+        framebuffer.Fill(Color::BLACK);
+        
         lastMode = 2;
         camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
         
 	}
     
 	if (event.keysym.sym == SDLK_p) {
+        
+        framebuffer.Fill(Color::BLACK);
         
         lastMode = 1;
         camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
@@ -139,6 +149,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     
     if (event.keysym.sym == SDLK_PLUS) {
         
+        framebuffer.Fill(Color::BLACK);
         
         if(lastFigure == 1){
             near_plane = near_plane + 0.1;
@@ -153,12 +164,12 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         
         if(lastFigure == 2){
             far_plane++;
+            
             if (lastMode == 2){
                 camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
             }
             if (lastMode == 1){
                 camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
-            
            }
         }
         
@@ -171,6 +182,9 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     }
     
     if (event.keysym.sym == SDLK_MINUS) {
+        
+        framebuffer.Fill(Color::BLACK);
+        
         if(lastFigure == 1){
             near_plane = near_plane - 0.1;
             if (lastMode == 2){
@@ -202,23 +216,37 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
-    if (event.button == SDL_BUTTON_RIGHT) {
-        camara.LookAt({ 0, -0.2, 5 },{mouse_position.x, mouse_position.y,0}, Vector3::DOWN);
+    if (event.button == SDL_BUTTON_LEFT) {
+        
+        framebuffer.Fill(Color::BLACK);
+        
+        eye.x = mouse_position.x;
+        eye.y = - mouse_position.y;
+        camara.LookAt(eye, center, Vector3::DOWN);
     }
     
-    if (event.button == SDL_BUTTON_LEFT) {
-    }
+    if (event.button == SDL_BUTTON_RIGHT) {
+        
+        framebuffer.Fill(Color::BLACK);
+        
+        center.x = mouse_position.x;
+        center.y = mouse_position.y;
+        camara.LookAt(eye, center, Vector3::DOWN);
+        
+     }
     
     
 }
 void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
 	if (event.button == SDL_BUTTON_LEFT) {
+        
 	}
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {
+    
 }
 
 void Application::OnWheel(SDL_MouseWheelEvent event)
