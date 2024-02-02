@@ -42,7 +42,7 @@ void Camera::Move(Vector3 delta)
 {
 	Vector3 localDelta = GetLocalVector(delta);
 	eye = eye - localDelta;
-	//center = center - localDelta;
+	//center = center - localDelta; Modificamos esto para que funciones correctamente
 	UpdateViewMatrix();
 }
 
@@ -94,7 +94,6 @@ void Camera::UpdateViewMatrix()
     Vector3 top(forward.y * side.z - forward.z * side.y, forward.z * side.x - forward.x * side.z, forward.x * side.y - forward.y * side.x);
 
 	// Normalizamos
-    
     forward.Normalize();
     side.Normalize();
     top.Normalize();

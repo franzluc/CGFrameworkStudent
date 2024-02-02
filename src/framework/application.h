@@ -70,6 +70,8 @@ public:
 	bool isMoving = false;
     
     
+    // Variables que usaremos para ejecutar bien la aplicación
+    
     int lastFigure;
         // 1 --> near_plane
         // 2 --> far_plane
@@ -79,34 +81,40 @@ public:
         // 1 --> perspectiva
         // 2 --> ortografica
     
-    int tipo = 1;
-       // 1 --> No animada
-       // 2 --> Animada
     
-    float fov = 45;            // View angle in degrees (1/zoom)
+    // Iniciamos los valores inciales de la perspectiva
+    float fov = 44.5;            // View angle in degrees (1/zoom)
     float near_plane = 0.01;    // Near plane
     float far_plane = 100;    // Far plane
 
-    // For orthogonal projection
-    float left = -5;
-    float right = 5;
-    float top = 2;
-    float bottom = -2;
+    // Iniciamos los valores de la ortográfica
+    float left = -2;
+    float right = 2;
+    float top = 1;
+    float bottom = -1;
     
-    Vector3 eye = {0, 0.2, 5};
+    // Iniciamos los vectores eye y center
+    Vector3 eye = {0, 0, 5};
     Vector3 center = {0, 0, 0};
-
+    
+    // Creamos una camara
 	Camera camara = Camera();
+    
+    // Creamos las mallas y las entidades que utilizaremos
     
     Mesh mesh0 = Mesh();
     Entity entity0;
-	Mesh mesh1 = Mesh();
+	
+    Mesh mesh1 = Mesh();
 	Entity entity1;
-	Mesh mesh2 = Mesh();
+	
+    Mesh mesh2 = Mesh();
 	Entity entity2;
-	Mesh mesh3 = Mesh();
+	
+    Mesh mesh3 = Mesh();
 	Entity entity3;
-
+    
+    
     void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
 	void OnMouseButtonUp(SDL_MouseButtonEvent event);

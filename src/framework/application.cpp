@@ -54,7 +54,8 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {	
-	// Fran, si te va lento, deja solo un entity girando
+	// Marcamos como se actualizaran las entidades
+    
     entity0.Render(&framebuffer, &camara, Color::BLACK);
     entity0.Update(seconds_elapsed, 3);
     entity0.Render(&framebuffer, &camara, Color::GREEN);
@@ -81,9 +82,10 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
 
 	if (event.keysym.sym == SDLK_1) {
-        
+        // A modo de crear un efecto realista borramos la pantalla cada vez que se actualiza
         framebuffer.Fill(Color::BLACK);
         
+        // Entidad no animada, que igualmente responde a los cambios en las perspectivas
         mesh0.LoadOBJ("meshes/lee.obj");
         entity0 = Entity(mesh0);
         entity0.matrixModel.Scale(1.35, 1.35, 1.35);
@@ -94,9 +96,10 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 	if (event.keysym.sym == SDLK_2) {
         
-        
         framebuffer.Fill(Color::BLACK);
-            
+        
+        // Iniciamos las entidades animadas
+        
         // Entidad 1
         mesh1.LoadOBJ("meshes/lee.obj");
         entity1 = Entity(mesh1);
@@ -118,74 +121,89 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         entity3.Render(&framebuffer, &camara, Color::BLUE);
 	}
     
-    if (event.keysym.sym == SDLK_o) {
+    if (event.keysym.sym == SDLK_o) { // Cambio a proyección ortográfica
         
         framebuffer.Fill(Color::BLACK);
         
+        // Establecemos la siguiente variable para que los valores near_plane y far_plane se actualicen en la proyección adecuada
         lastMode = 2;
+        
+        // Realizamos el cambio
         camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
         
 	}
     
-	if (event.keysym.sym == SDLK_p) {
+	if (event.keysym.sym == SDLK_p) { // Cambio a perspectiva
         
         framebuffer.Fill(Color::BLACK);
         
-        lastMode = 1;
+        lastMode = 1; // Volvemos a utilizar la variable para marcar en qué proyección estamos
+        
+        // Realizamos el cambio
         camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
 	}
 
-	if (event.keysym.sym == SDLK_n) {
+	if (event.keysym.sym == SDLK_n) { // Modificar near_plane
+        //Utilizamos la siguiente varaible para saber qué valor se cambia con el PLUS y el MINUS (near_plane, far_plane o fov)
         lastFigure = 1;
 	}
     
-    if (event.keysym.sym == SDLK_f){
+    if (event.keysym.sym == SDLK_f){ // Modificar far_plane con + y -
         lastFigure = 2;
     }
     
-    if (event.keysym.sym == SDLK_v){
+    if (event.keysym.sym == SDLK_v){ // Modificar fov con + y -
         lastFigure = 3;
     }
     
-    if (event.keysym.sym == SDLK_PLUS) {
+    if (event.keysym.sym == SDLK_PLUS) { // Aumentamos el valor dado
         
         framebuffer.Fill(Color::BLACK);
         
-        if(lastFigure == 1){
-            near_plane = near_plane + 0.1;
-            if (lastMode == 2){
+        if(lastFigure == 1){ // Si es near_plane:
+            near_plane = near_plane + 0.1; // Aumentamos poco a poco el near plane para que se vea cómo va desapareciendo la entidad
+            
+            if (lastMode == 2){ // Actualizamos si es ortográfica
                 camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
             }
-            if (lastMode == 1){
+            if (lastMode == 1){ // Actualizamos si es perspectiva
                 camara.SetPerspective(fov,framebuffer.width/framebuffer.height, near_plane, far_plane);
             
            }
         }
         
-        if(lastFigure == 2){
+        if(lastFigure == 2){ // Si es far plane:
+            
+            // Ya que el valor del far plane por defecto es 100, si aumentamos no ocurrirá nada. Si lo disminuimos primero,
+            // hasta donde ya no se ve el objeto, despues podemos aumentarlo para que se vuelva a ver.
+            
             far_plane++;
-            if (lastMode == 2){
+            
+            if (lastMode == 2){ // Actualizamos si es ortográfica
                 camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
             }
-            if (lastMode == 1){
+            if (lastMode == 1){ // Actualizamos si es perspectiva
                 camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
            }
         }
         
-        if(lastFigure == 3){
-            fov = fov+0.25;
+        if(lastFigure == 3){ // Si es field of view:
+            
             if (lastMode == 1){
+                fov = fov + 0.25; // El fov sólo se actualiza en la perspectiva
                 camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
             }
         }
     }
     
-    if (event.keysym.sym == SDLK_MINUS) {
+    if (event.keysym.sym == SDLK_MINUS) { // Realizamos lo mismo pero disminuyendo
         
         framebuffer.Fill(Color::BLACK);
         
-        if(lastFigure == 1){
+        if(lastFigure == 1){ // Si disminuimos el near plane sin haberlo aumentado, tampoco ocurrirá nada.
+            
             near_plane = near_plane - 0.1;
+            
             if (lastMode == 2){
                 camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
             }
@@ -194,8 +212,10 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
             }
         }
         
-        if(lastFigure == 2){
+        if(lastFigure == 2){ // Para que se vea el cambio, hay que disminuirlo mucho.
+            
             far_plane = far_plane - 1;
+            
             if (lastMode == 2){
                 camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
             }
@@ -204,9 +224,12 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
            }
         }
         
-        if(lastFigure == 3){
-            fov = fov-0.25;
-            camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
+        if(lastFigure == 3){ // FOV
+            
+            if (lastMode == 1){
+                fov = fov - 0.25; // El fov sólo se actualiza en la perspectiva
+                camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
+            }
         }
     }
 }
@@ -215,29 +238,32 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
-    if (event.button == SDL_BUTTON_RIGHT) {
+    if (event.button == SDL_BUTTON_LEFT) { // Para orbitar alrededor del objeto:
         
         framebuffer.Fill(Color::BLACK);
         
-        camara.Rotate(mouse_delta.x* DEG2RAD, Vector3(0,1,0));
-        camara.Rotate(mouse_delta.y* DEG2RAD, Vector3(1,0,0));
+        // Utilizamos la función de camara "rotate", utilizando la variación de posición del mouse (mouse_delta) en cada uno de los ejes. Multiplicamos por DEG2RAD para pasar de grados a radianes
+        
+        
+        camara.Rotate(mouse_delta.x* DEG2RAD, Vector3(0,1,0)); // Si se mueve el mouse en el eje x, gira la camara en el eje y
+        camara.Rotate(mouse_delta.y* DEG2RAD, Vector3(1,0,0)); // Viceversa
         
     }
     
-    if (event.button == SDL_BUTTON_LEFT) {
+    if (event.button == SDL_BUTTON_RIGHT) {
+        
+        // Utilizamos la función de camara 'move', nuevamente usando mouse_delta, en la que cambiamos la posición del centro de enfoque
         
         framebuffer.Fill(Color::BLACK);
         
-        camara.Move(Vector3(mouse_delta.x*DEG2RAD, mouse_delta.y*DEG2RAD,0));
+        camara.Move(Vector3(mouse_delta.x*DEG2RAD, mouse_delta.y*DEG2RAD, 0));
      }
     
     
 }
 void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
-	if (event.button == SDL_BUTTON_LEFT) {
-        
-	}
+	
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)

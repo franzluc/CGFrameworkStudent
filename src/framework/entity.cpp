@@ -10,6 +10,8 @@
 #include "mesh.h"
 #include "image.h"
 
+// Definimos los distintos constructores posibles
+
 Entity::Entity(){
 }
 
@@ -19,27 +21,25 @@ Entity::Entity(Mesh m){
     this->matrixModel.SetIdentity();
 }
 
-/*
- Entity::Entity(Matrix44 matrix) {
+Entity::Entity(Matrix44 matrix) {
     for(int i=0;i<4;i++){
         for(int j = 0; j<4; j++){
-            this->matrixModel[i][j] = matrix[i][j];
+            this->matrixModel.M[i][j] = matrix.M[i][j];
         }
     }
-    
 }
 
-Entity::Entity(Mesh m, int matrix[4][4]){
+Entity::Entity(Mesh m, Matrix44 matrix){
     this->malla = m;
     for(int i=0;i<4;i++){
         for(int j = 0; j<4; j++){
-            this->matrixModel[i][j] = matrix[i][j];
+            this->matrixModel.M[i][j] = matrix.M[i][j];
         }
     }
 
 }
- */
-
+ 
+// Definimos la función render que unirá los vertices de nuestra malla
 void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
     // Se cogen los vertices del mesh
     const std::vector<Vector3>& vertices = malla.GetVertices();
@@ -99,8 +99,10 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
     }
 }
 
+// Definimos la función update de actualizará nuestra entidad
 void Entity::Update(float seconds_elapsed, int type) {
-
+    
+    // Rotación
     if (type == 0) {
         for (float radians = 0; radians <= 1; radians += 0.01) {
             matrixModel.RotateLocal(radians, { 0, 1, 0 });
@@ -111,7 +113,7 @@ void Entity::Update(float seconds_elapsed, int type) {
     }
     
     
-    // No funciona
+    // Escala (No funciona)
     else if (type == 1) {
         for (float i = 1; i <= 2; i += 0.01) {
             matrixModel.ScaleLocal(i, i, i);
@@ -120,7 +122,7 @@ void Entity::Update(float seconds_elapsed, int type) {
             }
         }
     }
-    // No funciona
+    // Traslación (No funciona)
     else if (type == 2) {
         for (float i = -0.4; i > 1; i += 0.01) {
             matrixModel.Translate(0, i, 0);
