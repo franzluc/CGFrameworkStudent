@@ -42,6 +42,13 @@ void Application::Init(void)
     
 	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
 	camara.LookAt(eye, center, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
+
+    // Entidad no animada, que igualmente responde a los cambios en las perspectivas
+    mesh0.LoadOBJ("meshes/lee.obj");
+    entity0 = Entity(mesh0);
+    entity0.matrixModel.Scale(1.35, 1.35, 1.35);
+    entity0.matrixModel.Translate(0, -0.4, 0);
+    entity0.Render(&framebuffer, &camara, Color::GREEN);
     
 }
 
@@ -53,24 +60,10 @@ void Application::Render(void)
 
 // Called after render
 void Application::Update(float seconds_elapsed)
-{	
-	// Marcamos como se actualizaran las entidades
-    
-    entity0.Render(&framebuffer, &camara, Color::BLACK);
+{	  
+    /*entity0.Render(&framebuffer, &camara, Color::BLACK);
     entity0.Update(seconds_elapsed, 3);
-    entity0.Render(&framebuffer, &camara, Color::GREEN);
-    
-    entity1.Render(&framebuffer, &camara, Color::BLACK);
-	entity1.Update(seconds_elapsed, 0);
-	entity1.Render(&framebuffer, &camara, Color::WHITE);
-	
-    entity2.Render(&framebuffer, &camara, Color::BLACK);
-	entity2.Update(seconds_elapsed, 0);
-	entity2.Render(&framebuffer, &camara, Color::RED);
-	
-    entity3.Render(&framebuffer, &camara, Color::BLACK);
-	entity3.Update(seconds_elapsed, 0);
-	entity3.Render(&framebuffer, &camara, Color::BLUE);
+    entity0.Render(&framebuffer, &camara, Color::GREEN);*/
 }
 
 //keyboard press event 
@@ -81,49 +74,17 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 		case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app	
 	}
 
-	if (event.keysym.sym == SDLK_1) {
-        // A modo de crear un efecto realista borramos la pantalla cada vez que se actualiza
-        framebuffer.Fill(Color::BLACK);
-        
-        // Entidad no animada, que igualmente responde a los cambios en las perspectivas
-        mesh0.LoadOBJ("meshes/lee.obj");
-        entity0 = Entity(mesh0);
-        entity0.matrixModel.Scale(1.35, 1.35, 1.35);
-        entity0.matrixModel.Translate(0, -0.4, 0);
-        entity0.Render(&framebuffer, &camara, Color::GREEN);
+	if (event.keysym.sym == SDLK_1) {     
         
     }
 
 	if (event.keysym.sym == SDLK_2) {
         
-        framebuffer.Fill(Color::BLACK);
-        
-        // Iniciamos las entidades animadas
-        
-        // Entidad 1
-        mesh1.LoadOBJ("meshes/lee.obj");
-        entity1 = Entity(mesh1);
-        entity1.matrixModel.Scale(1.35, 1.35, 1.35);
-        entity1.matrixModel.Translate(0, -0.4, 0);
-        entity1.Render(&framebuffer, &camara, Color::WHITE);
-
-        // Entidad 2
-        mesh2.LoadOBJ("meshes/anna.obj");
-        entity2 = Entity(mesh2);
-        entity2.matrixModel.Translate(-0.55, 0.35, 0);
-
-        // Entidad 3
-        mesh3.LoadOBJ("meshes/cleo.obj");
-        entity3 = Entity(mesh3);
-        entity3.matrixModel.Scale(1.6, 1.6, 1.6);
-        entity3.matrixModel.Translate(0.75, 0, 0);
-        entity3.matrixModel.Rotate(0.40, { -1, 1, 0 });
-        entity3.Render(&framebuffer, &camara, Color::BLUE);
 	}
     
     if (event.keysym.sym == SDLK_o) { // Cambio a proyección ortográfica
         
-        framebuffer.Fill(Color::BLACK);
+        //framebuffer.Fill(Color::BLACK);
         
         // Establecemos la siguiente variable para que los valores near_plane y far_plane se actualicen en la proyección adecuada
         lastMode = 2;
@@ -135,7 +96,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     
 	if (event.keysym.sym == SDLK_p) { // Cambio a perspectiva
         
-        framebuffer.Fill(Color::BLACK);
+        //framebuffer.Fill(Color::BLACK);
         
         lastMode = 1; // Volvemos a utilizar la variable para marcar en qué proyección estamos
         
@@ -238,23 +199,21 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
-    if (event.button == SDL_BUTTON_LEFT) { // Para orbitar alrededor del objeto:
-        
+    if (event.button == SDL_BUTTON_LEFT) { // Para orbitar alrededor del objeto:  
+
         framebuffer.Fill(Color::BLACK);
-        
+
         // Utilizamos la función de camara "rotate", utilizando la variación de posición del mouse (mouse_delta) en cada uno de los ejes. Multiplicamos por DEG2RAD para pasar de grados a radianes
-        
         
         camara.Rotate(mouse_delta.x* DEG2RAD, Vector3(0,1,0)); // Si se mueve el mouse en el eje x, gira la camara en el eje y
         camara.Rotate(mouse_delta.y* DEG2RAD, Vector3(1,0,0)); // Viceversa
-        
     }
     
     if (event.button == SDL_BUTTON_RIGHT) {
+
+        framebuffer.Fill(Color::BLACK);
         
         // Utilizamos la función de camara 'move', nuevamente usando mouse_delta, en la que cambiamos la posición del centro de enfoque
-        
-        framebuffer.Fill(Color::BLACK);
         
         camara.Move(Vector3(mouse_delta.x*DEG2RAD, mouse_delta.y*DEG2RAD, 0));
      }
