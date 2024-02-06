@@ -201,7 +201,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
     if (event.button == SDL_BUTTON_LEFT) { // Para orbitar alrededor del objeto:  
 
-        framebuffer.Fill(Color::BLACK);
+        //framebuffer.Fill(Color::BLACK);
 
         // Utilizamos la función de camara "rotate", utilizando la variación de posición del mouse (mouse_delta) en cada uno de los ejes. Multiplicamos por DEG2RAD para pasar de grados a radianes
         
@@ -211,7 +211,7 @@ void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
     
     if (event.button == SDL_BUTTON_RIGHT) {
 
-        framebuffer.Fill(Color::BLACK);
+        //framebuffer.Fill(Color::BLACK);
         
         // Utilizamos la función de camara 'move', nuevamente usando mouse_delta, en la que cambiamos la posición del centro de enfoque
         

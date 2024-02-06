@@ -87,7 +87,7 @@ void Camera::UpdateViewMatrix()
 	view_matrix.SetIdentity();
     
     // Definimos el vector frontal.
-	Vector3 forward(eye.x - center.x, eye.y - center.y, eye.z - center.z);
+	Vector3 forward(center.x - eye.x, center.y - eye.y, center.z - eye.z);
 	// Definimos el vector side realizando el producto vectorial entre el frontal y el vector up.
     Vector3 side(forward.z * up.y - forward.y * up.z, forward.x * up.z - forward.z * up.x, forward.y * up.x - forward.x * up.y);
 	// Definimos el vector top realizando el producto vectorial entre los dos anteriores.

@@ -112,8 +112,6 @@ void Entity::Update(float seconds_elapsed, int type) {
                 }
             }
         }
-        
-        
         // Escala (No funciona)
         else if (type == 1) {
             for (float i = 1; i <= 2; i += 0.01) {
