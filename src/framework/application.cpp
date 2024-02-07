@@ -62,7 +62,6 @@ void Application::Render(void)
 void Application::Update(float seconds_elapsed)
 {	  
     entity0.Render(&framebuffer, &camara, Color::BLACK);
-    entity0.Update(seconds_elapsed, 3);
     entity0.Render(&framebuffer, &camara, Color::GREEN);
 }
 
