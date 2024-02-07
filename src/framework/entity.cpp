@@ -79,21 +79,19 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
         int screenWidth = framebuffer->width;
         int screenHeight = framebuffer->height;
 
-        int x1 = static_cast<int>((clipPos1.x + 1.0f) * 0.5f * screenWidth);
-        int y1 = static_cast<int>((1.0f - clipPos1.y) * 0.5f * screenHeight);
+        float x1 = static_cast<int>((clipPos1.x + 1.0f) * 0.5f * screenWidth);
+        float y1 = static_cast<int>((1.0f - clipPos1.y) * 0.5f * screenHeight);
 
-        int x2 = static_cast<int>((clipPos2.x + 1.0f) * 0.5f * screenWidth);
-        int y2 = static_cast<int>((1.0f - clipPos2.y) * 0.5f * screenHeight);
+        float x2 = static_cast<int>((clipPos2.x + 1.0f) * 0.5f * screenWidth);
+        float y2 = static_cast<int>((1.0f - clipPos2.y) * 0.5f * screenHeight);
 
-        int x3 = static_cast<int>((clipPos3.x + 1.0f) * 0.5f * screenWidth);
-        int y3 = static_cast<int>((1.0f - clipPos3.y) * 0.5f * screenHeight);
+        float x3 = static_cast<int>((clipPos3.x + 1.0f) * 0.5f * screenWidth);
+        float y3 = static_cast<int>((1.0f - clipPos3.y) * 0.5f * screenHeight);
 
         // Se dibuja la malla de triangulos usando el algoritmo DDA
         if (x1 < framebuffer->width && x2 < framebuffer->width && x3 < framebuffer->width){
             if (y1 < framebuffer->height && y2 < framebuffer->height && y3 < framebuffer->height){
-                framebuffer->DrawLineDDA(x1, y1, x2, y2, c);
-                framebuffer->DrawLineDDA(x2, y2, x3, y3, c);
-                framebuffer->DrawLineDDA(x3, y3, x1, y1, c);
+                framebuffer->DrawTriangle({ x1, y1 }, { x2, y2 }, { x3, y3 }, c, true, c);
             }
         }
     }

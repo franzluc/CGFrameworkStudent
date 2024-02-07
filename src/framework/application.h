@@ -51,9 +51,6 @@ public:
 	Vector2 vector2;
 	// Booleano para comprobar que se ha cargado exitosamente la imagen
 	bool exitCarrega;
-	// Int para saber la ultima figura dibujada
-	
-		
 
 	// Booleano que indica si se ha seleccionado un boton de la barra inferior
 	bool modeSelected = false;
@@ -101,7 +98,6 @@ public:
 	Camera camara = Camera();
     
     // Creamos las mallas y las entidades que utilizaremos
-    
     Mesh mesh0 = Mesh();
     Entity entity0;
 	

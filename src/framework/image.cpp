@@ -574,13 +574,12 @@ void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2
 	Image::DrawLineDDA(p1.x, p1.y, p2.x, p2.y, borderColor);
 	Image::DrawLineDDA(p2.x, p2.y, p0.x, p0.y, borderColor);
     
-    
-    
     // Si est‡ lleno, procedemos a crear la tabla que servir‡ de par‡metro para ScanLineDDA.
     if (isFilled){
-        
-        // Creamos la tabla donde se almacenar‡n los m‡ximos y m’nimos de X.
-        std::vector<Cell> table;
+
+		// Creamos la tabla donde se almacenar‡n los m‡ximos y m’nimos de X.
+		std::vector<Cell> table;
+
         table.resize(height); // Aumentamos el nœmero de filas y redefinimos los valores m‡ximos y m’nimos como 0 y el ancho.
         for(int i=0; i<table.size(); ++i){
             table[i].minX=width;
