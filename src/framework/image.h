@@ -38,8 +38,8 @@ public:
 
 	// Estructura para AET
 	struct Cell {
-		int minX;
-		int maxX;
+		int minX = 2000;
+		int maxX = -1;
 	};
 
 	Color* pixels;

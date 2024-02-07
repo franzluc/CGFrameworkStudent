@@ -417,35 +417,27 @@ void Image::DrawLineDDA(int x0, int y0, int x1, int y1, const Color& c)
 
 
 void Image::ScanLineDDA(int x0, int y0, int x1, int y1, std::vector<Cell>& table) {
-    // Repetimos los pasos de dibujar la l’nea, pero en vez de utilizar SetPixel con los puntos,
-    // comprobamos si el valor x es un valor m‡ximo o m’nimo para ese valor de Y. Almacenamos estos puntos en la tabla.
-    //Es calcula la diferencia entre els punts
 
 	int dx = x1 - x0;
 	int dy = y1 - y0;
 
-	
-	int steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+	int d = std::max(abs(dx), abs(dy));
 
-	//Es calcula l'increment
-	float Xinc = dx / (float)steps;
-	float Yinc = dy / (float)steps;
+	Vector2 v(dx / static_cast<float>(d), dy / static_cast<float>(d));
 
-	//Es dibuixa la linia
-	float X = x0;
-	float Y = y0;
-	
-    // Iteramos hasta recorrer todos los pixels
-    for (int i = 0; i <= steps; ++i){
-        if (round(X) < table[round(Y)].minX){
-            table[round(Y)].minX = round(X);
-        }
-        if (round(X) > table[round(Y)].maxX){
-            table[round(Y)].maxX = round(X);
-        }
-        X += Xinc;
-        Y += Yinc;
-    }
+	Vector2 A = Vector2(x0, y0);
+
+	for (int i = 0; i < d; ++i) {
+		if (table[A.y].minX > A.x) {
+			table[A.y].minX = A.x;
+		}
+
+		if (table[A.y].maxX < A.x) {
+			table[A.y].maxX = A.x;
+		}
+
+		A += v;
+	}
 }
 
 void Image::DrawRect(int x, int y, int w, int h, const Color& bordercolor, int borderWidth, bool isFilled, const Color& fillColor)
@@ -568,36 +560,21 @@ void Image::DrawCircle(int x, int y, int r, const Color& borderColor, int border
     
 // Funci—n para dibujar un triangulo
 void Image::DrawTriangle(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Color& borderColor, bool isFilled, const Color& fillColor) {
-	
-    // Dibujo de las lineas del triangulo.
-	Image::DrawLineDDA(p0.x, p0.y, p1.x, p1.y, borderColor);
-	Image::DrawLineDDA(p1.x, p1.y, p2.x, p2.y, borderColor);
-	Image::DrawLineDDA(p2.x, p2.y, p0.x, p0.y, borderColor);
-    
-    // Si est‡ lleno, procedemos a crear la tabla que servir‡ de par‡metro para ScanLineDDA.
-    if (isFilled){
 
-		// Creamos la tabla donde se almacenar‡n los m‡ximos y m’nimos de X.
-		std::vector<Cell> table;
+	std::vector<Cell> table;
+	table.resize(height);
 
-        table.resize(height); // Aumentamos el nœmero de filas y redefinimos los valores m‡ximos y m’nimos como 0 y el ancho.
-        for(int i=0; i<table.size(); ++i){
-            table[i].minX=width;
-            table[i].maxX=0;
-        }
-        
-        // Aplicamos la siguiente funci—n sobre cada l’nea para obtener los valores m‡ximos y m’nimos de X.
-        ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
-        ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
-        ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
-        
-        // Iteramos por cada valor de Y para rellenar de color entre el valor m’nimo y m‡ximo.
-        for(int j = 0; j < table.size(); ++j){
-            for (int i = table[j].minX+1; i < table[j].maxX; ++i){
-                SetPixel(i, j, fillColor);
-            }
-       }
-    }
+	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table);
+	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table);
+	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table);
+
+	for (int i = 0; i < table.size(); ++i) {
+		if (table[i].minX < table[i].maxX) {
+			for (int j = table[i].minX; j < table[i].maxX; ++j) {
+				SetPixelSafe(j, i, fillColor);
+			}
+		}
+	}
 }
 
 void Image::DrawImage(const Image& image, int x, int y, bool top) {
