@@ -61,9 +61,9 @@ void Application::Render(void)
 // Called after render
 void Application::Update(float seconds_elapsed)
 {	  
-    /*entity0.Render(&framebuffer, &camara, Color::BLACK);
+    entity0.Render(&framebuffer, &camara, Color::BLACK);
     entity0.Update(seconds_elapsed, 3);
-    entity0.Render(&framebuffer, &camara, Color::GREEN);*/
+    entity0.Render(&framebuffer, &camara, Color::GREEN);
 }
 
 //keyboard press event 
@@ -84,7 +84,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     
     if (event.keysym.sym == SDLK_o) { // Cambio a proyección ortográfica
         
-        //framebuffer.Fill(Color::BLACK);
+        framebuffer.Fill(Color::BLACK);
         
         // Establecemos la siguiente variable para que los valores near_plane y far_plane se actualicen en la proyección adecuada
         lastMode = 2;
@@ -96,7 +96,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     
 	if (event.keysym.sym == SDLK_p) { // Cambio a perspectiva
         
-        //framebuffer.Fill(Color::BLACK);
+        framebuffer.Fill(Color::BLACK);
         
         lastMode = 1; // Volvemos a utilizar la variable para marcar en qué proyección estamos
         
@@ -195,39 +195,43 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     }
 }
 
-
-
 void Application::OnMouseButtonDown( SDL_MouseButtonEvent event )
 {
-    if (event.button == SDL_BUTTON_LEFT) { // Para orbitar alrededor del objeto:  
-
-        //framebuffer.Fill(Color::BLACK);
-
-        // Utilizamos la función de camara "rotate", utilizando la variación de posición del mouse (mouse_delta) en cada uno de los ejes. Multiplicamos por DEG2RAD para pasar de grados a radianes
-        
-        camara.Rotate(mouse_delta.x* DEG2RAD, Vector3(0,1,0)); // Si se mueve el mouse en el eje x, gira la camara en el eje y
-        camara.Rotate(mouse_delta.y* DEG2RAD, Vector3(1,0,0)); // Viceversa
+    if (event.button == SDL_BUTTON_LEFT) { 
+        moveCam = true;
     }
     
     if (event.button == SDL_BUTTON_RIGHT) {
-
-        //framebuffer.Fill(Color::BLACK);
-        
-        // Utilizamos la función de camara 'move', nuevamente usando mouse_delta, en la que cambiamos la posición del centro de enfoque
-        
-        camara.Move(Vector3(mouse_delta.x*DEG2RAD, mouse_delta.y*DEG2RAD, 0));
+        moveCam2 = true;
      }
-    
-    
 }
+
 void Application::OnMouseButtonUp( SDL_MouseButtonEvent event )
 {
-	
+    if (event.button == SDL_BUTTON_LEFT) {
+        moveCam = false;
+    }
+
+    if (event.button == SDL_BUTTON_RIGHT) {
+        moveCam2 = false;
+    }
 }
 
 void Application::OnMouseMove(SDL_MouseButtonEvent event)
-{
-    
+{       
+    if (moveCam) {
+        // Para orbitar alrededor del objeto:  
+        framebuffer.Fill(Color::BLACK);
+        // Utilizamos la función de camara "rotate", utilizando la variación de posición del mouse (mouse_delta) en cada uno de los ejes. Multiplicamos por DEG2RAD para pasar de grados a radianes
+        camara.Rotate(mouse_delta.x * DEG2RAD, Vector3(0, 1, 0)); // Si se mueve el mouse en el eje x, gira la camara en el eje y
+        camara.Rotate(mouse_delta.y * DEG2RAD, Vector3(1, 0, 0)); // Viceversa
+    }
+
+    if (moveCam2) {
+        framebuffer.Fill(Color::BLACK);
+        // Utilizamos la función de camara 'move', nuevamente usando mouse_delta, en la que cambiamos la posición del centro de enfoque
+        camara.Move(Vector3(mouse_delta.x * DEG2RAD, mouse_delta.y * DEG2RAD, 0));
+    }
 }
 
 void Application::OnWheel(SDL_MouseWheelEvent event)

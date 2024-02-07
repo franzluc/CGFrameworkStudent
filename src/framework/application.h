@@ -113,7 +113,9 @@ public:
 	
     Mesh mesh3 = Mesh();
 	Entity entity3;
-    
+
+	bool moveCam = false;
+	bool moveCam2 = false;
     
     void OnKeyPressed(SDL_KeyboardEvent event);
 	void OnMouseButtonDown(SDL_MouseButtonEvent event);
