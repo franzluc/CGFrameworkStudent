@@ -590,6 +590,50 @@ void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	}
 }
 
+void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2) {
+	Matrix44 bCoordsMatrix;
+	Vector3 pointVector;
+	Vector3 bCoords;
+
+	bCoordsMatrix.M[0][0] = p0.x;
+	bCoordsMatrix.M[0][1] = p1.x;
+	bCoordsMatrix.M[0][2] = p2.x;
+	bCoordsMatrix.M[0][3] = 0;
+	bCoordsMatrix.M[1][0] = p0.y;
+	bCoordsMatrix.M[1][1] = p1.y;
+	bCoordsMatrix.M[1][2] = p2.y;
+	bCoordsMatrix.M[1][3] = 0;
+	bCoordsMatrix.M[2][0] = 1;
+	bCoordsMatrix.M[2][1] = 1;
+	bCoordsMatrix.M[2][2] = 1;
+	bCoordsMatrix.M[2][3] = 0;
+	bCoordsMatrix.M[3][0] = 0;
+	bCoordsMatrix.M[3][1] = 0;
+	bCoordsMatrix.M[3][2] = 0;
+	bCoordsMatrix.M[3][3] = 1;
+
+	bCoordsMatrix.Inverse();
+
+	std::vector<Cell> table2;
+	table2.resize(height);
+
+	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table2);
+	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table2);
+	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table2);
+
+	for (int y = 0; y < height; y++) {
+		if (table2[y].minX <= table2[y].maxX) {
+			for (int x = table2[y].minX; x < table2[y].maxX; x++) {
+				bCoords = bCoordsMatrix * Vector3(x, y, 1);
+				bCoords.Clamp(0, 1);
+				float suma = bCoords.x + bCoords.y + bCoords.z;
+				bCoords = bCoords / suma;
+				SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
+			}
+		}
+	}
+}
+
 // Funci—n para obtener valores aleatorios
 float getRandomFloat(float min, float max) {
     return min + static_cast<float>(std::rand()) / RAND_MAX * (max - min);

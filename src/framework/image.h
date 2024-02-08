@@ -115,6 +115,9 @@ public:
 
 	//Declaracion de la funcion para dibujar una imagen
 	void DrawImage(const Image& image, int x, int y, bool top);
+
+	//Declaracion de la funcion para dibujar un triangulo interpolado
+	void DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2);
 };
 
 // Image storing one float per pixel instead of a 3 or 4 component Color

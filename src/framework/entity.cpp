@@ -91,7 +91,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
         // Se dibuja la malla de triangulos usando el algoritmo DDA
         if (x1 < framebuffer->width && x2 < framebuffer->width && x3 < framebuffer->width){
             if (y1 < framebuffer->height && y2 < framebuffer->height && y3 < framebuffer->height){
-                framebuffer->DrawTriangle({ x1, y1 }, { x2, y2 }, { x3, y3 }, c, true, c);
+                framebuffer->DrawTriangleInterpolated({ x1, y1, 1 }, { x2, y2, 1 }, { x3, y3, 1 }, Color::RED, Color::BLUE, Color::GREEN);
             }
         }
     }
