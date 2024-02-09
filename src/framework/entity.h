@@ -26,4 +26,12 @@ public:
     void Update(float seconds_elapsed, int type);
 };
 
+enum class eRenderMode {
+    POINTCLOUD,
+    WIREFRAME,
+    TRIANGLES,
+    TRIANGLES_INTERPOLATED
+};
+eRenderMode mode;
+
 

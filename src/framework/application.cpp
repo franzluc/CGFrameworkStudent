@@ -55,14 +55,15 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void)
 {
+    framebuffer.Fill(Color::BLACK);
+    entity0.Render(&framebuffer, &camara, Color::GREEN);
 	framebuffer.Render();
 }
 
 // Called after render
 void Application::Update(float seconds_elapsed)
 {	  
-    entity0.Render(&framebuffer, &camara, Color::BLACK);
-    entity0.Render(&framebuffer, &camara, Color::GREEN);
+    
 }
 
 //keyboard press event 
@@ -82,9 +83,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
     
     if (event.keysym.sym == SDLK_o) { // Cambio a proyección ortográfica
-        
-        framebuffer.Fill(Color::BLACK);
-        
         // Establecemos la siguiente variable para que los valores near_plane y far_plane se actualicen en la proyección adecuada
         lastMode = 2;
         
@@ -94,8 +92,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
     
 	if (event.keysym.sym == SDLK_p) { // Cambio a perspectiva
-        
-        framebuffer.Fill(Color::BLACK);
         
         lastMode = 1; // Volvemos a utilizar la variable para marcar en qué proyección estamos
         
@@ -115,10 +111,12 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     if (event.keysym.sym == SDLK_v){ // Modificar fov con + y -
         lastFigure = 3;
     }
+
+    if (event.keysym.sym == SDLK_c) { // Cambia entre plain color y interpolated
+        
+    }
     
     if (event.keysym.sym == SDLK_PLUS) { // Aumentamos el valor dado
-        
-        framebuffer.Fill(Color::BLACK);
         
         if(lastFigure == 1){ // Si es near_plane:
             near_plane = near_plane + 0.1; // Aumentamos poco a poco el near plane para que se vea cómo va desapareciendo la entidad
@@ -157,8 +155,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     }
     
     if (event.keysym.sym == SDLK_MINUS) { // Realizamos lo mismo pero disminuyendo
-        
-        framebuffer.Fill(Color::BLACK);
         
         if(lastFigure == 1){ // Si disminuimos el near plane sin haberlo aumentado, tampoco ocurrirá nada.
             
@@ -220,14 +216,14 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
 {       
     if (moveCam) {
         // Para orbitar alrededor del objeto:  
-        framebuffer.Fill(Color::BLACK);
+        
         // Utilizamos la función de camara "rotate", utilizando la variación de posición del mouse (mouse_delta) en cada uno de los ejes. Multiplicamos por DEG2RAD para pasar de grados a radianes
         camara.Rotate(mouse_delta.x * DEG2RAD, Vector3(0, 1, 0)); // Si se mueve el mouse en el eje x, gira la camara en el eje y
         camara.Rotate(mouse_delta.y * DEG2RAD, Vector3(1, 0, 0)); // Viceversa
     }
 
     if (moveCam2) {
-        framebuffer.Fill(Color::BLACK);
+        
         // Utilizamos la función de camara 'move', nuevamente usando mouse_delta, en la que cambiamos la posición del centro de enfoque
         camara.Move(Vector3(mouse_delta.x * DEG2RAD, mouse_delta.y * DEG2RAD, 0));
     }
