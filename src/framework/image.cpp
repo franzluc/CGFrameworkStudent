@@ -596,21 +596,14 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 	Vector3 bCoords;
 
 	bCoordsMatrix.M[0][0] = p0.x;
-	bCoordsMatrix.M[0][1] = p1.x;
-	bCoordsMatrix.M[0][2] = p2.x;
-	bCoordsMatrix.M[0][3] = 0;
-	bCoordsMatrix.M[1][0] = p0.y;
+	bCoordsMatrix.M[1][0] = p1.x;
+	bCoordsMatrix.M[2][0] = p2.x;
+	bCoordsMatrix.M[0][1] = p0.y;
 	bCoordsMatrix.M[1][1] = p1.y;
-	bCoordsMatrix.M[1][2] = p2.y;
-	bCoordsMatrix.M[1][3] = 0;
-	bCoordsMatrix.M[2][0] = 1;
-	bCoordsMatrix.M[2][1] = 1;
+	bCoordsMatrix.M[2][1] = p2.y;
+	bCoordsMatrix.M[0][2] = 1;
+	bCoordsMatrix.M[1][2] = 1;
 	bCoordsMatrix.M[2][2] = 1;
-	bCoordsMatrix.M[2][3] = 0;
-	bCoordsMatrix.M[3][0] = 0;
-	bCoordsMatrix.M[3][1] = 0;
-	bCoordsMatrix.M[3][2] = 0;
-	bCoordsMatrix.M[3][3] = 1;
 
 	bCoordsMatrix.Inverse();
 
