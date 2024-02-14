@@ -79,6 +79,8 @@ public:
         // 2 --> ortografica
     
     
+    
+    
     // Iniciamos los valores inciales de la perspectiva
     float fov = 44.5;            // View angle in degrees (1/zoom)
     float near_plane = 0.01;    // Near plane
@@ -123,7 +125,10 @@ public:
 	// CPU Global framebuffer
 	Image framebuffer;
     
-	// Constructor and main methods
+    FloatImage zetaBuffer;
+    
+	
+    // Constructor and main methods
 	Application(const char* caption, int width, int height);
 	~Application();
 

@@ -40,7 +40,7 @@ Entity::Entity(Mesh m, Matrix44 matrix){
 }
  
 // Definimos la función render que unirá los vertices de nuestra malla
-void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
+void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
     // Se cogen los vertices del mesh
     const std::vector<Vector3>& vertices = malla.GetVertices();
 
@@ -91,7 +91,7 @@ void Entity::Render(Image* framebuffer, Camera* camera, const Color& c) {
         // Se dibuja la malla de triangulos usando el algoritmo DDA
         if (x1 < framebuffer->width && x2 < framebuffer->width && x3 < framebuffer->width){
             if (y1 < framebuffer->height && y2 < framebuffer->height && y3 < framebuffer->height){
-                framebuffer->DrawTriangleInterpolated({ x1, y1, 1 }, { x2, y2, 1 }, { x3, y3, 1 }, Color::RED, Color::BLUE, Color::GREEN);
+                framebuffer->DrawTriangleInterpolated({ x1, y1, clipPos1.z}, { x2, y2, clipPos2.z}, { x3, y3, clipPos3.z}, Color::RED, Color::BLUE, Color::GREEN, zBuffer);
             }
         }
     }

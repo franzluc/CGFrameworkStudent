@@ -42,13 +42,16 @@ void Application::Init(void)
     
 	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
 	camara.LookAt(eye, center, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
-
+    
+    zetaBuffer.Resize(this->window_width, this->window_height);
+    zetaBuffer.Fill(FLT_MAX);
+    
     // Entidad no animada, que igualmente responde a los cambios en las perspectivas
     mesh0.LoadOBJ("meshes/lee.obj");
     entity0 = Entity(mesh0);
     entity0.matrixModel.Scale(1.35, 1.35, 1.35);
     entity0.matrixModel.Translate(0, -0.4, 0);
-    entity0.Render(&framebuffer, &camara, Color::GREEN);
+    entity0.Render(&framebuffer, &camara, &zetaBuffer);
     
 }
 
@@ -56,7 +59,8 @@ void Application::Init(void)
 void Application::Render(void)
 {
     framebuffer.Fill(Color::BLACK);
-    entity0.Render(&framebuffer, &camara, Color::GREEN);
+    zetaBuffer.Fill(FLT_MAX);
+    entity0.Render(&framebuffer, &camara, &zetaBuffer);
 	framebuffer.Render();
 }
 

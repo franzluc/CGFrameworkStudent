@@ -22,10 +22,11 @@ public:
     Entity(Mesh malla, Matrix44 matrix);
     
     // Métodos de la clase
-    void Render(Image* framebuffer, Camera* camera, const Color& c);
+    void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer);
     void Update(float seconds_elapsed, int type);
 };
 
+/*
 enum class eRenderMode {
     POINTCLOUD,
     WIREFRAME,
@@ -33,5 +34,5 @@ enum class eRenderMode {
     TRIANGLES_INTERPOLATED
 };
 eRenderMode mode;
-
+*/
 

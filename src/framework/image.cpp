@@ -590,8 +590,9 @@ void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	}
 }
 
-void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2) {
-	Matrix44 bCoordsMatrix;
+void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2, FloatImage* zBuffer) {
+	
+    Matrix44 bCoordsMatrix;
 	Vector3 pointVector;
 	Vector3 bCoords;
 
@@ -613,18 +614,27 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
 	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table2);
 	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table2);
 	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table2);
-
-	for (int y = 0; y < height; y++) {
-		if (table2[y].minX <= table2[y].maxX) {
-			for (int x = table2[y].minX; x < table2[y].maxX; x++) {
-				bCoords = bCoordsMatrix * Vector3(x, y, 1);
-				bCoords.Clamp(0, 1);
-				float suma = bCoords.x + bCoords.y + bCoords.z;
-				bCoords = bCoords / suma;
-				SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
-			}
-		}
-	}
+    
+    for (int y = 0; y < height; y++) {
+        if (table2[y].minX <= table2[y].maxX) {
+            
+            for (int x = table2[y].minX; x < table2[y].maxX; x++) {
+                bCoords = bCoordsMatrix * Vector3(x, y, 1);
+                bCoords.Clamp(0, 1);
+                float suma = bCoords.x + bCoords.y + bCoords.z;
+                bCoords = bCoords / suma;
+                
+                float zeta = bCoords.x * p0.z + bCoords.y * p1.z + bCoords.z * p2.z;
+                
+                if (x < zBuffer->width && y < zBuffer->height){
+                    if (zeta < (zBuffer->GetPixel(x, y))){
+                        SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
+                        zBuffer->SetPixel(x, y, zeta);
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Funci—n para obtener valores aleatorios
