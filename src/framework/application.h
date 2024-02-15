@@ -82,7 +82,7 @@ public:
     
     
     // Iniciamos los valores inciales de la perspectiva
-    float fov = 44.5;            // View angle in degrees (1/zoom)
+    float fov = 44.20;            // View angle in degrees (1/zoom)
     float near_plane = 0.01;    // Near plane
     float far_plane = 100;    // Far plane
 
