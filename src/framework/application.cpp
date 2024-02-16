@@ -44,11 +44,12 @@ void Application::Init(void)
 	camara.LookAt(eye, center, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
     
     zetaBuffer.Resize(this->window_width, this->window_height);
-    zetaBuffer.Fill(FLT_MAX);
+    //zetaBuffer.Fill(FLT_MAX);
     
     // Entidad no animada, que igualmente responde a los cambios en las perspectivas
     mesh0.LoadOBJ("meshes/lee.obj");
-    entity0 = Entity(mesh0);
+    textura.LoadTGA("textures/lee_normal.tga");
+    entity0 = Entity(mesh0, textura);
     entity0.matrixModel.Scale(1.35, 1.35, 1.35);
     entity0.matrixModel.Translate(0, -0.4, 0);
     entity0.Render(&framebuffer, &camara, &zetaBuffer);
@@ -108,16 +109,16 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         lastFigure = 1;
 	}
     
-    if (event.keysym.sym == SDLK_f){ // Modificar far_plane con + y -
-        lastFigure = 2;
-    }
-    
-    if (event.keysym.sym == SDLK_v){ // Modificar fov con + y -
-        lastFigure = 3;
-    }
-
     if (event.keysym.sym == SDLK_c) { // Cambia entre plain color y interpolated
         
+    }
+
+    if (event.keysym.sym == SDLK_z) { // Cambia entre oclusion y no oclusion
+
+    }
+
+    if (event.keysym.sym == SDLK_t) { // Cambia entre mesh texture y plain color
+
     }
     
     if (event.keysym.sym == SDLK_PLUS) { // Aumentamos el valor dado

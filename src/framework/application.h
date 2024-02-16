@@ -82,7 +82,7 @@ public:
     
     
     // Iniciamos los valores inciales de la perspectiva
-    float fov = 44.20;            // View angle in degrees (1/zoom)
+    float fov = 44.25;            // View angle in degrees (1/zoom)
     float near_plane = 0.01;    // Near plane
     float far_plane = 100;    // Far plane
 
@@ -102,15 +102,7 @@ public:
     // Creamos las mallas y las entidades que utilizaremos
     Mesh mesh0 = Mesh();
     Entity entity0;
-	
-    Mesh mesh1 = Mesh();
-	Entity entity1;
-	
-    Mesh mesh2 = Mesh();
-	Entity entity2;
-	
-    Mesh mesh3 = Mesh();
-	Entity entity3;
+	Image textura;
 
 	bool moveCam = false;
 	bool moveCam2 = false;
