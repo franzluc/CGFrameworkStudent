@@ -10,6 +10,7 @@
 #include <iostream>
 #include "framework.h"
 
+
 //remove unsafe warnings
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
@@ -43,8 +44,18 @@ public:
 	};
 
 	Color* pixels;
+    
+    enum class eRenderMode {
+        POINTCLOUD,
+        WIREFRAME,
+        TRIANGLES,
+        TRIANGLES_INTERPOLATED,
+        TRIANGLES_OCLUSSION,
+        TEXTURE
+    };
+    eRenderMode mode;
 
-	// Constructors
+    // Constructors
 	Image();
 	Image(unsigned int width, unsigned int height);
 	Image(const Image& c);
@@ -121,6 +132,9 @@ public:
 };
 
 // Image storing one float per pixel instead of a 3 or 4 component Color
+
+
+
 
 class FloatImage
 {

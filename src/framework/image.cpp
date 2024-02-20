@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "mesh.h"
 #include "application.h"
+#include "entity.h"
 #include <cmath>
 #include <random>
 #include <cstdlib>
@@ -590,11 +591,13 @@ void Image::DrawImage(const Image& image, int x, int y, bool top) {
 	}
 }
 
-void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2, FloatImage* zBuffer, Image * texture, const Vector2& uv0, const Vector2& uv1, const Vector2& uv2 ) {
+void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2, FloatImage* zBuffer, Image* texture, const Vector2& uv0, const Vector2& uv1, const Vector2& uv2 ) {
     
+    // Inicializamos la matriz que utilizaremos para obtener las coordenadas baricéntricas y el vector con dichas coordenadas.
     Matrix44 bCoordsMatrix;
     Vector3 bCoords;
-
+    
+    // Asignamos los valores para la matriz
     bCoordsMatrix.M[0][0] = p0.x;
     bCoordsMatrix.M[1][0] = p1.x;
     bCoordsMatrix.M[2][0] = p2.x;
@@ -604,10 +607,11 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
     bCoordsMatrix.M[0][2] = 1;
     bCoordsMatrix.M[1][2] = 1;
     bCoordsMatrix.M[2][2] = 1;
-
+    
+    // Invertimos la matriz
     bCoordsMatrix.Inverse();
     
-    
+    // Realizamos la misma operación para las coordenadas UVS
     Matrix44 uvCoordsMatrix;
     Vector3 uvCoords;
     
@@ -623,149 +627,74 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
     
     uvCoordsMatrix.Inverse();
     
-    
+    // Realizamos el proceso para la rasterización de triángulos. Creamos la tabla con una dimensión igual a la altura del framebuffer
     std::vector<Cell> table2;
     table2.resize(height);
-
+    
+    
     ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table2);
     ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table2);
     ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table2);
     
+    // Recorremos en horizontal cada posición vertical y rellenaremos entre el valor máximo y mínimo de cada línea horizontal
     for (int y = 0; y < height; y++) {
-        if (table2[y].minX <= table2[y].maxX) {
-            for (int x = table2[y].minX; x < table2[y].maxX; x++) {
-                bCoords = bCoordsMatrix * Vector3(x, y, 1);
-                bCoords.Clamp(0, 1);
-                float suma = bCoords.x + bCoords.y + bCoords.z;
-                bCoords = bCoords / suma;
-                
-                uvCoords = uvCoordsMatrix * Vector3(x, y, 1);
-                uvCoords.Clamp(0, 1);
-                float suma2 = uvCoords.x + uvCoords.y + uvCoords.z;
-                //uvCoords = uvCoords / suma2;
-                
-                float zeta = bCoords.x * p0.z + bCoords.y * p1.z + bCoords.z * p2.z;
-				
-				// Se pasan las texturas clampeadas al texture space
-				//uvCoords.x *= (texture->width - 1);
-				//uvCoords.y *= (texture->height - 1);
-
-                if (texture != nullptr){
-                    if (x < zBuffer->width && y < zBuffer->height){
-                        if (uvCoords.x < texture->width && uvCoords.y < texture->height){
-                            if (zeta < zBuffer->GetPixel(x, y)){
-                                //SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
-								Color pixelColor = texture->GetPixel(uvCoords.x * uv0.x + uvCoords.y * uv1.x + uvCoords.z * uv2.x,
-																	 uvCoords.x * uv0.y + uvCoords.y * uv1.y + uvCoords.z * uv2.y);
-								SetPixelSafe(x, y, pixelColor);
-                                zBuffer->SetPixel(x, y, zeta);
-                            }
-                        }
-                    }
-				}
-				else {
-
-				}
-            }
-        }
-    }
-}
- 
-/*void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2, FloatImage* zBuffer, Image * texture, const Vector2& uv0, const Vector2& uv1, const Vector2& uv2 ) {
-    
-    Matrix44 bCoordsMatrix;
-    Vector3 bCoords;
-
-    bCoordsMatrix.M[0][0] = p0.x;
-    bCoordsMatrix.M[1][0] = p1.x;
-    bCoordsMatrix.M[2][0] = p2.x;
-    bCoordsMatrix.M[0][1] = p0.y;
-    bCoordsMatrix.M[1][1] = p1.y;
-    bCoordsMatrix.M[2][1] = p2.y;
-    bCoordsMatrix.M[0][2] = 1;
-    bCoordsMatrix.M[1][2] = 1;
-    bCoordsMatrix.M[2][2] = 1;
-
-    bCoordsMatrix.Inverse();
-    
-    std::vector<Cell> table2;
-    table2.resize(height);
-
-    ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table2);
-    ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table2);
-    ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table2);
-    
-    for (int y = 0; y < height; y++) {
-        if (table2[y].minX <= table2[y].maxX) {
-            for (int x = table2[y].minX; x < table2[y].maxX; x++) {
-                bCoords = bCoordsMatrix * Vector3(x, y, 1);
-                bCoords.Clamp(0, 1);
-                float suma = bCoords.x + bCoords.y + bCoords.z;
-                bCoords = bCoords / suma;
-                
-                // Calculate interpolated texture coordinates using barycentric interpolation
-				Vector2 interpolatedUV = { bCoords.x * uv0.x + bCoords.y * uv1.x + bCoords.z * uv2.x, bCoords.x * uv0.y + bCoords.y * uv1.y + bCoords.z * uv2.y };
-
-                float zeta = bCoords.x * p0.z + bCoords.y * p1.z + bCoords.z * p2.z;
-				
-                if (texture != nullptr && x < zBuffer->width && y < zBuffer->height) {
-                    if (interpolatedUV.x >= 0 && interpolatedUV.x < texture->width && interpolatedUV.y >= 0 && interpolatedUV.y < texture->height) {
-                        if (zeta < zBuffer->GetPixel(x, y)) {
-                            Color pixelColor = texture->GetPixel(interpolatedUV.x, interpolatedUV.y);
-                            SetPixelSafe(x, y, pixelColor);
-                            zBuffer->SetPixel(x, y, zeta);
-                        }
-                    }
-                } else {
-                    Color finalColor = bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2;
-                    SetPixelSafe(x, y, finalColor);
-                }
-            }
-        }
-    }
-}*/
-
-/*
-void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2, FloatImage* zBuffer) {
-	
-    Matrix44 bCoordsMatrix;
-	Vector3 pointVector;
-	Vector3 bCoords;
-
-	bCoordsMatrix.M[0][0] = p0.x;
-	bCoordsMatrix.M[1][0] = p1.x;
-	bCoordsMatrix.M[2][0] = p2.x;
-	bCoordsMatrix.M[0][1] = p0.y;
-	bCoordsMatrix.M[1][1] = p1.y;
-	bCoordsMatrix.M[2][1] = p2.y;
-	bCoordsMatrix.M[0][2] = 1;
-	bCoordsMatrix.M[1][2] = 1;
-	bCoordsMatrix.M[2][2] = 1;
-
-	bCoordsMatrix.Inverse();
-
-	std::vector<Cell> table2;
-	table2.resize(height);
-
-	ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table2);
-	ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table2);
-	ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table2);
-    
-    for (int y = 0; y < height; y++) {
+        
         if (table2[y].minX <= table2[y].maxX) {
             
             for (int x = table2[y].minX; x < table2[y].maxX; x++) {
-                bCoords = bCoordsMatrix * Vector3(x, y, 1);
-                bCoords.Clamp(0, 1);
-                float suma = bCoords.x + bCoords.y + bCoords.z;
-                bCoords = bCoords / suma;
                 
+                // Obtenemos las coordenadas baricéntricas multiplicando la posición (x, y) en (forma de vector 3) por la matriz.
+                bCoords = bCoordsMatrix * Vector3(x, y, 1);
+                bCoords.Clamp(0, 1); // Ajustamos su valor entre 0 y 1
+                float suma = bCoords.x + bCoords.y + bCoords.z;
+                bCoords = bCoords / suma; // Normalizamos
+                
+                // Realizamos la misma operación con las UVs
+                uvCoords = uvCoordsMatrix * Vector3(x, y, 1);
+                float suma2 = uvCoords.x + uvCoords.y + uvCoords.z;
+                uvCoords = uvCoords/suma2;
+                
+                uvCoords.Clamp(0, 1);
+                
+                //Obtenemos el valor del pixel para cada x e y
+                Color pColor = texture->GetPixel(uvCoords.x * uv0.x + uvCoords.y * uv1.x + uvCoords.z * uv2.x,
+                                                 uvCoords.x * uv0.y + uvCoords.y * uv1.y + uvCoords.z * uv2.y);
+                
+                // Error encontrando las coordenadas baricéntricas para las UVs (Se pinta un sólo color por triangulo y no hemos logrado encontrar el error.
+                
+                
+                // Obtenemos la variable que denota la distancia entre el pixel y la cámara, que utilizaremos para actualizar el zBuffer
                 float zeta = bCoords.x * p0.z + bCoords.y * p1.z + bCoords.z * p2.z;
                 
-                if (x < zBuffer->width && y < zBuffer->height){
-                    if (zeta < (zBuffer->GetPixel(x, y))){
-                        SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
-                        zBuffer->SetPixel(x, y, zeta);
+                // Ahora estableceremos una serie de condicionales en función del enum mode. En función de que valor de enum tengamos, la entidad se 'coloreará' de una manera u otra.
+                
+                // Por defecto, se colorearán todos los triángulos del mismo color
+                if (mode == eRenderMode::TRIANGLES){
+                    SetPixelSafe(x, y, c0);
+                }
+                
+                if (mode == eRenderMode::TRIANGLES_INTERPOLATED){ // Triángulos interpolados sín oclusión
+                    SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
+                    
+                }
+                
+                if (mode == eRenderMode::TRIANGLES_OCLUSSION){ // Triángulos interpolados con oclusión
+                    if (x < zBuffer->width && y < zBuffer->height){
+                        if (zeta < (zBuffer->GetPixel(x, y))){
+                                SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
+                                zBuffer->SetPixel(x, y, zeta);
+                        }
+                    }
+                }
+                
+                
+                if (mode == eRenderMode::TEXTURE){ // Texturas
+                    
+                    if (x < zBuffer->width && y < zBuffer->height){
+                        if (zeta < (zBuffer->GetPixel(x, y))){
+                            SetPixelSafe(x, y, pColor);
+                            zBuffer->SetPixel(x, y, zeta);
+                        }
                     }
                 }
             }
@@ -773,7 +702,8 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
     }
 }
  
-*/
+
+
 
 // Función para obtener valores aleatorios
 float getRandomFloat(float min, float max) {

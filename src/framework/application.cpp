@@ -43,23 +43,30 @@ void Application::Init(void)
 	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
 	camara.LookAt(eye, center, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
     
-    zetaBuffer.Resize(this->window_width, this->window_height);
-    zetaBuffer.Fill(FLT_MAX);
+    zetaBuffer.Resize(this->window_width, this->window_height); // Redimensionamos el zBuffer a las dimensiones de framebuffer
+    zetaBuffer.Fill(FLT_MAX); // Rellenamos el zBuffer con valores máximos
+     
+    framebuffer.mode = Image::eRenderMode::TRIANGLES; // Iniciamos el enum con el modo Plain Color
+    
     
     // Entidad no animada, que igualmente responde a los cambios en las perspectivas
-    mesh0.LoadOBJ("meshes/lee.obj");
-    textura.LoadTGA("textures/lee_color_specular.tga");
-    entity0 = Entity(mesh0, textura);
+    mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
+    textura.LoadTGA("textures/lee_color_specular.tga"); // Cargamos la textura
+    entity0 = Entity(mesh0, textura); // Iniciamos la entidad
+    
+    
     entity0.matrixModel.Scale(1.35, 1.35, 1.35);
     entity0.matrixModel.Translate(0, -0.4, 0);
     entity0.Render(&framebuffer, &camara, &zetaBuffer);
+    
+    
     
 }
 
 // Render one frame
 void Application::Render(void)
 {
-    framebuffer.Fill(Color::BLACK);
+    framebuffer.Fill(Color::BLACK); // Rellenamos el framebuffer y el zBuffer por cada render
     zetaBuffer.Fill(FLT_MAX);
     entity0.Render(&framebuffer, &camara, &zetaBuffer);
 	framebuffer.Render();
@@ -109,16 +116,45 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         lastFigure = 1;
 	}
     
+    if (event.keysym.sym == SDLK_f){ // Modificar far_plane con + y -
+        lastFigure = 2;
+    }
+    
+    if (event.keysym.sym == SDLK_v){ // Modificar fov con + y -
+        lastFigure = 3;
+    }
+
     if (event.keysym.sym == SDLK_c) { // Cambia entre plain color y interpolated
-        
+        if (framebuffer.mode != Image::eRenderMode::TRIANGLES){
+            framebuffer.mode = Image::eRenderMode::TRIANGLES;
+            
+            
+        } else {
+            framebuffer.mode = Image::eRenderMode::TRIANGLES_INTERPOLATED;
+            
+        }
     }
-
-    if (event.keysym.sym == SDLK_z) { // Cambia entre oclusion y no oclusion
-
+    
+    if (event.keysym.sym == SDLK_z) { // Cambia entre oclusión y no oclusión
+        if (framebuffer.mode != Image::eRenderMode::TRIANGLES_OCLUSSION){
+            framebuffer.mode = Image::eRenderMode::TRIANGLES_OCLUSSION;
+            
+            
+        } else {
+            framebuffer.mode = Image::eRenderMode::TRIANGLES_INTERPOLATED;
+            
+        }
     }
-
-    if (event.keysym.sym == SDLK_t) { // Cambia entre mesh texture y plain color
-
+    
+    if (event.keysym.sym == SDLK_t) { // Cambia entre textura y plain color
+        if (framebuffer.mode != Image::eRenderMode::TEXTURE){
+            framebuffer.mode = Image::eRenderMode::TEXTURE;
+            
+            
+        } else {
+            framebuffer.mode = Image::eRenderMode::TRIANGLES;
+            
+        }
     }
     
     if (event.keysym.sym == SDLK_PLUS) { // Aumentamos el valor dado

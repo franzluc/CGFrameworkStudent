@@ -73,42 +73,39 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
         Vector3 clipPos2 = camera->ProjectVector(v2.GetVector3(), negZ2);
         Vector3 clipPos3 = camera->ProjectVector(v3.GetVector3(), negZ3);
         
+        
+        
         // Se comprueba que ningun vertice este fuera de la camara
         if (negZ1 || negZ2 || negZ3) {
             continue;
         }
 
-        // Se convierten las posiciones del clip space al screen space
-        float w1 = v1.w;
-        float w2 = v2.w;
-        float w3 = v3.w;
-
-        v1.GetVector3() = v1.GetVector3() / w1;
-        v2.GetVector3() = v2.GetVector3() / w2;
-        v3.GetVector3() = v3.GetVector3() / w3;
-
         // Convierte el screen space usando la anchura y altura del framebuffer
         int screenWidth = framebuffer->width;
         int screenHeight = framebuffer->height;
 
-        float x1 = static_cast<int>((clipPos1.x + 1.0f) * 0.5f * screenWidth);
-        float y1 = static_cast<int>((1.0f - clipPos1.y) * 0.5f * screenHeight);
+        float x1 = (clipPos1.x + 1.0f) * 0.5f * screenWidth;
+        float y1 = (1.0f - clipPos1.y) * 0.5f * screenHeight;
 
-        float x2 = static_cast<int>((clipPos2.x + 1.0f) * 0.5f * screenWidth);
-        float y2 = static_cast<int>((1.0f - clipPos2.y) * 0.5f * screenHeight);
+        float x2 = (clipPos2.x + 1.0f) * 0.5f * screenWidth;
+        float y2 = (1.0f - clipPos2.y) * 0.5f * screenHeight;
 
-        float x3 = static_cast<int>((clipPos3.x + 1.0f) * 0.5f * screenWidth);
-        float y3 = static_cast<int>((1.0f - clipPos3.y) * 0.5f * screenHeight);
+        float x3 = (clipPos3.x + 1.0f) * 0.5f * screenWidth;
+        float y3 = (1.0f - clipPos3.y) * 0.5f * screenHeight;
         
+        
+        // Realizamos la misma operación con los UVs
         
         Vector2 uv1 = {mallaUV[i].x, mallaUV[i].y};
         Vector2 uv2 = {mallaUV[i+1].x, mallaUV[i+1].y};
         Vector2 uv3 = {mallaUV[i+2].x, mallaUV[i+2].y};
         
+        // Ajustamos al tamaño de la textura
+        
         uv1.x = (mallaUV[i].x + 1.0f) * 0.5f * textura.width;
         uv1.y = (1.0f - mallaUV[i].y) * 0.5f * textura.height;
         
-        uv2.x = (mallaUV[i+1].x + 1.0f) * 0.5f * textura.width;
+        uv2.x = (mallaUV[i+1].x + 1.0f) * 0.5 * textura.width;
         uv2.y = (1.0f - mallaUV[i+1].y) * 0.5f * textura.height;
         
         uv3.x = (mallaUV[i+2].x + 1.0f) * 0.5f * textura.width;
