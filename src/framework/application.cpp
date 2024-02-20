@@ -44,11 +44,11 @@ void Application::Init(void)
 	camara.LookAt(eye, center, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
     
     zetaBuffer.Resize(this->window_width, this->window_height);
-    //zetaBuffer.Fill(FLT_MAX);
+    zetaBuffer.Fill(FLT_MAX);
     
     // Entidad no animada, que igualmente responde a los cambios en las perspectivas
     mesh0.LoadOBJ("meshes/lee.obj");
-    textura.LoadTGA("textures/lee_normal.tga");
+    textura.LoadTGA("textures/lee_color_specular.tga");
     entity0 = Entity(mesh0, textura);
     entity0.matrixModel.Scale(1.35, 1.35, 1.35);
     entity0.matrixModel.Translate(0, -0.4, 0);

@@ -633,7 +633,6 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
     
     for (int y = 0; y < height; y++) {
         if (table2[y].minX <= table2[y].maxX) {
-            
             for (int x = table2[y].minX; x < table2[y].maxX; x++) {
                 bCoords = bCoordsMatrix * Vector3(x, y, 1);
                 bCoords.Clamp(0, 1);
@@ -643,27 +642,88 @@ void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const
                 uvCoords = uvCoordsMatrix * Vector3(x, y, 1);
                 uvCoords.Clamp(0, 1);
                 float suma2 = uvCoords.x + uvCoords.y + uvCoords.z;
-                uvCoords = uvCoords / suma2;
+                //uvCoords = uvCoords / suma2;
                 
                 float zeta = bCoords.x * p0.z + bCoords.y * p1.z + bCoords.z * p2.z;
-                
+				
+				// Se pasan las texturas clampeadas al texture space
+				//uvCoords.x *= (texture->width - 1);
+				//uvCoords.y *= (texture->height - 1);
+
                 if (texture != nullptr){
-                    if (x > 0 && x < zBuffer->width && y > 0 && y < zBuffer->height){
+                    if (x < zBuffer->width && y < zBuffer->height){
                         if (uvCoords.x < texture->width && uvCoords.y < texture->height){
-							Color pixelColor = texture->GetPixel(uvCoords.x, uvCoords.y);
                             if (zeta < zBuffer->GetPixel(x, y)){
                                 //SetPixelSafe(x, y, bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2);
-                                SetPixelSafe(x, y, pixelColor);
+								Color pixelColor = texture->GetPixel(uvCoords.x * uv0.x + uvCoords.y * uv1.x + uvCoords.z * uv2.x,
+																	 uvCoords.x * uv0.y + uvCoords.y * uv1.y + uvCoords.z * uv2.y);
+								SetPixelSafe(x, y, pixelColor);
                                 zBuffer->SetPixel(x, y, zeta);
                             }
                         }
                     }
-                }
+				}
+				else {
+
+				}
             }
         }
     }
 }
  
+/*void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2, FloatImage* zBuffer, Image * texture, const Vector2& uv0, const Vector2& uv1, const Vector2& uv2 ) {
+    
+    Matrix44 bCoordsMatrix;
+    Vector3 bCoords;
+
+    bCoordsMatrix.M[0][0] = p0.x;
+    bCoordsMatrix.M[1][0] = p1.x;
+    bCoordsMatrix.M[2][0] = p2.x;
+    bCoordsMatrix.M[0][1] = p0.y;
+    bCoordsMatrix.M[1][1] = p1.y;
+    bCoordsMatrix.M[2][1] = p2.y;
+    bCoordsMatrix.M[0][2] = 1;
+    bCoordsMatrix.M[1][2] = 1;
+    bCoordsMatrix.M[2][2] = 1;
+
+    bCoordsMatrix.Inverse();
+    
+    std::vector<Cell> table2;
+    table2.resize(height);
+
+    ScanLineDDA(p0.x, p0.y, p1.x, p1.y, table2);
+    ScanLineDDA(p1.x, p1.y, p2.x, p2.y, table2);
+    ScanLineDDA(p2.x, p2.y, p0.x, p0.y, table2);
+    
+    for (int y = 0; y < height; y++) {
+        if (table2[y].minX <= table2[y].maxX) {
+            for (int x = table2[y].minX; x < table2[y].maxX; x++) {
+                bCoords = bCoordsMatrix * Vector3(x, y, 1);
+                bCoords.Clamp(0, 1);
+                float suma = bCoords.x + bCoords.y + bCoords.z;
+                bCoords = bCoords / suma;
+                
+                // Calculate interpolated texture coordinates using barycentric interpolation
+				Vector2 interpolatedUV = { bCoords.x * uv0.x + bCoords.y * uv1.x + bCoords.z * uv2.x, bCoords.x * uv0.y + bCoords.y * uv1.y + bCoords.z * uv2.y };
+
+                float zeta = bCoords.x * p0.z + bCoords.y * p1.z + bCoords.z * p2.z;
+				
+                if (texture != nullptr && x < zBuffer->width && y < zBuffer->height) {
+                    if (interpolatedUV.x >= 0 && interpolatedUV.x < texture->width && interpolatedUV.y >= 0 && interpolatedUV.y < texture->height) {
+                        if (zeta < zBuffer->GetPixel(x, y)) {
+                            Color pixelColor = texture->GetPixel(interpolatedUV.x, interpolatedUV.y);
+                            SetPixelSafe(x, y, pixelColor);
+                            zBuffer->SetPixel(x, y, zeta);
+                        }
+                    }
+                } else {
+                    Color finalColor = bCoords.x * c0 + bCoords.y * c1 + bCoords.z * c2;
+                    SetPixelSafe(x, y, finalColor);
+                }
+            }
+        }
+    }
+}*/
 
 /*
 void Image::DrawTriangleInterpolated(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Color& c0, const Color& c1, const Color& c2, FloatImage* zBuffer) {

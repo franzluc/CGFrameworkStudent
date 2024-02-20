@@ -73,8 +73,6 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
         Vector3 clipPos2 = camera->ProjectVector(v2.GetVector3(), negZ2);
         Vector3 clipPos3 = camera->ProjectVector(v3.GetVector3(), negZ3);
         
-        
-        
         // Se comprueba que ningun vertice este fuera de la camara
         if (negZ1 || negZ2 || negZ3) {
             continue;
@@ -107,14 +105,14 @@ void Entity::Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer) {
         Vector2 uv2 = {mallaUV[i+1].x, mallaUV[i+1].y};
         Vector2 uv3 = {mallaUV[i+2].x, mallaUV[i+2].y};
         
-        uv1.x = (mallaUV[i].x + 1.0f) * 0.5f * framebuffer->width;
-        uv1.y = (1.0f - mallaUV[i].y) * 0.5f * framebuffer->height;
+        uv1.x = (mallaUV[i].x + 1.0f) * 0.5f * textura.width;
+        uv1.y = (1.0f - mallaUV[i].y) * 0.5f * textura.height;
         
-        uv2.x = (mallaUV[i+1].x + 1.0f) * 0.5f * framebuffer->width;
-        uv2.y = (1.0f - mallaUV[i+1].y) * 0.5f * framebuffer->height;
+        uv2.x = (mallaUV[i+1].x + 1.0f) * 0.5f * textura.width;
+        uv2.y = (1.0f - mallaUV[i+1].y) * 0.5f * textura.height;
         
-        uv3.x = (mallaUV[i+2].x + 1.0f) * 0.5f * framebuffer->width;
-        uv3.y = (1.0f - mallaUV[i+2].y) * 0.5f * framebuffer->height;
+        uv3.x = (mallaUV[i+2].x + 1.0f) * 0.5f * textura.width;
+        uv3.y = (1.0f - mallaUV[i+2].y) * 0.5f * textura.height;
         
         
         // Se dibuja la malla de triangulos usando el algoritmo DDA
