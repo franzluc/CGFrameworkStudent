@@ -11,6 +11,7 @@
 #include <thread>
 
 
+
 Application::Application(const char* caption, int width, int height)
 {
 	this->window = createWindow(caption, width, height);
@@ -33,43 +34,23 @@ Application::~Application()
 }
 
 void Application::Init(void)
+
 {
+    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
+    //texture = Texture::Get("image/fruits.png");
+    quad.CreateQuad();
 	
-    std::cout << "Initiating app..." << std::endl;
-    
-    // Se establecen los parametros de la camara. Establecemos por defecto la cámara cómo perspectiva.
-	camara.SetPerspective(fov, framebuffer.width/framebuffer.height , near_plane, far_plane);
-    
-	// Web para entender las coordenadas de las camaras--> https://learnwebgl.brown37.net/07_cameras/camera_lookat/camera_lookat.html
-	camara.LookAt(eye, center, Vector3::DOWN); //Vector3::DOWN = {0, -1, 0}
-    
-    zetaBuffer.Resize(this->window_width, this->window_height); // Redimensionamos el zBuffer a las dimensiones de framebuffer
-    zetaBuffer.Fill(FLT_MAX); // Rellenamos el zBuffer con valores máximos
-     
-    framebuffer.mode = Image::eRenderMode::TRIANGLES; // Iniciamos el enum con el modo Plain Color
-    
-    
-    // Entidad no animada, que igualmente responde a los cambios en las perspectivas
-    mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
-    textura.LoadTGA("textures/lee_color_specular.tga"); // Cargamos la textura
-    entity0 = Entity(mesh0, textura); // Iniciamos la entidad
-    
-    
-    entity0.matrixModel.Scale(1.35, 1.35, 1.35);
-    entity0.matrixModel.Translate(0, -0.4, 0);
-    entity0.Render(&framebuffer, &camara, &zetaBuffer);
-    
-    
-    
 }
 
 // Render one frame
 void Application::Render(void)
 {
-    framebuffer.Fill(Color::BLACK); // Rellenamos el framebuffer y el zBuffer por cada render
-    zetaBuffer.Fill(FLT_MAX);
-    entity0.Render(&framebuffer, &camara, &zetaBuffer);
-	framebuffer.Render();
+    
+    shader->Enable();
+    quad.Render();
+    shader->Disable();
+    //shader->SetTexture("u_texture", texture);
+    
 }
 
 // Called after render
@@ -95,139 +76,46 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
     
     if (event.keysym.sym == SDLK_o) { // Cambio a proyección ortográfica
-        // Establecemos la siguiente variable para que los valores near_plane y far_plane se actualicen en la proyección adecuada
-        lastMode = 2;
         
-        // Realizamos el cambio
-        camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
         
 	}
     
 	if (event.keysym.sym == SDLK_p) { // Cambio a perspectiva
         
-        lastMode = 1; // Volvemos a utilizar la variable para marcar en qué proyección estamos
         
-        // Realizamos el cambio
-        camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
 	}
 
 	if (event.keysym.sym == SDLK_n) { // Modificar near_plane
-        //Utilizamos la siguiente varaible para saber qué valor se cambia con el PLUS y el MINUS (near_plane, far_plane o fov)
-        lastFigure = 1;
+       
 	}
     
     if (event.keysym.sym == SDLK_f){ // Modificar far_plane con + y -
-        lastFigure = 2;
+       
     }
     
     if (event.keysym.sym == SDLK_v){ // Modificar fov con + y -
-        lastFigure = 3;
+       
     }
 
     if (event.keysym.sym == SDLK_c) { // Cambia entre plain color y interpolated
-        if (framebuffer.mode != Image::eRenderMode::TRIANGLES){
-            framebuffer.mode = Image::eRenderMode::TRIANGLES;
-            
-            
-        } else {
-            framebuffer.mode = Image::eRenderMode::TRIANGLES_INTERPOLATED;
-            
-        }
+       
     }
     
     if (event.keysym.sym == SDLK_z) { // Cambia entre oclusión y no oclusión
-        if (framebuffer.mode != Image::eRenderMode::TRIANGLES_OCLUSSION){
-            framebuffer.mode = Image::eRenderMode::TRIANGLES_OCLUSSION;
-            
-            
-        } else {
-            framebuffer.mode = Image::eRenderMode::TRIANGLES_INTERPOLATED;
-            
-        }
+       
     }
     
     if (event.keysym.sym == SDLK_t) { // Cambia entre textura y plain color
-        if (framebuffer.mode != Image::eRenderMode::TEXTURE){
-            framebuffer.mode = Image::eRenderMode::TEXTURE;
-            
-            
-        } else {
-            framebuffer.mode = Image::eRenderMode::TRIANGLES;
-            
-        }
+        
     }
     
     if (event.keysym.sym == SDLK_PLUS) { // Aumentamos el valor dado
         
-        if(lastFigure == 1){ // Si es near_plane:
-            near_plane = near_plane + 0.1; // Aumentamos poco a poco el near plane para que se vea cómo va desapareciendo la entidad
-            
-            if (lastMode == 2){ // Actualizamos si es ortográfica
-                camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
-            }
-            if (lastMode == 1){ // Actualizamos si es perspectiva
-                camara.SetPerspective(fov,framebuffer.width/framebuffer.height, near_plane, far_plane);
-            
-           }
-        }
         
-        if(lastFigure == 2){ // Si es far plane:
-            
-            // Ya que el valor del far plane por defecto es 100, si aumentamos no ocurrirá nada. Si lo disminuimos primero,
-            // hasta donde ya no se ve el objeto, despues podemos aumentarlo para que se vuelva a ver.
-            
-            far_plane++;
-            
-            if (lastMode == 2){ // Actualizamos si es ortográfica
-                camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
-            }
-            if (lastMode == 1){ // Actualizamos si es perspectiva
-                camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
-           }
-        }
-        
-        if(lastFigure == 3){ // Si es field of view:
-            
-            if (lastMode == 1){
-                fov = fov + 0.25; // El fov sólo se actualiza en la perspectiva
-                camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
-            }
-        }
     }
     
     if (event.keysym.sym == SDLK_MINUS) { // Realizamos lo mismo pero disminuyendo
         
-        if(lastFigure == 1){ // Si disminuimos el near plane sin haberlo aumentado, tampoco ocurrirá nada.
-            
-            near_plane = near_plane - 0.1;
-            
-            if (lastMode == 2){
-                camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
-            }
-            if (lastMode == 1){
-                camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
-            }
-        }
-        
-        if(lastFigure == 2){ // Para que se vea el cambio, hay que disminuirlo mucho.
-            
-            far_plane = far_plane - 1;
-            
-            if (lastMode == 2){
-                camara.SetOrthographic(left, right, top, bottom, near_plane, far_plane);
-            }
-            if (lastMode == 1){
-                camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
-           }
-        }
-        
-        if(lastFigure == 3){ // FOV
-            
-            if (lastMode == 1){
-                fov = fov - 0.25; // El fov sólo se actualiza en la perspectiva
-                camara.SetPerspective(fov, framebuffer.width/framebuffer.height, near_plane, far_plane);
-            }
-        }
     }
 }
 

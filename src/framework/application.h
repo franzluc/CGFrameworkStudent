@@ -10,6 +10,8 @@
 #include "camera.h"
 #include "mesh.h"
 #include "entity.h"
+#include "shader.h"
+#include "texture.h"
 
 
 class Application
@@ -154,6 +156,14 @@ public:
 		SDL_GetWindowSize(window,&w,&h);
 		return Vector2(float(w), float(h));
 	}
+    
+    
+    
+    
+    Shader* shader = nullptr;
+    Texture* texture = nullptr;
+    Mesh quad;
+    
     
     
 };

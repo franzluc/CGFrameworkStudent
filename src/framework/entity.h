@@ -9,6 +9,7 @@
 #include "mesh.h"
 #include "image.h"
 #include "texture.h"
+#include "shader.h"
 
 class Entity { // Creamos la clase entidad compuesta por una malla y una matrix model
 public:
@@ -16,6 +17,8 @@ public:
     Mesh malla;
     Matrix44 matrixModel;
     Image textura;
+    Shader shader;
+    
     
     // Distintos constructores
     Entity();
