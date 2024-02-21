@@ -12,10 +12,13 @@
 
 
 
+
 Application::Application(const char* caption, int width, int height)
 {
 	this->window = createWindow(caption, width, height);
-
+    
+    
+    
 	int w,h;
 	SDL_GetWindowSize(window,&w,&h);
 
@@ -39,6 +42,11 @@ void Application::Init(void)
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
     //texture = Texture::Get("image/fruits.png");
     quad.CreateQuad();
+    
+    u_aspect_ratio = window_width/window_height;
+    ex = 1;
+    prob = 2;
+    
 	
 }
 
@@ -47,6 +55,11 @@ void Application::Render(void)
 {
     
     shader->Enable();
+    
+    shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
+    shader->SetUniform1("ex", ex);
+    shader->SetUniform1("prob", prob);
+    
     quad.Render();
     shader->Disable();
     //shader->SetTexture("u_texture", texture);
