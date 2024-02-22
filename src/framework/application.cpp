@@ -45,7 +45,7 @@ void Application::Init(void)
     
     u_aspect_ratio = window_width/window_height;
     ex = 1;
-    prob = 2;
+    prob = 4;
     
 	
 }
