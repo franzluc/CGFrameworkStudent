@@ -41,11 +41,20 @@ void main()
 			vec2 rd = vec2((floor(v_uv.x * p)), (floor(v_uv.y * p)));
 
 			float blanco = mod((floor(rd.x+rd.y)), 2.0);
-			vec3 c4 = vec3(1.0 - blanco, 1.0 - blanco, 1.0-blanco);
+			vec3 c5 = vec3(1.0 - blanco, 1.0 - blanco, 1.0-blanco);
 			
-			gl_FragColor = vec4(c4, 1.0);
+			gl_FragColor = vec4(c5, 1.0);
 
 
+		}
+
+		if (prob == 6){
+			
+			float y = sin(3.14*v_uv.x*2.0)*0.3 + 0.5;
+
+			vec3 c6 = vec3(mix(vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 0.0), v_uv.y))*step(y, v_uv.y) + vec3(mix(vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), v_uv.y))*floor(cos(step(y, v_uv.y)));
+
+			gl_FragColor = vec4(c6, 1.0);
 		}
 
 	}
