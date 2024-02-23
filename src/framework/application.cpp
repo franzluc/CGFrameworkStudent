@@ -40,12 +40,12 @@ void Application::Init(void)
 
 {
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
-    //texture = Texture::Get("image/fruits.png");
+    texture = Texture::Get("images/fruits.png");
     quad.CreateQuad();
     
     u_aspect_ratio = window_width/window_height;
     ex = 1;
-    prob = 4;
+    prob = 1;
     
 	
 }
@@ -59,10 +59,12 @@ void Application::Render(void)
     shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
     shader->SetUniform1("ex", ex);
     shader->SetUniform1("prob", prob);
+    shader->SetTexture("u_texture", texture);
     
     quad.Render();
+    
     shader->Disable();
-    //shader->SetTexture("u_texture", texture);
+    
     
 }
 
@@ -80,13 +82,69 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 		case SDLK_ESCAPE: exit(0); break; // ESC key, kill the app	
 	}
 
-	if (event.keysym.sym == SDLK_1) {     
-        
+	if (event.keysym.sym == SDLK_1) {
+        ex = 1;
+        prob = 1;
+        Render();
     }
 
 	if (event.keysym.sym == SDLK_2) {
+        ex = 2;
+        prob = 0;
+        Render();
         
 	}
+    
+    if (event.keysym.sym == SDLK_3) {
+        ex = 3;
+        prob = 1;
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_4) {
+        ex = 4;
+        prob = 1;
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_a) {
+        prob = 1;
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_b) {
+        prob = 2;
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_c) {
+        prob = 3;
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_d) {
+        prob = 4;
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_e) {
+        prob = 5;
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_f) {
+        prob = 6;
+        Render();
+        
+    }
+    
     
     if (event.keysym.sym == SDLK_o) { // Cambio a proyección ortográfica
         
@@ -102,17 +160,13 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
        
 	}
     
-    if (event.keysym.sym == SDLK_f){ // Modificar far_plane con + y -
-       
-    }
+    
     
     if (event.keysym.sym == SDLK_v){ // Modificar fov con + y -
        
     }
 
-    if (event.keysym.sym == SDLK_c) { // Cambia entre plain color y interpolated
-       
-    }
+    
     
     if (event.keysym.sym == SDLK_z) { // Cambia entre oclusión y no oclusión
        

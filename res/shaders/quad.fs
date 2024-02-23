@@ -1,7 +1,9 @@
 varying vec2 v_uv;
+
 uniform float u_aspect_ratio;
 uniform int ex;
 uniform int prob;
+uniform sampler2D u_texture;
 
 void main()
 {	
@@ -22,19 +24,70 @@ void main()
 		}
 
 		if (prob == 4){
-			//vec3 c4 = vec3(0.0, 0.0, 1.0)*floor(v_uv.x/4) + vec3(1.0, 0.0, 0.0)*floor(v_uv.y/4);
-			//gl_FragColor = vec4(c4, 1.0);
-			float pixelSize = 20.0;
-    
-			// Redondea las coordenadas de textura
-			vec2 roundedUV = vec2(floor(v_uv.x * pixelSize) / pixelSize, floor(v_uv.y * pixelSize) / pixelSize);
-			
-			// Calcula el color pixelado
-			vec3 c4 = vec3(1.0, 0.0, 0.0) * roundedUV.x + vec3(0.0, 1.0, 0.0) * roundedUV.y;
+			float p = 25.0;
+    		
+			vec2 rd = vec2((floor(v_uv.x * p)/p), (floor(v_uv.y * p)/p));
+			vec3 c4 = vec3(1.0, 0.0, 0.0) * rd.x *  u_aspect_ratio + vec3(0.0, 1.0, 0.0) * rd.y * u_aspect_ratio;
 			
 			gl_FragColor = vec4(c4, 1.0);
 
 		}
+
+	}
+
+	if (ex == 2){
+		if (prob == 0){
+			
+			vec4 t0 = texture2D(u_texture,  v_uv);
+			gl_FragColor = t0;
+
+		}
+
+		if (prob == 1){
+
+			vec3 t1 = texture2D(u_texture, v_uv).xyz;
+			gl_FragColor = vec4((t1.x + t1.y + t1.z)/3.0, (t1.x + t1.y + t1.z)/3.0, (t1.x + t1.y + t1.z)/3.0, 1.0); 
+		}
+
+		if (prob == 2){
+
+			vec3 t1 = texture2D(u_texture, v_uv).xyz;
+			gl_FragColor = vec4(1.0 - t1.x, 1.0 - t1.y, 1.0 - t1.z, 1.0); 
+		}
+
+		if (prob == 3){
+
+			vec3 t1 = texture2D(u_texture, v_uv).xyz * vec3(1.0, 1.0, 0.0);
+			gl_FragColor = vec4(t1.x, t1.y, t1.z, 1.0); 
+		}
+
+		if (prob == 4){
+
+			vec3 t1 = texture2D(u_texture, v_uv).xyz;
+			float sat = step(0.6, (t1.x + t1.y + t1.z)/3.0);
+
+			gl_FragColor = vec4(sat, sat, sat, 1.0);  
+		}
+
+		if (prob == 5){
+			
+			vec3 ct = vec3(distance(vec2(0.5*u_aspect_ratio,0.5*u_aspect_ratio), v_uv));
+
+			vec3 t1 = texture2D(u_texture,  v_uv).xyz * vec3(1.0 - ct.x, 1.0 - ct.y, 1.0 - ct.z);
+			gl_FragColor = vec4(t1, 1.0);
+
+		}
+		 
+
+		
+
+
+
+
+
+
+
+
 
 	}
 	
