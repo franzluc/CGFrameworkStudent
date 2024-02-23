@@ -26,12 +26,25 @@ void main()
 		}
 
 		if (prob == 4){
-			float p = 25.0;
+			float p = 20.0;
     		
 			vec2 rd = vec2((floor(v_uv.x * p)/p), (floor(v_uv.y * p)/p));
 			vec3 c4 = vec3(1.0, 0.0, 0.0) * rd.x *  u_aspect_ratio + vec3(0.0, 1.0, 0.0) * rd.y * u_aspect_ratio;
 			
 			gl_FragColor = vec4(c4, 1.0);
+
+		}
+
+		if (prob == 5){
+			float p = 20.0;
+    		
+			vec2 rd = vec2((floor(v_uv.x * p)), (floor(v_uv.y * p)));
+
+			float blanco = mod((floor(rd.x+rd.y)), 2.0);
+			vec3 c4 = vec3(1.0 - blanco, 1.0 - blanco, 1.0-blanco);
+			
+			gl_FragColor = vec4(c4, 1.0);
+
 
 		}
 
@@ -82,22 +95,21 @@ void main()
 
 		if (prob == 6){
 			
-			vec2 px = vec2(1.0/u_width, 1.0/u_heigth);
+			float ph = 3.0*1.0/u_width; //Multiplicamos por 3 para que se vea mas borroso.
+			float pv = 3.0*1.0/u_heigth;
 
-			vec4 tf = (texture2D(u_texture, v_uv - 2.0*px) +
-					   texture2D(u_texture, v_uv + 2.0*px) + 
-			           texture2D(u_texture, v_uv - vec2(2.0*px.x, 0.0)) + 
-					   texture2D(u_texture, v_uv + vec2(2.0*px.x, 0.0)) +
-					   texture2D(u_texture, v_uv + vec2(0.0, 2.0*px.y)) +
-					   texture2D(u_texture, v_uv - vec2(0.0, 2.0*px.y)) +
-					   texture2D(u_texture, v_uv + vec2(2.0*px.x, - 2.0*px.y)) +
-					   texture2D(u_texture, v_uv - vec2(2.0*px.x, - 2.0*px.y))) / 8.0;
+			vec4 tf = (texture2D(u_texture, v_uv - vec2(ph, pv)) +
+					   texture2D(u_texture, v_uv + vec2(ph, pv)) + 
+			           texture2D(u_texture, v_uv - vec2(ph, 0.0)) + 
+					   texture2D(u_texture, v_uv + vec2(ph, 0.0)) +
+					   texture2D(u_texture, v_uv + vec2(0.0, pv)) +
+					   texture2D(u_texture, v_uv - vec2(0.0, pv)) +
+					   texture2D(u_texture, v_uv + vec2(ph, - pv)) +
+					   texture2D(u_texture, v_uv - vec2(ph, - pv))) / 8.0;
 					   
 
 			gl_FragColor = tf;
-					  
-
-
+		
 		}
 		 
 
