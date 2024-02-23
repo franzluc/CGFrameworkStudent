@@ -3,6 +3,8 @@ varying vec2 v_uv;
 uniform float u_aspect_ratio;
 uniform int ex;
 uniform int prob;
+uniform float u_heigth;
+uniform float u_width;
 uniform sampler2D u_texture;
 
 void main()
@@ -75,6 +77,26 @@ void main()
 
 			vec3 t1 = texture2D(u_texture,  v_uv).xyz * vec3(1.0 - ct.x, 1.0 - ct.y, 1.0 - ct.z);
 			gl_FragColor = vec4(t1, 1.0);
+
+		}
+
+		if (prob == 6){
+			
+			vec2 px = vec2(1.0/u_width, 1.0/u_heigth);
+
+			vec4 tf = (texture2D(u_texture, v_uv - 2.0*px) +
+					   texture2D(u_texture, v_uv + 2.0*px) + 
+			           texture2D(u_texture, v_uv - vec2(2.0*px.x, 0.0)) + 
+					   texture2D(u_texture, v_uv + vec2(2.0*px.x, 0.0)) +
+					   texture2D(u_texture, v_uv + vec2(0.0, 2.0*px.y)) +
+					   texture2D(u_texture, v_uv - vec2(0.0, 2.0*px.y)) +
+					   texture2D(u_texture, v_uv + vec2(2.0*px.x, - 2.0*px.y)) +
+					   texture2D(u_texture, v_uv - vec2(2.0*px.x, - 2.0*px.y))) / 8.0;
+					   
+
+			gl_FragColor = tf;
+					  
+
 
 		}
 		 

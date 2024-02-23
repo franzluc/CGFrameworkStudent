@@ -41,11 +41,14 @@ void Application::Init(void)
 {
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
     texture = Texture::Get("images/fruits.png");
+    
     quad.CreateQuad();
     
     u_aspect_ratio = window_width/window_height;
     ex = 1;
     prob = 1;
+    
+    
     
 	
 }
@@ -57,6 +60,8 @@ void Application::Render(void)
     shader->Enable();
     
     shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
+    shader->SetFloat("u_width", texture->width);
+    shader->SetFloat("u_heigth", texture->height);
     shader->SetUniform1("ex", ex);
     shader->SetUniform1("prob", prob);
     shader->SetTexture("u_texture", texture);
