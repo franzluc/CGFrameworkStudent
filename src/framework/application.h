@@ -164,7 +164,7 @@ public:
     Texture* texture = nullptr;
     Mesh quad;
     
-    int u_aspect_ratio = width/height;
+    int u_aspect_ratio;
     int ex;
     int prob;
     

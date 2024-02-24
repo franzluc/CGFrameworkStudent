@@ -62,6 +62,7 @@ void Application::Render(void)
     shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
     shader->SetFloat("u_width", texture->width);
     shader->SetFloat("u_heigth", texture->height);
+    shader->SetFloat("time", time);
     shader->SetUniform1("ex", ex);
     shader->SetUniform1("prob", prob);
     shader->SetTexture("u_texture", texture);
