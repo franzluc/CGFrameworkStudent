@@ -39,35 +39,56 @@ Application::~Application()
 void Application::Init(void)
 
 {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
+    // Creamos las variables que posteriormente pasaremos al fragment shader (el u_aspect_ratio no nos funciona bien)
     
+    
+    u_aspect_ratio = window_width/window_height;
+    
+    // Estas variables funcionan para el control de los apartados y los ejercicios
+    ex = 1;
+    prob = 1;
+    
+    // Asignamos archivos a shader y texture creados en el application.h
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
     texture = Texture::Get("images/fruits.png");
     
+    //Creamos un quad para la malla 'quad' creada en el aplication.h
     quad.CreateQuad();
     
-    u_aspect_ratio = window_width/window_height;
-    ex = 1;
-    prob = 1;
-
-    mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
-    entity0 = Entity(mesh0);
     
-    entity0.shaderEntity = Shader::Get("shaders/simple.vs", "shaders/simple2.fs");
+    
+    // Realizamos las operaciones adecuadas para el ejercicio 4
+    mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
+    entity0 = Entity(mesh0); // Creamos la entidad
+    
+    
+    
+    // Asignamos el shader y el texture que son atributos de entitity
+    entity0.shaderEntity = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
     entity0.entityTexture = Texture::Get("textures/lee_color_specular.tga");
     
     
+    
+    // Configuramos la camara
     camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
     camara.LookAt(eye, center, Vector3::UP);
+    
+    // Habilitamos el test de profundidad (no nos funciona)
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
 
 }
 
 // Render one frame
 void Application::Render(void)
 {
+   
+    // Para los ejercicios 1, 2 y 3
     if (ex != 4){
         shader->Enable();
+        
+        // Pasamos las variables que usaremos a los shaders
+        
         
         shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
         shader->SetFloat("u_width", texture->width);
@@ -77,10 +98,12 @@ void Application::Render(void)
         shader->SetUniform1("prob", prob);
         shader->SetTexture("u_texture", texture);
         
+        // Renderizamos el quad
         quad.Render();
         
         shader->Disable();
    }
+   // Para el ejercicio 4, el render esta definido en la clase entity
    if (ex == 4){
         entity0.Render(&camara);
    }

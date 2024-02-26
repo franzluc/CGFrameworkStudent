@@ -51,18 +51,16 @@ Entity::Entity(Mesh m, Image t){
 // Definimos la función render que unirá los vertices de nuestra malla
 void Entity::Render(Camera* camera) {
 
-    //shaderEntity = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
-    //entityTexture = Texture::Get("textures/lee_color_specular.tga");
-
     shaderEntity->Enable();
 
-    //Variables que se pasan a la CPU
+    //Variables que se pasamos a los shaders
     shaderEntity->SetMatrix44("u_model", matrixModel);
     shaderEntity->SetMatrix44("u_viewprojection", camera->viewprojection_matrix);
 
     //Se establece la textura a renderizar
     shaderEntity->SetTexture("u_textureEntity", entityTexture);
-     
+    
+    // Renderizamos la malla
     malla.Render();
 
     shaderEntity->Disable();

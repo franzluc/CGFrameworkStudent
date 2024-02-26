@@ -86,7 +86,7 @@ public:
     // Iniciamos los valores inciales de la perspectiva
     float fov = 44.20;            // View angle in degrees (1/zoom)
     float near_plane = 0.01;    // Near plane
-    float far_plane = 100;    // Far plane
+    float far_plane = 1000;    // Far plane
 
     // Iniciamos los valores de la ortográfica
     float left = -2;
@@ -95,7 +95,7 @@ public:
     float bottom = -1;
     
     // Iniciamos los vectores eye y center
-    Vector3 eye = {0, 0, 5};
+    Vector3 eye = {0, 0.3, 4};
     Vector3 center = {0, 0, 0};
     
     // Creamos una camara
@@ -154,7 +154,7 @@ public:
     Texture* texture = nullptr;
     Mesh quad;
     
-    int u_aspect_ratio;
+    float u_aspect_ratio;
     int ex;
     int prob;
     

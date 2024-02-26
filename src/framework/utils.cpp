@@ -27,6 +27,8 @@
 #include "application.h"
 #include "image.h"
 
+
+
 std::string absResPath( const std::string& p_sFile )
 {
 	std::string sFullPath;
@@ -77,7 +79,9 @@ bool checkGLErrors()
 // Create a window using SDL
 SDL_Window* createWindow(const char* caption, int width, int height )
 {
-	int bpp = 0;
+	
+    
+    int bpp = 0;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -126,11 +130,12 @@ SDL_Window* createWindow(const char* caption, int width, int height )
 		exit(-1);
 	}
     
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
+    
 
 	// Set the clear color (the background color)
 	glClearColor(0.0, 0.0, 0.0, 1.0);
+    
+   
 
 	// In case of exit...
 	atexit(SDL_Quit);
@@ -153,6 +158,7 @@ void launchLoop(Application* app)
 
 	Uint32 start_time = SDL_GetTicks();
 
+    glEnable(GL_DEPTH_TEST);
     
     
 	// Infinite loop
@@ -161,12 +167,12 @@ void launchLoop(Application* app)
 		// Read keyboard state and stored in keystate
 		app->keystate = SDL_GetKeyboardState(NULL);
         
-         // Clear the window and the depth buffer
+        // Clear the window and the depth buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
+       
         
-
-		// Render frame
+        // Render frame
 		app->Render();
 
 		// Swap between front buffer and back buffer
