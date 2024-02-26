@@ -103,17 +103,7 @@ public:
     
     // Creamos las mallas y las entidades que utilizaremos
     Mesh mesh0 = Mesh();
-    Entity entity0;
-	
-    Mesh mesh1 = Mesh();
-	Entity entity1;
-	
-    Mesh mesh2 = Mesh();
-	Entity entity2;
-	
-    Mesh mesh3 = Mesh();
-	Entity entity3;
-
+	Entity entity0;
 	
     bool moveCam = false;
 	bool moveCam2 = false;

@@ -19,7 +19,6 @@ public:
     Image textura;
     Shader shader;
     
-    
     // Distintos constructores
     Entity();
     Entity(Mesh malla);
@@ -29,8 +28,11 @@ public:
     
     
     // Métodos de la clase
-    void Render(Image* framebuffer, Camera* camera, FloatImage* zBuffer);
+    void Render(Camera* camera);
     void Update(float seconds_elapsed, int type);
+
+    Shader* shaderEntity = nullptr;
+    Texture* entityTexture = nullptr;
 };
 
 

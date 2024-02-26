@@ -47,10 +47,12 @@ void Application::Init(void)
     u_aspect_ratio = window_width/window_height;
     ex = 1;
     prob = 1;
+
+    entity0.malla = mesh0;
     
-    
-    
-	
+    camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
+    camara.LookAt(eye, center, Vector3::DOWN);
+
 }
 
 // Render one frame
@@ -92,6 +94,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         ex = 1;
         prob = 1;
         Render();
+
     }
 
 	if (event.keysym.sym == SDLK_2) {
@@ -111,7 +114,8 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     if (event.keysym.sym == SDLK_4) {
         ex = 4;
         prob = 1;
-        Render();
+        entity0.Render(&camara);
+        
         
     }
     
