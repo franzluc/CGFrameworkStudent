@@ -7,8 +7,10 @@ int main(int argc, char **argv)
 	Application* app = new Application( "Computer Graphics", 1280, 720);
 	app->Init();
     app->Update(10);
-
-	std::cout << "Starting loop..." << std::endl;
+    
+    
+    
+    std::cout << "Starting loop..." << std::endl;
 	launchLoop(app);
 
 	SDL_Window* window = app->window;

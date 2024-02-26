@@ -17,7 +17,7 @@ public:
     Mesh malla;
     Matrix44 matrixModel;
     Image textura;
-    Shader shader;
+    Shader* shader2;
     
     // Distintos constructores
     Entity();
@@ -33,6 +33,8 @@ public:
 
     Shader* shaderEntity = nullptr;
     Texture* entityTexture = nullptr;
+    
+    
 };
 
 

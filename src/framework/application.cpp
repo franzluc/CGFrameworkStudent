@@ -39,6 +39,9 @@ Application::~Application()
 void Application::Init(void)
 
 {
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    
     shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
     texture = Texture::Get("images/fruits.png");
     
@@ -48,31 +51,39 @@ void Application::Init(void)
     ex = 1;
     prob = 1;
 
-    mesh0.LoadOBJ("meshes/lee.obj");
-    entity0.malla = mesh0;
+    mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
+    entity0 = Entity(mesh0);
+    
+    entity0.shaderEntity = Shader::Get("shaders/simple.vs", "shaders/simple2.fs");
+    entity0.entityTexture = Texture::Get("textures/lee_color_specular.tga");
+    
     
     camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
-    camara.LookAt(eye, center, Vector3::DOWN);
+    camara.LookAt(eye, center, Vector3::UP);
 
 }
 
 // Render one frame
 void Application::Render(void)
 {
-    
-    shader->Enable();
-    
-    shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
-    shader->SetFloat("u_width", texture->width);
-    shader->SetFloat("u_heigth", texture->height);
-    shader->SetFloat("time", time);
-    shader->SetUniform1("ex", ex);
-    shader->SetUniform1("prob", prob);
-    shader->SetTexture("u_texture", texture);
-    
-    quad.Render();
-    
-    shader->Disable();
+    if (ex != 4){
+        shader->Enable();
+        
+        shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
+        shader->SetFloat("u_width", texture->width);
+        shader->SetFloat("u_heigth", texture->height);
+        shader->SetFloat("time", time);
+        shader->SetUniform1("ex", ex);
+        shader->SetUniform1("prob", prob);
+        shader->SetTexture("u_texture", texture);
+        
+        quad.Render();
+        
+        shader->Disable();
+   }
+   if (ex == 4){
+        entity0.Render(&camara);
+   }
 }
 
 // Called after render
