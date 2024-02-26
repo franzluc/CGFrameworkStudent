@@ -52,21 +52,19 @@ Entity::Entity(Mesh m, Image t){
 void Entity::Render(Camera* camera) {
 
     shaderEntity = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
+    entityTexture = Texture::Get("textures/lee_color_specular.tga");
 
     shaderEntity->Enable();
 
-    // Pass necessary CPU variables to the GPU
+    //Variables que se pasan a la CPU
     shaderEntity->SetMatrix44("u_model", matrixModel);
     shaderEntity->SetMatrix44("u_viewprojection", camera->viewprojection_matrix);
 
-    // Set the texture for the entity
-    entityTexture = Texture::Get("textures/lee_color_specular.tga");
+    //Se establece la textura a renderizar
     shaderEntity->SetTexture("u_textureEntity", entityTexture);
 
-    // Render the mesh
-    malla.Render(); // Assuming the mesh has a Render() method
+    malla.Render();
 
-    // Unbind the shader
     shaderEntity->Disable();
 }
 

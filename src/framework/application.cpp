@@ -48,6 +48,7 @@ void Application::Init(void)
     ex = 1;
     prob = 1;
 
+    mesh0.LoadOBJ("meshes/lee.obj");
     entity0.malla = mesh0;
     
     camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
@@ -72,8 +73,6 @@ void Application::Render(void)
     quad.Render();
     
     shader->Disable();
-    
-    
 }
 
 // Called after render
