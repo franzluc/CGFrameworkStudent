@@ -12,6 +12,7 @@
 #include "entity.h"
 #include "shader.h"
 #include "texture.h"
+#include "light.h"
 
 
 class Application
@@ -100,10 +101,6 @@ public:
     
     // Creamos una camara
 	Camera camara = Camera();
-    
-    // Creamos las mallas y las entidades que utilizaremos
-    Mesh mesh0 = Mesh();
-	Entity entity0;
 	
     bool moveCam = false;
 	bool moveCam2 = false;
@@ -158,8 +155,11 @@ public:
     int ex;
     int prob;
     
-    
-    
+	Light lights;
+	float ambientIntensity;
+	// Creamos las mallas y las entidades que utilizaremos
+	Mesh mesh0 = Mesh();
+	Entity entity0;
 };
 
 
