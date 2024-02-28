@@ -18,19 +18,17 @@ public:
     Mesh malla;
     Matrix44 matrixModel;
     Material material;
-    
-    
+   
     // Distintos constructores
     Entity();
     Entity(Mesh malla);
     Entity(Matrix44 matrix);
     Entity(Mesh malla, Matrix44 matrix);
-    //Entity(Mesh malla, Image textura);
     Entity(Mesh malla, Material material);
     
     
     // Métodos de la clase
-    void Render(Camera* camera);
+    void Render(Camera* camara, sUniformData uniformData);
     void Update(float seconds_elapsed, int type);   
     
 };

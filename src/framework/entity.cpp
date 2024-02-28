@@ -10,6 +10,7 @@
 #include "mesh.h"
 #include "image.h"
 #include "texture.h"
+#include "material.h"
 
 // Definimos los distintos constructores posibles
 
@@ -40,13 +41,7 @@ Entity::Entity(Mesh m, Matrix44 matrix){
 
 }
 
-/*Entity::Entity(Mesh m, Image t) {
-    
-    this->malla = m;
-    this->textura = t;
-    this->matrixModel.SetIdentity();
-    
-}*/
+
 
 Entity::Entity(Mesh malla, Material material) {
     this->malla = malla;
@@ -54,8 +49,9 @@ Entity::Entity(Mesh malla, Material material) {
 }
  
 // Definimos la función render que unirá los vertices de nuestra malla
-void Entity::Render(Camera* camera) {
-
+void Entity::Render(Camera* camara, sUniformData uniformData) {
+    
+    
     //shaderEntity->Enable();
 
     //Variables que se pasamos a los shaders
@@ -66,10 +62,16 @@ void Entity::Render(Camera* camera) {
     //shaderEntity->SetTexture("u_textureEntity", entityTexture);
     
     // Renderizamos la malla
-    malla.Render();
+    //malla.Render();
 
     //shaderEntity->Disable();
     
+    uniformData.modelMatrix = matrixModel;
+    uniformData.view_projection_matrix = camara->viewprojection_matrix;
+    
+    material.Enable(uniformData);
+    malla.Render();
+    material.Disable();
     
     
 }

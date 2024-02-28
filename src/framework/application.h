@@ -13,6 +13,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "light.h"
+#include "material.h"
 
 
 class Application
@@ -160,6 +161,11 @@ public:
 	// Creamos las mallas y las entidades que utilizaremos
 	Mesh mesh0 = Mesh();
 	Entity entity0;
+    
+    sUniformData sUniform;
+    Material material0;
+    
+    
 };
 
 

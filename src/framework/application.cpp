@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "entity.h"
 #include "mesh.h"
+#include "light.h"
 
 #include <cmath>
 #include <chrono>
@@ -41,72 +42,57 @@ void Application::Init(void)
 {
     // Creamos las variables que posteriormente pasaremos al fragment shader (el u_aspect_ratio no nos funciona bien)
     
-    
     u_aspect_ratio = window_width/window_height;
     
     // Estas variables funcionan para el control de los apartados y los ejercicios
     ex = 1;
     prob = 1;
     
-    // Asignamos archivos a shader y texture creados en el application.h
-    shader = Shader::Get("shaders/quad.vs", "shaders/quad.fs");
-    texture = Texture::Get("images/fruits.png");
-    
-    //Creamos un quad para la malla 'quad' creada en el aplication.h
-    quad.CreateQuad();
-    
-    
-    
-    // Realizamos las operaciones adecuadas para el ejercicio 4
+   
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
-    entity0 = Entity(mesh0); // Creamos la entidad
     
+    material0.shader = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
+    material0.textura = Texture::Get("textures/lee_color_specular.tga");
+    material0.Ka = 3;
+    material0.Kd = 4;
+    material0.Ks = 5;
+    material0.Shininess = 6;
     
-    
-    // Asignamos el shader y el texture que son atributos de entitity
-    entity0.shaderEntity = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
-    entity0.entityTexture = Texture::Get("textures/lee_color_specular.tga");
-    
-    
+    entity0 = Entity(mesh0, material0);
     
     // Configuramos la camara
     camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
     camara.LookAt(eye, center, Vector3::UP);
     
+    lights.posicion = (0,0,0);
+    lights.intensidadId = 10;
+    lights.intensidadIs = 5;
+    
     // Habilitamos el test de profundidad (no nos funciona)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
+    
+    
+    sUniform.modelMatrix = entity0.matrixModel;
+    sUniform.view_projection_matrix = camara.viewprojection_matrix;
+    sUniform.lightPosition = lights.posicion;
+    sUniform.Ia = ambientIntensity;
+    sUniform.Id = lights.intensidadId;
+    sUniform.Is = lights.intensidadIs;
+    sUniform.Ka = material0.Ka;
+    sUniform.Kd = material0.Kd;
+    sUniform.Ks = material0.Ks;
+    sUniform.brillo = material0.Shininess;
+    
+    
 
 }
 
 // Render one frame
 void Application::Render(void)
 {
-   
-    // Para los ejercicios 1, 2 y 3
-    if (ex != 4){
-        shader->Enable();
-        
-        // Pasamos las variables que usaremos a los shaders
-        
-        
-        shader->SetFloat("u_aspect_ratio", u_aspect_ratio);
-        shader->SetFloat("u_width", texture->width);
-        shader->SetFloat("u_heigth", texture->height);
-        shader->SetFloat("time", time);
-        shader->SetUniform1("ex", ex);
-        shader->SetUniform1("prob", prob);
-        shader->SetTexture("u_texture", texture);
-        
-        // Renderizamos el quad
-        quad.Render();
-        
-        shader->Disable();
-   }
-   // Para el ejercicio 4, el render esta definido en la clase entity
-   if (ex == 4){
-        entity0.Render(&camara);
-   }
+   entity0.Render(&camara, sUniform);
+  
 }
 
 // Called after render
@@ -147,9 +133,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     if (event.keysym.sym == SDLK_4) {
         ex = 4;
         prob = 1;
-        entity0.Render(&camara);
-        
-        
     }
     
     if (event.keysym.sym == SDLK_a) {
@@ -259,12 +242,14 @@ void Application::OnMouseMove(SDL_MouseButtonEvent event)
         // Utilizamos la función de camara "rotate", utilizando la variación de posición del mouse (mouse_delta) en cada uno de los ejes. Multiplicamos por DEG2RAD para pasar de grados a radianes
         camara.Rotate(mouse_delta.x * DEG2RAD, Vector3(0, 1, 0)); // Si se mueve el mouse en el eje x, gira la camara en el eje y
         camara.Rotate(mouse_delta.y * DEG2RAD, Vector3(1, 0, 0)); // Viceversa
+        
     }
 
     if (moveCam2) {
         
         // Utilizamos la función de camara 'move', nuevamente usando mouse_delta, en la que cambiamos la posición del centro de enfoque
         camara.Move(Vector3(mouse_delta.x * DEG2RAD, mouse_delta.y * DEG2RAD, 0));
+        
     }
 }
 

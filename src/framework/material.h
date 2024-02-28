@@ -2,6 +2,21 @@
 
 #include "texture.h"
 #include "shader.h"
+#include "camera.h"
+#include "light.h"
+
+struct sUniformData{
+    Matrix44 modelMatrix;
+    Matrix44 view_projection_matrix;
+    float Ia;
+    float Id;
+    float Is;
+    float Ka;
+    float Kd;
+    float Ks;
+    Vector3 lightPosition;
+    float brillo;
+};
 
 class Material
 {
@@ -12,9 +27,12 @@ public:
 	float Kd;
 	float Ks;
 	float Shininess = 0.5;
-
-	Material();
+    
+    Material();
 	Material(Shader* shader, Texture* textura, float Ka, float Kd, float Ks);
-	void Enable(Camera* camera, Entity entity, float ambientIntensity, Light lights);
+	void Enable(const sUniformData& sUniform);
 	void Disable();
 };
+
+
+
