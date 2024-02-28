@@ -49,12 +49,12 @@ void Application::Init(void)
     
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
     
-    material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
+    material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
     material0.textura = Texture::Get("textures/lee_normal.tga");
     material0.Ka = {1, 3, 0};
     material0.Kd = {0, 4, 1};
     material0.Ks = {1, 5, 0};
-    material0.Shininess = 6;
+    material0.Shininess = 1;
     
     entity0 = Entity(mesh0, material0);
     
@@ -105,15 +105,13 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
 
 	if (event.keysym.sym == SDLK_1) {
-        ex = 1;
-        prob = 1;
+        material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
         Render();
 
     }
 
 	if (event.keysym.sym == SDLK_2) {
-        ex = 2;
-        prob = 0;
+        material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
         Render();
         
 	}
