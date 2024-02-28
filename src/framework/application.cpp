@@ -44,7 +44,7 @@ void Application::Init(void)
     u_aspect_ratio = window_width/window_height;
     
     // Estas variables funcionan para el control de los apartados y los ejercicios
-    ex = 1;
+    ex = 2;
     prob = 1;
     
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
