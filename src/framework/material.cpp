@@ -20,17 +20,18 @@ void Material::Enable(const sUniformData& sUniform) {
     //Variables que se pasamos a los shaders
     shader->SetMatrix44("u_model", sUniform.modelMatrix);
     shader->SetMatrix44("u_viewprojection", sUniform.camara->viewprojection_matrix);
+    shader->SetVector3("u_eye", sUniform.camara->eye);
 
     //Se establece la textura a renderizar
     shader->SetTexture("u_textureEntity", textura);
 
-	shader->SetFloat("u_Ia", sUniform.Ia);
-    shader->SetFloat("u_Id", sUniform.Id);
-    shader->SetFloat("u_Is", sUniform.Is);
+	shader->SetVector3("u_Ia", sUniform.Ia);
+    shader->SetVector3("u_Id", sUniform.Id);
+    shader->SetVector3("u_Is", sUniform.Is);
 
-	shader->SetFloat("u_ka", sUniform.Ka);
-	shader->SetFloat("u_kd", sUniform.Kd);
-	shader->SetFloat("u_ks", sUniform.Ks);
+	shader->SetVector3("u_ka", sUniform.Ka);
+	shader->SetVector3("u_kd", sUniform.Kd);
+	shader->SetVector3("u_ks", sUniform.Ks);
 
 	shader->SetVector3("u_lightPosition", sUniform.lightPosition);
 

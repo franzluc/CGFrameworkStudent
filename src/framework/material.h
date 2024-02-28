@@ -8,20 +8,20 @@
 struct sUniformData{
     Matrix44 modelMatrix;
     Camera* camara = nullptr;
-    float Ia;
-    float Id;
-    float Is;
-    float Ka;
-    float Kd;
-    float Ks;
+    Vector3 Ia;
+    Vector3 Id;
+    Vector3 Is;
+    Vector3 Ka;
+    Vector3 Kd;
+    Vector3 Ks;
     Vector3 lightPosition;
     float brillo;
 };
 
 struct Light {
     Vector3 posicion;
-    float intensidadId;
-    float intensidadIs;
+    Vector3 intensidadId;
+    Vector3 intensidadIs;
 };
 
 
@@ -30,9 +30,9 @@ class Material
 public:
 	Shader* shader = nullptr;
 	Texture* textura = nullptr;
-	float Ka;
-	float Kd;
-	float Ks;
+    Vector3 Ka;
+    Vector3 Kd;
+    Vector3 Ks;
 	float Shininess = 0.5;
     
     Material();

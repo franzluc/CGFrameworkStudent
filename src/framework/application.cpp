@@ -49,11 +49,11 @@ void Application::Init(void)
     
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
     
-    material0.shader = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
+    material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
     material0.textura = Texture::Get("textures/lee_color_specular.tga");
-    material0.Ka = 3;
-    material0.Kd = 4;
-    material0.Ks = 5;
+    material0.Ka = {1, 3, 0};
+    material0.Kd = {0, 4, 1};
+    material0.Ks = {1, 5, 0};
     material0.Shininess = 6;
     
     entity0 = Entity(mesh0, material0);
@@ -62,9 +62,9 @@ void Application::Init(void)
     camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
     camara.LookAt(eye, center, Vector3::UP);
     
-    lights.posicion = (0,0,0);
-    lights.intensidadId = 10;
-    lights.intensidadIs = 5;
+    lights.posicion = {1, 2, 0};
+    lights.intensidadId = {1, 0, 2};
+    lights.intensidadIs = {2, 1, 0};
     
     // Habilitamos el test de profundidad (no nos funciona)
     glEnable(GL_DEPTH_TEST);

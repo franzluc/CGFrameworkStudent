@@ -152,7 +152,7 @@ public:
     int ex;
     int prob;
     
-	float ambientIntensity;
+    Vector3 ambientIntensity = {0, 0, 4};
 	
 	Mesh mesh0 = Mesh();
 	Entity entity0;
