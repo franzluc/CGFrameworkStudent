@@ -49,8 +49,8 @@ void Application::Init(void)
     
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
     
-    material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
-    material0.textura = Texture::Get("textures/lee_color_specular.tga");
+    material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
+    material0.textura = Texture::Get("textures/lee_normal.tga");
     material0.Ka = {1, 3, 0};
     material0.Kd = {0, 4, 1};
     material0.Ks = {1, 5, 0};
@@ -70,7 +70,6 @@ void Application::Init(void)
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     
-    
     sUniform.modelMatrix = entity0.matrixModel;
     sUniform.camara = &camara;
     sUniform.lightPosition = lights.posicion;
@@ -81,8 +80,6 @@ void Application::Init(void)
     sUniform.Kd = material0.Kd;
     sUniform.Ks = material0.Ks;
     sUniform.brillo = material0.Shininess;
-    
-    
 
 }
 
