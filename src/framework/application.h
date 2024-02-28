@@ -12,7 +12,6 @@
 #include "entity.h"
 #include "shader.h"
 #include "texture.h"
-#include "light.h"
 #include "material.h"
 
 
@@ -148,20 +147,18 @@ public:
     
     
     
-    Shader* shader = nullptr;
-    Texture* texture = nullptr;
-    Mesh quad;
-    
+   
     float u_aspect_ratio;
     int ex;
     int prob;
     
-	Light lights;
 	float ambientIntensity;
-	// Creamos las mallas y las entidades que utilizaremos
+	
 	Mesh mesh0 = Mesh();
 	Entity entity0;
     
+    
+    Light lights;
     sUniformData sUniform;
     Material material0;
     

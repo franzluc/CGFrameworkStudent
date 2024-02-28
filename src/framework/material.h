@@ -3,11 +3,11 @@
 #include "texture.h"
 #include "shader.h"
 #include "camera.h"
-#include "light.h"
+
 
 struct sUniformData{
     Matrix44 modelMatrix;
-    Matrix44 view_projection_matrix;
+    Camera* camara = nullptr;
     float Ia;
     float Id;
     float Is;
@@ -17,6 +17,13 @@ struct sUniformData{
     Vector3 lightPosition;
     float brillo;
 };
+
+struct Light {
+    Vector3 posicion;
+    float intensidadId;
+    float intensidadIs;
+};
+
 
 class Material
 {

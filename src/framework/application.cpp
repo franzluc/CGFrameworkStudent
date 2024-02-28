@@ -5,7 +5,6 @@
 #include "camera.h"
 #include "entity.h"
 #include "mesh.h"
-#include "light.h"
 
 #include <cmath>
 #include <chrono>
@@ -48,7 +47,6 @@ void Application::Init(void)
     ex = 1;
     prob = 1;
     
-   
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
     
     material0.shader = Shader::Get("shaders/simple.vs", "shaders/simple.fs");
@@ -74,7 +72,7 @@ void Application::Init(void)
     
     
     sUniform.modelMatrix = entity0.matrixModel;
-    sUniform.view_projection_matrix = camara.viewprojection_matrix;
+    sUniform.camara = &camara;
     sUniform.lightPosition = lights.posicion;
     sUniform.Ia = ambientIntensity;
     sUniform.Id = lights.intensidadId;
@@ -91,7 +89,7 @@ void Application::Init(void)
 // Render one frame
 void Application::Render(void)
 {
-   entity0.Render(&camara, sUniform);
+   entity0.Render(sUniform);
   
 }
 

@@ -28,7 +28,7 @@ public:
     
     
     // Métodos de la clase
-    void Render(Camera* camara, sUniformData uniformData);
+    void Render(sUniformData uniformData);
     void Update(float seconds_elapsed, int type);   
     
 };

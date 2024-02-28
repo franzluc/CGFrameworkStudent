@@ -2,7 +2,6 @@
 #include "shader.h"
 #include "texture.h"
 #include "camera.h"
-#include "light.h"
 
 Material::Material(){}
 
@@ -20,7 +19,7 @@ void Material::Enable(const sUniformData& sUniform) {
 
     //Variables que se pasamos a los shaders
     shader->SetMatrix44("u_model", sUniform.modelMatrix);
-    shader->SetMatrix44("u_viewprojection", sUniform.view_projection_matrix);
+    shader->SetMatrix44("u_viewprojection", sUniform.camara->viewprojection_matrix);
 
     //Se establece la textura a renderizar
     shader->SetTexture("u_textureEntity", textura);
