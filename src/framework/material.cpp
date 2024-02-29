@@ -5,9 +5,10 @@
 
 Material::Material(){}
 
-Material::Material(Shader* shader, Texture* textura, float Ka, float Kd, float Ks) {
+Material::Material(Shader* shader, Texture* textura, Texture* nText,  float Ka, float Kd, float Ks) {
 	this->shader = shader;
 	this->textura = textura;
+    this->nText = nText;
 	this->Ka = Ka;   //Ambience
 	this->Kd = Kd;   //Diffuse
 	this->Ks = Ks;   //Specular
@@ -16,6 +17,8 @@ Material::Material(Shader* shader, Texture* textura, float Ka, float Kd, float K
 void Material::Enable(const sUniformData& sUniform) {
 	
     shader->Enable();
+    
+    shader->SetUniform1("ex", sUniform.ex);
 
     //Variables que se pasamos a los shaders
     shader->SetMatrix44("u_model", sUniform.modelMatrix);
@@ -24,6 +27,7 @@ void Material::Enable(const sUniformData& sUniform) {
 
     //Se establece la textura a renderizar
     shader->SetTexture("u_textureEntity", textura);
+    shader->SetTexture("u_normalTexture", nText);
 
 	shader->SetVector3("u_Ia", sUniform.Ia);
     shader->SetVector3("u_Id", sUniform.Id);

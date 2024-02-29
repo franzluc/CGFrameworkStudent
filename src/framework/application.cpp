@@ -44,17 +44,18 @@ void Application::Init(void)
     u_aspect_ratio = window_width/window_height;
     
     // Estas variables funcionan para el control de los apartados y los ejercicios
-    ex = 2;
-    prob = 1;
+    //ex = 2;
+    //prob = 1;
     
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
     
     material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
     material0.textura = Texture::Get("textures/lee_color_specular.tga");
-    material0.Ka = {1, 3, 0};
-    material0.Kd = {0, 4, 0};
-    material0.Ks = {1, 5, 0};
-    material0.Shininess = 6;
+    material0.nText = Texture::Get("textures/lee_normal.tga");
+    material0.Ka = {1.0, 1.0, 1.0};
+    material0.Kd = {0.8, 0.7, 0.2};
+    material0.Ks = {1.0, 1.0, 1.0};
+    material0.Shininess = 10;
     
     entity0 = Entity(mesh0, material0);
     
@@ -62,16 +63,17 @@ void Application::Init(void)
     camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
     camara.LookAt(eye, center, Vector3::UP);
     
-    lights.posicion = {1, 2, 0};
+    lights.posicion = {1.0, 2.0, 0.0};
     
-    lights.intensidadId = {1, 0, 5};
-    lights.intensidadIs = {2, 1, 0};
-    ambientIntensity = {0, 0, 4};
+    lights.intensidadId = {1.0, 1.0, 1.0};
+    lights.intensidadIs = {1.0, 1.0, 1.0};
+    ambientIntensity = {1.0, 1.0, 1.0};
     
-    // Habilitamos el test de profundidad (no nos funciona)
+    // Habilitamos el test de profundidad 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     
+    sUniform.ex = 1;
     sUniform.modelMatrix = entity0.matrixModel;
     sUniform.camara = &camara;
     sUniform.lightPosition = lights.posicion;
@@ -108,30 +110,34 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 
 	if (event.keysym.sym == SDLK_1) {
         //material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
-        //Render();
+        
+        sUniform.ex = 1;
+        Render();
 
     }
 
 	if (event.keysym.sym == SDLK_2) {
         //material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
         //Render();
+        sUniform.ex = 2;
+        Render();
+        
         
 	}
     
     if (event.keysym.sym == SDLK_3) {
-        ex = 3;
-        prob = 1;
+        sUniform.ex = 3;
         Render();
         
     }
     
     if (event.keysym.sym == SDLK_4) {
-        ex = 4;
-        prob = 1;
+        sUniform.ex = 4;
+        Render();
     }
     
-    if (event.keysym.sym == SDLK_a) {
-        prob = 1;
+    if (event.keysym.sym == SDLK_5) {
+        sUniform.ex = 5;
         Render();
         
     }
