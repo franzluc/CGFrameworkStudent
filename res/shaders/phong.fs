@@ -19,7 +19,7 @@ uniform vec3 u_ks;
 
 uniform float u_shininess;
 
-int ex = 2;
+int ex = 1;
 
 void main()
 {

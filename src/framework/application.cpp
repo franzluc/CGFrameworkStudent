@@ -49,12 +49,12 @@ void Application::Init(void)
     
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
     
-    material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
-    material0.textura = Texture::Get("textures/lee_normal.tga");
+    material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
+    material0.textura = Texture::Get("textures/lee_color_specular.tga");
     material0.Ka = {1, 3, 0};
-    material0.Kd = {0, 4, 1};
+    material0.Kd = {0, 4, 0};
     material0.Ks = {1, 5, 0};
-    material0.Shininess = 1;
+    material0.Shininess = 6;
     
     entity0 = Entity(mesh0, material0);
     
@@ -63,8 +63,10 @@ void Application::Init(void)
     camara.LookAt(eye, center, Vector3::UP);
     
     lights.posicion = {1, 2, 0};
-    lights.intensidadId = {1, 0, 2};
+    
+    lights.intensidadId = {1, 0, 5};
     lights.intensidadIs = {2, 1, 0};
+    ambientIntensity = {0, 0, 4};
     
     // Habilitamos el test de profundidad (no nos funciona)
     glEnable(GL_DEPTH_TEST);
@@ -105,14 +107,14 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	}
 
 	if (event.keysym.sym == SDLK_1) {
-        material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
-        Render();
+        //material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
+        //Render();
 
     }
 
 	if (event.keysym.sym == SDLK_2) {
-        material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
-        Render();
+        //material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
+        //Render();
         
 	}
     

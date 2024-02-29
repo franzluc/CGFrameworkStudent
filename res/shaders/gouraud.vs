@@ -43,10 +43,10 @@ void main()
 	vec3 N = normalize(world_normal);  
 	vec3 L = normalize(u_lightPosition - world_position);
 	vec3 R = reflect(-L, N); 
-	vec3 V = normalize(-world_position);
+	vec3 V = normalize(u_eye - world_position);
 
 	vec3 ambient = u_ka * u_Ia;
-	vec3 dif = u_kd * u_Id * clamp(dot(N,L), 0.0, 1.0);
+	vec3 dif = u_kd * u_Id * clamp(dot(L,N), 0.0, 1.0);
 	vec3 spec = u_ks * u_Is * pow(clamp(dot(R,V), 0.0, 1.0), u_shininess);
 	
 	vec3 cv = ambient + (1.0 / pow(distance(world_position, u_lightPosition) ,2.0)) * (dif + spec); 
