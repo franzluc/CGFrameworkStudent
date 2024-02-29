@@ -22,6 +22,7 @@ varying vec3 v_world_normal;
 
 
 
+
 //here create uniforms for all the data we need here
 
 void main()
@@ -29,7 +30,7 @@ void main()
 	v_uv = gl_MultiTexCoord0.xy;
 
 	// Convert local position to world space
-	vec3 world_position = (u_model * vec4( gl_Vertex.xyz, 1.0)).xyz;
+	vec3 world_position = (u_model * vec4(gl_Vertex.xyz, 1.0)).xyz;
 
 	// Convert local normal to world space
 	vec3 world_normal = (u_model * vec4(gl_Normal.xyz, 0.0)).xyz;
