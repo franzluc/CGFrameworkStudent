@@ -74,6 +74,7 @@ void Application::Init(void)
     glDepthFunc(GL_LEQUAL);
     
     sUniform.ex = 1;
+    sUniform.prob = {0,0,0};
     sUniform.modelMatrix = entity0.matrixModel;
     sUniform.camara = &camara;
     sUniform.lightPosition = lights.posicion;
@@ -142,38 +143,50 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         
     }
     
-    if (event.keysym.sym == SDLK_b) {
-        prob = 2;
+    if (event.keysym.sym == SDLK_g) {
+        material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
+        Render();
+        
+    }
+    
+    if (event.keysym.sym == SDLK_p) {
+        material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
         Render();
         
     }
     
     if (event.keysym.sym == SDLK_c) {
-        prob = 3;
+        if (sUniform.prob.x != 1){
+            sUniform.prob.x = 1;
+        } else {
+            sUniform.prob.x = 0;
+        }
         Render();
         
     }
     
-    if (event.keysym.sym == SDLK_d) {
-        prob = 4;
+    if (event.keysym.sym == SDLK_s) {
+        if (sUniform.prob.y != 1){
+            sUniform.prob.y = 1;
+        } else {
+            sUniform.prob.y = 0;
+        }
         Render();
         
     }
     
-    if (event.keysym.sym == SDLK_e) {
-        prob = 5;
+    if (event.keysym.sym == SDLK_n) {
+        if (sUniform.prob.z != 1){
+            sUniform.prob.z = 1;
+        } else {
+            sUniform.prob.z = 0;
+        }
         Render();
         
     }
     
-    if (event.keysym.sym == SDLK_f) {
-        prob = 6;
-        Render();
-        
-    }
     
-    
-    if (event.keysym.sym == SDLK_o) { // Cambio a proyección ortográfica
+    if (event.keysym.sym == SDLK_f) { // Cambio a proyección ortográfica
         
         
 	}
@@ -183,7 +196,7 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         
 	}
 
-	if (event.keysym.sym == SDLK_n) { // Modificar near_plane
+	if (event.keysym.sym == SDLK_o) { // Modificar near_plane
        
 	}
     

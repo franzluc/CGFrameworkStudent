@@ -17,6 +17,7 @@ struct sUniformData{
     Vector3 lightPosition;   //Ip
     float brillo;
     int ex;
+    Vector3 prob;
 };
 
 struct Light {

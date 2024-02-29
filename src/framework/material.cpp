@@ -19,6 +19,7 @@ void Material::Enable(const sUniformData& sUniform) {
     shader->Enable();
     
     shader->SetUniform1("ex", sUniform.ex);
+    shader->SetVector3("prob", sUniform.prob);
 
     //Variables que se pasamos a los shaders
     shader->SetMatrix44("u_model", sUniform.modelMatrix);
