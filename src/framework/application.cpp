@@ -67,7 +67,7 @@ void Application::Init(void)
     
     lights.intensidadId = {1.0, 1.0, 1.0};
     lights.intensidadIs = {1.0, 1.0, 1.0};
-    ambientIntensity = {1.0, 1.0, 1.0};
+    ambientIntensity = {0.2, 0.2, 0.2};
     
     // Habilitamos el test de profundidad 
     glEnable(GL_DEPTH_TEST);
