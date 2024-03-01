@@ -157,12 +157,13 @@ public:
 	Mesh mesh0 = Mesh();
 	Entity entity0;
     
-    
     Light lights;
+    Light lights2;
+    
     sUniformData sUniform;
     Material material0;
 
-	Light lights2;
+	
 
     
     

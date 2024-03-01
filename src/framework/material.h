@@ -4,30 +4,26 @@
 #include "shader.h"
 #include "camera.h"
 
-
-struct sUniformData{
-    Matrix44 modelMatrix;
-    Camera* camara = nullptr;
-    Vector3 Ia;   // Intensidad ambient light
-    Vector3 Id;   // Intensidad specular light
-    Vector3 Id2;  // Intensidad specular light 2
-    Vector3 Is;   // Intensidad diffuse light
-    Vector3 Is2;  // Intensidad diffuse light 2
-    Vector3 Ka;   // Ambient reflection
-    Vector3 Kd;   // Reflected diffuse light
-    Vector3 Ks;   // Reflected specular light
-    Vector3 lightPosition;   //Ip
-    Vector3 lightPosition2;  //Ip 2
-    float brillo;
-    int ex;
-    Vector3 prob;
-};
-
 struct Light {
     Vector3 posicion;
     Vector3 intensidadId;
     Vector3 intensidadIs;
 };
+
+struct sUniformData{
+    Matrix44 modelMatrix;
+    Camera* camara = nullptr;
+    Vector3 Ia;   // Intensidad ambient light
+    Vector3 Ka;   // Ambient reflection
+    Vector3 Kd;   // Reflected diffuse light
+    Vector3 Ks;   // Reflected specular light
+    std::vector<Light> lightsMult;
+    float brillo;
+    int ex;
+    Vector3 prob;
+};
+
+
 
 
 class Material
@@ -43,7 +39,7 @@ public:
     
     Material();
 	Material(Shader* shader, Texture* textura, Texture* nText, float Ka, float Kd, float Ks);
-	void Enable(const sUniformData& sUniform);
+	void Enable(const sUniformData& sUniform, int index);
 	void Disable();
 };
 

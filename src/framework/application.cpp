@@ -64,31 +64,36 @@ void Application::Init(void)
     camara.LookAt(eye, center, Vector3::UP);
 
     lights.posicion = { 1.0, 2.0, 0.0 };
-
     lights.intensidadId = { 1.0, 0.0, 0.0 };
     lights.intensidadIs = { 1.0, 1.0, 1.0 };
-    ambientIntensity = { 0.2, 0.2, 0.2 };
-
+    
     lights2.posicion = {-1.0, 2.0, 0.0 };
-
     lights2.intensidadId = { 0.0, 1.0, 0.0 };
     lights2.intensidadIs = { 1.0, 1.0, 1.0 };
+    
+    ambientIntensity = { 0.9, 0.9, 0.9 };
     
     // Habilitamos el test de profundidad 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     
+    
+    
     sUniform.ex = 1;
     sUniform.prob = {0,0,0};
+    
+    sUniform.lightsMult.push_back(lights);
+    sUniform.lightsMult.push_back(lights2);
+    
     sUniform.modelMatrix = entity0.matrixModel;
     sUniform.camara = &camara;
-    sUniform.lightPosition = lights.posicion;
-    sUniform.lightPosition2 = lights2.posicion;
+    //sUniform.lightPosition = lights.posicion;
+    //sUniform.lightPosition2 = lights2.posicion;
     sUniform.Ia = ambientIntensity;
-    sUniform.Id = lights.intensidadId;
-    sUniform.Id2 = lights2.intensidadId;
-    sUniform.Is = lights.intensidadIs;
-    sUniform.Is2 = lights2.intensidadIs;
+    //sUniform.Id = lights.intensidadId;
+    //sUniform.Id2 = lights2.intensidadId;
+    //sUniform.Is = lights.intensidadIs;
+    //sUniform.Is2 = lights2.intensidadIs;
     sUniform.Ka = material0.Ka;
     sUniform.Kd = material0.Kd;
     sUniform.Ks = material0.Ks;

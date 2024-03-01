@@ -14,7 +14,7 @@ Material::Material(Shader* shader, Texture* textura, Texture* nText,  float Ka, 
 	this->Ks = Ks;   //Specular
 }
 
-void Material::Enable(const sUniformData& sUniform) {
+void Material::Enable(const sUniformData& sUniform, int index) {
 	
     shader->Enable();
     
@@ -31,19 +31,18 @@ void Material::Enable(const sUniformData& sUniform) {
     shader->SetTexture("u_normalTexture", nText);
 
 	shader->SetVector3("u_Ia", sUniform.Ia);
-    shader->SetVector3("u_Id", sUniform.Id);
-    shader->SetVector3("u_Id2", sUniform.Id2);
-    shader->SetVector3("u_Is", sUniform.Is);
-    shader->SetVector3("u_Is2", sUniform.Is2);
+    
+    
+    shader->SetVector3("u_Id", sUniform.lightsMult[index].intensidadId);
+    shader->SetVector3("u_Is", sUniform.lightsMult[index].intensidadIs);
+    shader->SetVector3("u_lightPosition", sUniform.lightsMult[index].posicion);
+    
 
 	shader->SetVector3("u_ka", sUniform.Ka);
 	shader->SetVector3("u_kd", sUniform.Kd);
 	shader->SetVector3("u_ks", sUniform.Ks);
 
-	shader->SetVector3("u_lightPosition", sUniform.lightPosition);
-
-    shader->SetVector3("u_lightPosition2", sUniform.lightPosition2);
-
+	
     shader->SetFloat("u_shininess", sUniform.brillo);
 
 }

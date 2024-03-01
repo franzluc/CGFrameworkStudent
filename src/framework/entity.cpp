@@ -53,11 +53,12 @@ void Entity::Render(sUniformData uniformData) {
     
     uniformData.modelMatrix = matrixModel;
     
-    material->Enable(uniformData);
-    malla.Render();
-    material->Disable();
-    
-    
+    for (int i=0; i < uniformData.lightsMult.size(); i++){
+        material->Enable(uniformData, i);
+        malla.Render();
+        material->Disable();
+        
+    }
 }
 
 // Definimos la función update de actualizará nuestra entidad
