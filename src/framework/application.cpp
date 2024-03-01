@@ -56,11 +56,11 @@ void Application::Init(void)
     material0.Kd = { 0.8, 0.7, 0.2 };
     material0.Ks = { 1.0, 1.0, 1.0 };
     material0.Shininess = 6;
-
-    entity0 = Entity(mesh0, material0);
+    
+    entity0 = Entity(mesh0, &material0);
 
     // Configuramos la camara
-    camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
+    camara.SetPerspective(fov, framebuffer.width / float(framebuffer.height), near_plane, far_plane);
     camara.LookAt(eye, center, Vector3::UP);
 
     lights.posicion = { 1.0, 2.0, 0.0 };
@@ -71,7 +71,7 @@ void Application::Init(void)
 
     lights2.posicion = {-1.0, 2.0, 0.0 };
 
-    lights2.intensidadId = { 0.0, 0.0, 1.0 };
+    lights2.intensidadId = { 0.0, 1.0, 0.0 };
     lights2.intensidadIs = { 1.0, 1.0, 1.0 };
     
     // Habilitamos el test de profundidad 
@@ -121,47 +121,35 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         //material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
         
         sUniform.ex = 1;
-        Render();
-
     }
 
 	if (event.keysym.sym == SDLK_2) {
         //material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
         //Render();
-        sUniform.ex = 2;
-        Render();
-        
-        
+        sUniform.ex = 2;       
 	}
     
     if (event.keysym.sym == SDLK_3) {
         sUniform.ex = 3;
-        Render();
         
     }
     
     if (event.keysym.sym == SDLK_4) {
         sUniform.ex = 4;
-        Render();
     }
     
     if (event.keysym.sym == SDLK_5) {
         sUniform.ex = 5;
-        Render();
         
     }
     
     if (event.keysym.sym == SDLK_g) {
-        material0.shader = nullptr;
         material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
-        Render();
         
     }
     
     if (event.keysym.sym == SDLK_p) {
-        material0.shader = nullptr;
         material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
-        Render();
         
     }
     
@@ -171,7 +159,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         } else {
             sUniform.prob.x = 0;
         }
-        Render();
         
     }
     
@@ -181,7 +168,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         } else {
             sUniform.prob.y = 0;
         }
-        Render();
         
     }
     
@@ -191,7 +177,6 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
         } else {
             sUniform.prob.z = 0;
         }
-        Render();
         
     }
     

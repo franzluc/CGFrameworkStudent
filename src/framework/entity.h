@@ -17,14 +17,14 @@ public:
     // Atributos
     Mesh malla;
     Matrix44 matrixModel;
-    Material material;
+    Material *material = nullptr;
    
     // Distintos constructores
     Entity();
     Entity(Mesh malla);
     Entity(Matrix44 matrix);
     Entity(Mesh malla, Matrix44 matrix);
-    Entity(Mesh malla, Material material);
+    Entity(Mesh malla, Material *material);
     
     
     // Métodos de la clase

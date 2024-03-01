@@ -43,7 +43,7 @@ Entity::Entity(Mesh m, Matrix44 matrix){
 
 
 
-Entity::Entity(Mesh malla, Material material) {
+Entity::Entity(Mesh malla, Material *material) {
     this->malla = malla;
     this->material = material;
 }
@@ -53,9 +53,9 @@ void Entity::Render(sUniformData uniformData) {
     
     uniformData.modelMatrix = matrixModel;
     
-    material.Enable(uniformData);
+    material->Enable(uniformData);
     malla.Render();
-    material.Disable();
+    material->Disable();
     
     
 }
