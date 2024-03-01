@@ -29,8 +29,11 @@ void Material::Enable(const sUniformData& sUniform, int index) {
     //Se establece la textura a renderizar
     shader->SetTexture("u_textureEntity", textura);
     shader->SetTexture("u_normalTexture", nText);
-
-	shader->SetVector3("u_Ia", sUniform.Ia);
+    
+    
+    shader->SetVector3("u_Ia", index == 0 ? sUniform.Ia : Vector3 {0,0,0});
+    
+	
     
     
     shader->SetVector3("u_Id", sUniform.lightsMult[index].intensidadId);

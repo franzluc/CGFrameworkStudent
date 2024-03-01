@@ -55,7 +55,7 @@ void Application::Init(void)
     material0.Ka = { 1.0, 1.0, 1.0 };
     material0.Kd = { 0.8, 0.7, 0.2 };
     material0.Ks = { 1.0, 1.0, 1.0 };
-    material0.Shininess = 6;
+    material0.Shininess = 10;
     
     entity0 = Entity(mesh0, &material0);
 
@@ -71,7 +71,7 @@ void Application::Init(void)
     lights2.intensidadId = { 0.0, 1.0, 0.0 };
     lights2.intensidadIs = { 1.0, 1.0, 1.0 };
     
-    ambientIntensity = { 0.9, 0.9, 0.9 };
+    ambientIntensity = { 0.3, 0.3, 0.3};
     
     // Habilitamos el test de profundidad 
     glEnable(GL_DEPTH_TEST);

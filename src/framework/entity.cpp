@@ -53,7 +53,16 @@ void Entity::Render(sUniformData uniformData) {
     
     uniformData.modelMatrix = matrixModel;
     
-    for (int i=0; i < uniformData.lightsMult.size(); i++){
+    glDisable( GL_BLEND );
+    material->Enable(uniformData, 0);
+    malla.Render();
+    material->Disable();
+    
+    
+
+    for (int i=1; i < uniformData.lightsMult.size(); i++){
+        glEnable( GL_BLEND );
+        glBlendFunc( GL_ONE, GL_ONE );
         material->Enable(uniformData, i);
         malla.Render();
         material->Disable();
