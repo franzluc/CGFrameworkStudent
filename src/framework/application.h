@@ -161,6 +161,9 @@ public:
     Light lights;
     sUniformData sUniform;
     Material material0;
+
+	Light lights2;
+
     
     
 };

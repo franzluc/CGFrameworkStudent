@@ -40,34 +40,39 @@ void Application::Init(void)
 
 {
     // Creamos las variables que posteriormente pasaremos al fragment shader (el u_aspect_ratio no nos funciona bien)
-    
-    u_aspect_ratio = window_width/window_height;
-    
+
+    u_aspect_ratio = window_width / window_height;
+
     // Estas variables funcionan para el control de los apartados y los ejercicios
     //ex = 2;
     //prob = 1;
-    
+
     mesh0.LoadOBJ("meshes/lee.obj"); // Cargamos la malla
-    
+
     material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
     material0.textura = Texture::Get("textures/lee_color_specular.tga");
     material0.nText = Texture::Get("textures/lee_normal.tga");
-    material0.Ka = {1.0, 1.0, 1.0};
-    material0.Kd = {0.8, 0.7, 0.2};
-    material0.Ks = {1.0, 1.0, 1.0};
-    material0.Shininess = 10;
-    
+    material0.Ka = { 1.0, 1.0, 1.0 };
+    material0.Kd = { 0.8, 0.7, 0.2 };
+    material0.Ks = { 1.0, 1.0, 1.0 };
+    material0.Shininess = 6;
+
     entity0 = Entity(mesh0, material0);
-    
+
     // Configuramos la camara
     camara.SetPerspective(fov, framebuffer.width / framebuffer.height, near_plane, far_plane);
     camara.LookAt(eye, center, Vector3::UP);
-    
-    lights.posicion = {1.0, 2.0, 0.0};
-    
-    lights.intensidadId = {1.0, 1.0, 1.0};
-    lights.intensidadIs = {1.0, 1.0, 1.0};
-    ambientIntensity = {0.2, 0.2, 0.2};
+
+    lights.posicion = { 1.0, 2.0, 0.0 };
+
+    lights.intensidadId = { 1.0, 0.0, 0.0 };
+    lights.intensidadIs = { 1.0, 1.0, 1.0 };
+    ambientIntensity = { 0.2, 0.2, 0.2 };
+
+    lights2.posicion = {-1.0, 2.0, 0.0 };
+
+    lights2.intensidadId = { 0.0, 0.0, 1.0 };
+    lights2.intensidadIs = { 1.0, 1.0, 1.0 };
     
     // Habilitamos el test de profundidad 
     glEnable(GL_DEPTH_TEST);
@@ -78,9 +83,12 @@ void Application::Init(void)
     sUniform.modelMatrix = entity0.matrixModel;
     sUniform.camara = &camara;
     sUniform.lightPosition = lights.posicion;
+    sUniform.lightPosition2 = lights2.posicion;
     sUniform.Ia = ambientIntensity;
     sUniform.Id = lights.intensidadId;
+    sUniform.Id2 = lights2.intensidadId;
     sUniform.Is = lights.intensidadIs;
+    sUniform.Is2 = lights2.intensidadIs;
     sUniform.Ka = material0.Ka;
     sUniform.Kd = material0.Kd;
     sUniform.Ks = material0.Ks;
@@ -144,12 +152,14 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
     }
     
     if (event.keysym.sym == SDLK_g) {
+        material0.shader = nullptr;
         material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
         Render();
         
     }
     
     if (event.keysym.sym == SDLK_p) {
+        material0.shader = nullptr;
         material0.shader = Shader::Get("shaders/phong.vs", "shaders/phong.fs");
         Render();
         

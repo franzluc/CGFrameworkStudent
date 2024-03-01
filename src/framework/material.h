@@ -10,11 +10,14 @@ struct sUniformData{
     Camera* camara = nullptr;
     Vector3 Ia;   // Intensidad ambient light
     Vector3 Id;   // Intensidad specular light
+    Vector3 Id2;  // Intensidad specular light 2
     Vector3 Is;   // Intensidad diffuse light
+    Vector3 Is2;  // Intensidad diffuse light 2
     Vector3 Ka;   // Ambient reflection
     Vector3 Kd;   // Reflected diffuse light
     Vector3 Ks;   // Reflected specular light
     Vector3 lightPosition;   //Ip
+    Vector3 lightPosition2;  //Ip 2
     float brillo;
     int ex;
     Vector3 prob;

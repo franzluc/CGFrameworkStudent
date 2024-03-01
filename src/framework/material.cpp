@@ -32,13 +32,17 @@ void Material::Enable(const sUniformData& sUniform) {
 
 	shader->SetVector3("u_Ia", sUniform.Ia);
     shader->SetVector3("u_Id", sUniform.Id);
+    shader->SetVector3("u_Id2", sUniform.Id2);
     shader->SetVector3("u_Is", sUniform.Is);
+    shader->SetVector3("u_Is2", sUniform.Is2);
 
 	shader->SetVector3("u_ka", sUniform.Ka);
 	shader->SetVector3("u_kd", sUniform.Kd);
 	shader->SetVector3("u_ks", sUniform.Ks);
 
 	shader->SetVector3("u_lightPosition", sUniform.lightPosition);
+
+    shader->SetVector3("u_lightPosition2", sUniform.lightPosition2);
 
     shader->SetFloat("u_shininess", sUniform.brillo);
 
