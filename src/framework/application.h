@@ -159,13 +159,13 @@ public:
     
     Light lights;
     Light lights2;
+	Light lights3;
     
     sUniformData sUniform;
     Material material0;
 
-	
-
-    
+	int light2controller = 0;
+	int light3controller = 0;
     
 };
 

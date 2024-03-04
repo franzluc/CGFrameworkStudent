@@ -5,7 +5,7 @@ varying vec3 v_world_normal;
 varying vec3 v_world_position;
 uniform mat4 u_model;
 
-uniform int ex;
+//uniform int ex;
 
 uniform sampler2D u_textureEntity;
 uniform sampler2D u_normalTexture;
@@ -24,8 +24,6 @@ uniform vec3 u_ks;
 uniform vec3 prob;
 
 uniform float u_shininess;
-
-
 
 vec3 ka_u;
 vec3 ks_u;
@@ -84,11 +82,5 @@ void main()
 	
 	vec3 cv = ambient +  d*(dif + spec);
 	
-	gl_FragColor = vec4(cv, 1.0);
-	
-	
-
-	
-	
-	
+	gl_FragColor = vec4(cv, 1.0);	
 }

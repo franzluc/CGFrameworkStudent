@@ -20,9 +20,6 @@ varying vec2 v_uv;
 varying vec3 v_world_position;
 varying vec3 v_world_normal;
 
-
-
-
 //here create uniforms for all the data we need here
 
 void main()

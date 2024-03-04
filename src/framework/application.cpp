@@ -71,19 +71,23 @@ void Application::Init(void)
     lights2.intensidadId = { 0.0, 1.0, 0.0 };
     lights2.intensidadIs = { 1.0, 1.0, 1.0 };
     
+    lights3.posicion = { 0.0, 2.0, 0.0 };
+    lights3.intensidadId = { 0.0, 0.0, 1.0 };
+    lights3.intensidadIs = { 1.0, 1.0, 1.0 };
+
     ambientIntensity = { 0.3, 0.3, 0.3};
     
     // Habilitamos el test de profundidad 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
-    
-    
+    glEnable(GL_BLEND);
     
     sUniform.ex = 1;
     sUniform.prob = {0,0,0};
     
     sUniform.lightsMult.push_back(lights);
-    sUniform.lightsMult.push_back(lights2);
+    //sUniform.lightsMult.push_back(lights2);
+    //sUniform.lightsMult.push_back(lights3);
     
     sUniform.modelMatrix = entity0.matrixModel;
     sUniform.camara = &camara;
@@ -125,22 +129,41 @@ void Application::OnKeyPressed( SDL_KeyboardEvent event )
 	if (event.keysym.sym == SDLK_1) {
         //material0.shader = Shader::Get("shaders/phong2.vs", "shaders/phong2.fs");
         
-        sUniform.ex = 1;
+        //sUniform.ex = 1;
+
+        
     }
 
 	if (event.keysym.sym == SDLK_2) {
         //material0.shader = Shader::Get("shaders/gouraud.vs", "shaders/gouraud.fs");
-        //Render();
-        sUniform.ex = 2;       
+        //sUniform.ex = 2;
+        if (light2controller != 1) {
+            sUniform.lightsMult.push_back(lights2);
+            light2controller = 1;
+        }
+        else if (light2controller == 1) {
+            sUniform.lightsMult.pop_back();
+            light2controller = 0;
+        }
+        
 	}
     
     if (event.keysym.sym == SDLK_3) {
-        sUniform.ex = 3;
+        //sUniform.ex = 3;
+        if (light3controller != 1) {
+            sUniform.lightsMult.push_back(lights3);
+            light3controller = 1;
+        }
+        else if (light3controller == 1) {
+            sUniform.lightsMult.pop_back();
+            light3controller = 0;
+        }
         
     }
     
     if (event.keysym.sym == SDLK_4) {
         sUniform.ex = 4;
+
     }
     
     if (event.keysym.sym == SDLK_5) {
